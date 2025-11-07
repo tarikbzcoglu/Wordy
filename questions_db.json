@@ -1,0 +1,2702 @@
+[
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Largest desert on Earth, located in Africa",
+    "answer": "Sahara"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The layer of air surrounding Earth",
+    "answer": "Atmosphere"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Planet's natural satellite",
+    "answer": "Moon"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The process by which water vapor becomes liquid",
+    "answer": "Condensation"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The deepest ocean trench",
+    "answer": "Mariana Trench"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Longest river in Africa",
+    "answer": "Nile"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Highest mountain on Earth",
+    "answer": "Everest"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The ring of fire surrounds this ocean",
+    "answer": "Pacific"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Country that contains the Amazon rainforest's largest portion",
+    "answer": "Brazil"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Type of rock formed from cooled lava",
+    "answer": "Igneous"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Large body of salt water",
+    "answer": "Ocean"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The ice-covered polar region at Earth's north",
+    "answer": "Arctic"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Gradual movement of continents",
+    "answer": "Drift"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A tropical cyclone in the Atlantic",
+    "answer": "Hurricane"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The gas plants use to make food",
+    "answer": "Carbon Dioxide"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Fault line famous in California",
+    "answer": "San Andreas"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A long, narrow inlet with steep sides",
+    "answer": "Fjord"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A large flat area of land, often grassy",
+    "answer": "Plain"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Weather phenomenon with rotating column of air",
+    "answer": "Tornado"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Large sheet of ice on land",
+    "answer": "Glacier"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Region where freshwater meets the sea",
+    "answer": "Estuary"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Major ocean current that warms Western Europe",
+    "answer": "Gulf Stream"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A high, flat-topped mountain",
+    "answer": "Mesa"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A wide, slow-flowing river in tropical lowlands",
+    "answer": "Amazon"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "An island formed from volcanic activity",
+    "answer": "Atoll"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Process by which fertile land becomes desert",
+    "answer": "Desertification"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The study of Earth's physical structure",
+    "answer": "Geology"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A tropical grassland region",
+    "answer": "Savanna"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A place where two tectonic plates meet",
+    "answer": "Boundary"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Volcanic island nation in the Pacific: ___",
+    "answer": "Iceland"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Largest continent by area",
+    "answer": "Asia"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Ocean between Africa and Australia",
+    "answer": "Indian Ocean"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Country with the Great Barrier Reef",
+    "answer": "Australia"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A rocky, dry region with little vegetation",
+    "answer": "Desert"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Underground layer that stores groundwater",
+    "answer": "Aquifer"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A rapid downhill movement of rock/soil",
+    "answer": "Landslide"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Large body of ice floating in the ocean",
+    "answer": "Iceberg"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The imaginary line dividing Earth north/south",
+    "answer": "Equator"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Zone between low and high tides",
+    "answer": "Intertidal"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Magma that reaches Earth's surface",
+    "answer": "Lava"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A long-term average weather pattern",
+    "answer": "Climate"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A volcanic vent that emits hot water and steam",
+    "answer": "Geyser"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Large, seasonal accumulation of rain in tropics",
+    "answer": "Monsoon"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The study of weather",
+    "answer": "Meteorology"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A depression filled with water",
+    "answer": "Lake"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Strip of land connecting two larger areas",
+    "answer": "Isthmus"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A solitary hill rising abruptly",
+    "answer": "Butte"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "A ring of coral reefs",
+    "answer": "Coral Reef"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Planet Earth",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Planet Earth",
+    "answer": "Answer50"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The chemical symbol for water",
+    "answer": "H2O"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Force that pulls objects toward the Earth",
+    "answer": "Gravity"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Process by which plants make food",
+    "answer": "Photosynthesis"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The basic unit of life",
+    "answer": "Cell"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Gas essential for human breathing",
+    "answer": "Oxygen"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The organ that pumps blood",
+    "answer": "Heart"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Study of living organisms",
+    "answer": "Biology"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The smallest particle of an element",
+    "answer": "Atom"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "German physicist who developed relativity",
+    "answer": "Einstein"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Organism that makes its own food",
+    "answer": "Autotroph"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The change of species over generations",
+    "answer": "Evolution"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Branch of science studying stars",
+    "answer": "Astronomy"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "A symbiotic association between fungus and algae",
+    "answer": "Lichen"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Device to look at tiny objects",
+    "answer": "Microscope"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Basic building block of proteins",
+    "answer": "Amino Acid"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Material with negative electrical resistance",
+    "answer": "Semiconductor"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Natural satellite of Earth",
+    "answer": "Moon"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Element with atomic number 6",
+    "answer": "Carbon"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Process of cell division producing two identical cells",
+    "answer": "Mitosis"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "A large mammal known for tusks",
+    "answer": "Elephant"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Gas used in balloons that's lighter than air",
+    "answer": "Helium"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The study of heredity",
+    "answer": "Genetics"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Protein that carries oxygen in blood",
+    "answer": "Hemoglobin"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Solid form of water",
+    "answer": "Ice"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Organisms that feed on dead matter",
+    "answer": "Decomposers"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Part of plant that absorbs water",
+    "answer": "Roots"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Chemical reaction that releases energy",
+    "answer": "Exothermic"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "A body system that fights infection",
+    "answer": "Immune System"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "State of matter with fixed volume but no fixed shape",
+    "answer": "Liquid"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Tool used to measure temperature",
+    "answer": "Thermometer"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Speed of light unit starts with",
+    "answer": "C"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Process where plants lose water vapor",
+    "answer": "Transpiration"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "An animal that only eats plants",
+    "answer": "Herbivore"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Light bending as it passes through glass",
+    "answer": "Refraction"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Measure of the amount of matter",
+    "answer": "Mass"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "A sudden release of energy in Earth's crust",
+    "answer": "Earthquake"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Chemical symbol for sodium",
+    "answer": "Na"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "The study of insects",
+    "answer": "Entomology"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Gas produced by burning fossil fuels",
+    "answer": "Carbon Monoxide"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "A green pigment in plants",
+    "answer": "Chlorophyll"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Organ that filters blood in humans",
+    "answer": "Kidney"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Unit of electric current",
+    "answer": "Ampere"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Branch studying chemical reactions",
+    "answer": "Chemistry"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Particles that orbit an atom's nucleus",
+    "answer": "Electrons"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Vaccine purpose",
+    "answer": "Immunize"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "A disease-causing agent",
+    "answer": "Pathogen"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Measure of push on an area",
+    "answer": "Pressure"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Placeholder question 48 in Science & Nature",
+    "answer": "Answer48"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Science & Nature",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Science & Nature",
+    "answer": "Answer50"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Ancient Egyptian writing system",
+    "answer": "Hieroglyphs"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Empire known for roads and engineering: ___ Empire",
+    "answer": "Roman"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Leader who crossed the Alps with elephants",
+    "answer": "Hannibal"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Year the United States declared independence",
+    "answer": "1776"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Famous English playwright: William ___",
+    "answer": "Shakespeare"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "City where the Parthenon is located",
+    "answer": "Athens"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The medieval system of lords and vassals",
+    "answer": "Feudalism"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Explorer who completed a voyage around the world",
+    "answer": "Magellan"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Chinese dynasty known for the Great Wall expansion",
+    "answer": "Ming"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Revolution that began in 1789",
+    "answer": "French Revolution"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The ship that famously sank in 1912",
+    "answer": "Titanic"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Leader of the Soviet Union during WWII: ___ Stalin",
+    "answer": "Joseph"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The ancient city destroyed by Mount Vesuvius",
+    "answer": "Pompeii"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "First female Prime Minister of the UK",
+    "answer": "Thatcher"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Period of revived interest in art and learning",
+    "answer": "Renaissance"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The war between the North and South in the USA",
+    "answer": "Civil War"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Great leader who united the Mongol tribes",
+    "answer": "Genghis Khan"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "A system of writing used in ancient Mesopotamia",
+    "answer": "Cuneiform"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The trade route linking Europe and Asia",
+    "answer": "Silk Road"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Historic wall that divided Berlin",
+    "answer": "Berlin Wall"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The industrial revolution began in this country",
+    "answer": "England"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Famous pharaoh who built many monuments",
+    "answer": "Ramses"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The ancient capital of the Inca Empire",
+    "answer": "Cusco"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "City known for ancient library and lighthouse",
+    "answer": "Alexandria"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Leader of India's independence movement",
+    "answer": "Gandhi"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "A war that lasted from 1914 to 1918",
+    "answer": "World War I"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The palace complex in Beijing",
+    "answer": "Forbidden City"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "A famous 13th-century traveler from Venice",
+    "answer": "Marco Polo"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The document limiting king's power in 1215",
+    "answer": "Magna Carta"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The first man to step on the Moon",
+    "answer": "Armstrong"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Ancient Greek city-state rival of Sparta",
+    "answer": "Athens"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The code of laws of ancient Babylonian king",
+    "answer": "Hammurabi"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The treaty that ended WWI",
+    "answer": "Treaty of Versailles"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The Age of Enlightenment emphasized reason and ___",
+    "answer": "Science"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Leader who conquered much of Europe and was defeated at Waterloo",
+    "answer": "Napoleon"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The empire centered in modern-day Turkey",
+    "answer": "Ottoman"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "First Chinese emperor who unified the country",
+    "answer": "Qin Shi Huang"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "A prehistoric period before metal tools",
+    "answer": "Stone Age"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Important 20th-century civil rights leader",
+    "answer": "Martin Luther King"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The Aztec capital that became Mexico City",
+    "answer": "Tenochtitlan"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Famous German composer of symphonies",
+    "answer": "Beethoven"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Document that began the modern United Nations",
+    "answer": "UN Charter"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "A medieval fortress or grand home",
+    "answer": "Castle"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The crusades targeted control of",
+    "answer": "Jerusalem"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The movement to abolish slavery",
+    "answer": "Abolition"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Famous Renaissance artist who painted the Mona Lisa",
+    "answer": "Da Vinci"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "The ancient river associated with Chinese civilization",
+    "answer": "Yellow River"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Placeholder question 48 in History & Civilization",
+    "answer": "Answer48"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in History & Civilization",
+    "answer": "Answer49"
+  },
+  {
+    "category": "History & Civilization",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in History & Civilization",
+    "answer": "Answer50"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "The wizarding school in a famous book series",
+    "answer": "Hogwarts"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Director of 'Jaws' and 'E.T.'",
+    "answer": "Spielberg"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A film about a shark and a small town",
+    "answer": "Jaws"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "The superhero alter ego of Bruce Wayne",
+    "answer": "Batman"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A blockbuster space saga beginning with 'A New Hope'",
+    "answer": "Star Wars"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Iconic 1997 ship disaster film starring DiCaprio",
+    "answer": "Titanic"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A movie about dreams within dreams directed by Nolan",
+    "answer": "Inception"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A famous archaeologist played by Harrison Ford",
+    "answer": "Indiana Jones"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "The 'King of Pop'",
+    "answer": "Michael Jackson"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Sitcom featuring a group of friends in Manhattan",
+    "answer": "Friends"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Animated fish searching for his son",
+    "answer": "Finding Nemo"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A superhero with a shield from Marvel",
+    "answer": "Captain America"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Singer behind 'Like a Rolling Stone'",
+    "answer": "Bob Dylan"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A film series about a wizard named Frodo",
+    "answer": "Lord of the Rings"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Famous talk show host Oprah ___",
+    "answer": "Winfrey"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A space captain named James T. ___",
+    "answer": "Kirk"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "1994 film about a man and his box of chocolates",
+    "answer": "Forrest Gump"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A creature 'King of the Monsters' in movies",
+    "answer": "Godzilla"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Popular streaming platform with original series",
+    "answer": "Netflix"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A famous British rock band: The ___",
+    "answer": "Beatles"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Movie about shark cage diving with a great white",
+    "answer": "Jaws"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Superhero with an armored suit named Tony Stark",
+    "answer": "Iron Man"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A film director known for 'Pulp Fiction'",
+    "answer": "Tarantino"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "TV series about survivors on an island after a plane crash",
+    "answer": "Lost"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A beloved British spy, James ___",
+    "answer": "Bond"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Animated toys that come to life",
+    "answer": "Toy Story"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A movie about a ring and a fellowship",
+    "answer": "LOTR"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Singer known as 'The Queen of Pop', Madonna",
+    "answer": "Madonna"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Sci-fi film where humans are trapped in a matrix",
+    "answer": "The Matrix"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A comedy about time-traveling DeLorean",
+    "answer": "Back to the Future"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A fantasy series about dragons and thrones",
+    "answer": "Game of Thrones"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A film director of 'Schindler's List'",
+    "answer": "Spielberg"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Popular singing competition show",
+    "answer": "The Voice"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Show about the life of a high school glee club",
+    "answer": "Glee"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A long-running animated family in Springfield",
+    "answer": "The Simpsons"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Singer who led the band Queen",
+    "answer": "Freddie Mercury"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A movie set on a sinking ship in 1912",
+    "answer": "Titanic"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A famous film festival in France",
+    "answer": "Cannes"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Iconic dance movie starring John Travolta",
+    "answer": "Saturday Night Fever"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A character known for saying 'I'll be back'",
+    "answer": "Terminator"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A space opera with the character Luke Skywalker",
+    "answer": "Star Wars"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A 1999 sci-fi film that questions reality",
+    "answer": "The Matrix"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Popular reality show where contestants are eliminated on an island",
+    "answer": "Survivor"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Streaming channel known for short videos",
+    "answer": "YouTube"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "A cult classic about high school at Rydell",
+    "answer": "Grease"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Award given for excellence in film",
+    "answer": "Oscar"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "British royal family member famously associated with Diana",
+    "answer": "Charles"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Placeholder question 48 in Movies & Pop Culture",
+    "answer": "Answer48"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Movies & Pop Culture",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Movies & Pop Culture",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Movies & Pop Culture",
+    "answer": "Answer50"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Artist who painted the Mona Lisa",
+    "answer": "Leonardo"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Novel about a whale and a captain named Ahab",
+    "answer": "Moby Dick"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Poet who wrote 'The Raven'",
+    "answer": "Poe"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Playwright of 'Hamlet'",
+    "answer": "Shakespeare"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous Dutch painter: Vincent ___",
+    "answer": "Van Gogh"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "The art movement with dreamy, blurred images",
+    "answer": "Impressionism"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous Russian author of 'War and Peace'",
+    "answer": "Tolstoy"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Sculptor known for 'David' (first name)",
+    "answer": "Michelangelo"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A novel about 1984 dystopia author",
+    "answer": "Orwell"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A long narrative poem about heroic deeds",
+    "answer": "Epic"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A short, funny poem by Dr. Seuss",
+    "answer": "Nursery Rhyme"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A book genre focused on future technology",
+    "answer": "Science Fiction"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous play set in Verona with lovers Romeo and ___",
+    "answer": "Juliet"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A painter known for surreal melting clocks",
+    "answer": "Dali"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous children's author of 'Matilda'",
+    "answer": "Roald Dahl"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Novelist who created 'Sherlock Holmes'",
+    "answer": "Conan Doyle"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "The study of visual art is called",
+    "answer": "Art History"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A type of painting using watercolors and pigment",
+    "answer": "Watercolor"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Famous American poet who wrote about nature, 'Leaves of Grass'",
+    "answer": "Whitman"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A story told through images in boxes",
+    "answer": "Comic"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A genre focusing on mystery and crime",
+    "answer": "Detective Fiction"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "The device in literature where a story is told out of order",
+    "answer": "Flashback"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous Japanese poetry form with three lines",
+    "answer": "Haiku"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A novel by Jane Austen featuring Elizabeth Bennet",
+    "answer": "Pride and Prejudice"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous French impressionist painter",
+    "answer": "Monet"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A classical music form consisting of several movements",
+    "answer": "Symphony"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A dramatic work performed on stage",
+    "answer": "Play"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A well-known children's fantasy book: 'Alice in ___'",
+    "answer": "Wonderland"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous epic poet of ancient Greece",
+    "answer": "Homer"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A collection of poems is called",
+    "answer": "Anthology"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A technique of shading in drawing",
+    "answer": "Hatching"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "The protagonist of 'The Great Gatsby'",
+    "answer": "Gatsby"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "An art museum in Paris: ___ Museum",
+    "answer": "Louvre"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A genre mixing romance and adventure",
+    "answer": "Romanticism"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous American playwright Tennessee ___",
+    "answer": "Williams"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A writing style that imitates speech",
+    "answer": "Colloquial"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A narrative told by the main character using 'I'",
+    "answer": "First Person"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous Italian poet of the Divine Comedy",
+    "answer": "Dante"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A brief fictional story",
+    "answer": "Short Story"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Technique of building up paint layers",
+    "answer": "Impasto"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A book bound in cloth or leather",
+    "answer": "Hardcover"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A form of modern abstract art using shapes and colors",
+    "answer": "Cubism"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous novel by Gabriel García Márquez",
+    "answer": "One Hundred Years of Solitude"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "The study of books and manuscripts",
+    "answer": "Bibliography"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A type of theater with music, acting and dance",
+    "answer": "Musical"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "A famous American novelist of 'To Kill a Mockingbird'",
+    "answer": "Harper Lee"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "The process of publishing printed works",
+    "answer": "Printing"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Placeholder question 48 in Art & Literature",
+    "answer": "Answer48"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Art & Literature",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Art & Literature",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Art & Literature",
+    "answer": "Answer50"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Capital city of France",
+    "answer": "Paris"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Country with capital Tokyo",
+    "answer": "Japan"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Longest river in the world",
+    "answer": "Nile"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A famous tower in Pisa that leans",
+    "answer": "Leaning Tower"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Largest country by area",
+    "answer": "Russia"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A mountain range separating Europe and Asia",
+    "answer": "Ural"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A country known for fjords and vikings",
+    "answer": "Norway"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A large salt lake in Utah",
+    "answer": "Great Salt Lake"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "The city known as the Big Apple",
+    "answer": "New York"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A famous wall in China",
+    "answer": "Great Wall"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A desert spanning much of northern Africa",
+    "answer": "Sahara"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "The strait separating Spain and Morocco",
+    "answer": "Gibraltar"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "An island country in the Mediterranean: Malta",
+    "answer": "Malta"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Capital of Italy",
+    "answer": "Rome"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A US state known for Hollywood",
+    "answer": "California"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A famous canyon carved by the Colorado River",
+    "answer": "Grand Canyon"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "City famous for canals and gondolas",
+    "answer": "Venice"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A country famous for maple syrup",
+    "answer": "Canada"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A landlocked country in central Europe",
+    "answer": "Austria"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "The southernmost continent",
+    "answer": "Antarctica"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A city known for samba and Carnival: ___",
+    "answer": "Rio"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A region of active volcanoes and islands: ___ Ring",
+    "answer": "Pacific"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A country home to Mount Kilimanjaro",
+    "answer": "Tanzania"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A famous clock tower in London",
+    "answer": "Big Ben"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "An African country with pyramids: ___",
+    "answer": "Egypt"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A tiny European country inside Italy",
+    "answer": "San Marino"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A major river that flows through Baghdad",
+    "answer": "Tigris"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Island nation known for K-pop: ___",
+    "answer": "South Korea"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Capital of Australia",
+    "answer": "Canberra"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A city that hosts the Carnival in Brazil",
+    "answer": "Rio de Janeiro"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A famous pilgrimage site in India",
+    "answer": "Varanasi"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A pass through mountains",
+    "answer": "Pass"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "The narrowest piece of land connecting two larger bodies",
+    "answer": "Isthmus"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A measurement of distance at sea",
+    "answer": "Nautical Mile"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "The country famous for tulips and windmills",
+    "answer": "Netherlands"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "An African river that empties into the Mediterranean",
+    "answer": "Nile"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A region known for wine in France: ___",
+    "answer": "Bordeaux"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Capital of Spain",
+    "answer": "Madrid"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "City on two continents: ___",
+    "answer": "Istanbul"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A U.S. state known as 'The Lone Star State'",
+    "answer": "Texas"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A historic trade city in Turkey",
+    "answer": "Izmir"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A famous Asian metropolis formerly called Edo",
+    "answer": "Tokyo"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A country famous for its fjords and midnight sun",
+    "answer": "Norway"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "An alpine country known for chocolate and watches",
+    "answer": "Switzerland"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A sea bordered by Jordan, Israel and Egypt",
+    "answer": "Red Sea"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A popular tourist archipelago in Greece",
+    "answer": "Santorini"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "A gulf bordering Saudi Arabia",
+    "answer": "Persian Gulf"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Capital city of Canada",
+    "answer": "Ottawa"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Travel & Geography",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Travel & Geography",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Travel & Geography",
+    "answer": "Answer50"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind the iPhone",
+    "answer": "Apple"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular battle royale game with 'PUBG' initials",
+    "answer": "PlayerUnknowns Battlegrounds"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A console made by Sony",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Process of writing software code",
+    "answer": "Programming"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular mobile game about blocks and crafting",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device that displays output from a computer",
+    "answer": "Monitor"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Technology used for wireless short-range data",
+    "answer": "Bluetooth"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "An online platform for code hosting: ___Hub",
+    "answer": "GitHub"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Unit of data storage: megabyte abbreviation",
+    "answer": "MB"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A gaming console by Nintendo",
+    "answer": "Switch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A programming language known for web pages",
+    "answer": "JavaScript"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A device combining phone and computer",
+    "answer": "Smartphone"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "The person who creates a game",
+    "answer": "Developer"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A system that runs applications on computers",
+    "answer": "Operating System"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A tool used for debugging code",
+    "answer": "Debugger"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Online virtual currency used in games",
+    "answer": "Gold"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A form of artificial intelligence that learns",
+    "answer": "Machine Learning"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A popular eSports game: League of ___",
+    "answer": "Legends"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A handheld gaming device by Nintendo",
+    "answer": "Game Boy"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Open-source operating system kernel",
+    "answer": "Linux"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A standard markup language for documents",
+    "answer": "HTML"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A search engine giant",
+    "answer": "Google"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A device to input text",
+    "answer": "Keyboard"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Cloud computing platform by Amazon",
+    "answer": "AWS"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "The logic circuits inside a CPU",
+    "answer": "Transistors"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular streaming service for gamers",
+    "answer": "Twitch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A measure of processor speed",
+    "answer": "Clock Rate"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Graphic processing unit abbreviation",
+    "answer": "GPU"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A company known for the Xbox console",
+    "answer": "Microsoft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A programming language named after a snake",
+    "answer": "Python"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A popular multiplayer shooter: 'Call of Duty' publisher",
+    "answer": "Activision"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A digital ledger used by cryptocurrencies",
+    "answer": "Blockchain"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Type of memory that is volatile",
+    "answer": "RAM"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A handheld device for playing games",
+    "answer": "Console"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A wireless network standard: 802.11 commonly called",
+    "answer": "WiFi"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A famous video game character who eats dots",
+    "answer": "Pacman"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A company that makes GPUs: NVIDIA or ___",
+    "answer": "AMD"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A classic puzzle game with falling blocks",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A development environment abbreviation: IDE",
+    "answer": "IDE"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A company famous for search ads and Android",
+    "answer": "Google"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A device that converts code into machine language",
+    "answer": "Compiler"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A platform for mobile apps: Android or ___",
+    "answer": "iOS"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A set of rules that govern data transfer on the web",
+    "answer": "Protocol"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A handheld controller with analog sticks",
+    "answer": "Gamepad"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "A technology for immersive virtual worlds",
+    "answer": "Virtual Reality"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "An online digital storefront for PC games",
+    "answer": "Steam"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Placeholder question 47 in Games & Technology",
+    "answer": "Answer47"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Placeholder question 48 in Games & Technology",
+    "answer": "Answer48"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Games & Technology",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Games & Technology",
+    "answer": "Answer50"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dish of layered pasta, sauce, and cheese",
+    "answer": "Lasagna"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A spicy red paste used in many cuisines",
+    "answer": "Chili"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Japanese dish with vinegared rice and fish",
+    "answer": "Sushi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A popular Mexican folded tortilla filled with ingredients",
+    "answer": "Taco"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A typical French bread with a crusty exterior",
+    "answer": "Baguette"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A green fruit used to make guacamole",
+    "answer": "Avocado"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Traditional English breakfast meat",
+    "answer": "Bacon"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A creamy Italian dessert made with coffee",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A fermented soybean paste in Asian cooking",
+    "answer": "Miso"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A spicy Indian dish with curry and rice",
+    "answer": "Biryani"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Spanish rice dish with saffron and seafood",
+    "answer": "Paella"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A cold soup from Spain made of blended vegetables",
+    "answer": "Gazpacho"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A round, flat Italian bread",
+    "answer": "Pizza"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A dairy product made by churning cream",
+    "answer": "Butter"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A small Japanese dumpling",
+    "answer": "Gyoza"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A popular Middle Eastern spread made from chickpeas",
+    "answer": "Hummus"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A dessert of frozen flavored milk",
+    "answer": "Ice Cream"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A sandwich named after a French emperor",
+    "answer": "Croissant"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Korean dish of fermented vegetables",
+    "answer": "Kimchi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A sweet baked good often glazed",
+    "answer": "Donut"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A traditional German sausage",
+    "answer": "Bratwurst"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A beverage made from fermented grapes",
+    "answer": "Wine"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A breakfast food made from oats",
+    "answer": "Porridge"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A green herb commonly used in pesto",
+    "answer": "Basil"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Mexican sauce made from chocolate and chili",
+    "answer": "Mole"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Swiss cheese known for holes",
+    "answer": "Emmental"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A popular American fast-food item: burger",
+    "answer": "Burger"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Middle Eastern flatbread",
+    "answer": "Pita"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A French dish of thinly sliced potatoes and cream",
+    "answer": "Gratin"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A spicy Korean stew commonly with tofu",
+    "answer": "Kimchi Jjigae"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Japanese noodle soup",
+    "answer": "Ramen"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A pastry filled with cream or fruit",
+    "answer": "Danish"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A popular beverage made from roasted beans",
+    "answer": "Coffee"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A sweet spice often used in desserts",
+    "answer": "Cinnamon"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A citrus fruit with bitter peel",
+    "answer": "Grapefruit"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A fermented milk product common in Central Asia",
+    "answer": "Kefir"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A sweet syrup made from sugarcane or sugar beets",
+    "answer": "Molasses"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A type of flatbread from India",
+    "answer": "Naan"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A dish of raw marinated fish from Peru",
+    "answer": "Ceviche"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A small cake often served at parties",
+    "answer": "Cupcake"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian cured meat served thinly sliced",
+    "answer": "Prosciutto"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A traditional Japanese tea ceremony drink",
+    "answer": "Matcha"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A dessert of custard and caramel",
+    "answer": "Flan"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Southeast Asian noodle salad",
+    "answer": "Pad Thai"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A popular snack of fried dough balls",
+    "answer": "Churros"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Middle Eastern rice and meat dish",
+    "answer": "Kabsa"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "A Spanish cold tomato and pepper dip",
+    "answer": "Salmorejo"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Placeholder question 48 in Food & Culture",
+    "answer": "Answer48"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in Food & Culture",
+    "answer": "Answer49"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in Food & Culture",
+    "answer": "Answer50"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The chemical symbol for gold",
+    "answer": "Au"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The capital of the United Kingdom",
+    "answer": "London"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of continents on Earth",
+    "answer": "Seven"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The largest mammal",
+    "answer": "Blue Whale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The color of an emerald",
+    "answer": "Green"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The smallest prime number",
+    "answer": "Two"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Tool used to measure weight",
+    "answer": "Scale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The currency of Japan",
+    "answer": "Yen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The process of learning from experience",
+    "answer": "Education"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A pair of equal angles summing to 90 degrees are called",
+    "answer": "Complementary"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary color mixing red and blue makes",
+    "answer": "Purple"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Device that answers calls hands-free in cars",
+    "answer": "Bluetooth"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit used to measure electrical resistance",
+    "answer": "Ohm"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Branch of math dealing with shapes",
+    "answer": "Geometry"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The person who leads a country: often a ___",
+    "answer": "President"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A popular search engine starting with G",
+    "answer": "Google"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A large natural satellite of Earth",
+    "answer": "Moon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A famous carnival city in Brazil",
+    "answer": "Rio"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A device for taking photographs",
+    "answer": "Camera"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A unit of time equal to 60 seconds",
+    "answer": "Minute"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A holiday associated with carved pumpkins",
+    "answer": "Halloween"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A device showing time on the wrist",
+    "answer": "Watch"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The study of the mind and behavior",
+    "answer": "Psychology"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A famous structure in India, a white marble mausoleum",
+    "answer": "Taj Mahal"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A natural satellite of Mars",
+    "answer": "Phobos"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The gas we breathe out that plants use",
+    "answer": "Carbon Dioxide"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The first man-made satellite launched into space",
+    "answer": "Sputnik"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency used in the United States",
+    "answer": "Dollar"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A system of writing using characters: example in Japan is",
+    "answer": "Kanji"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A common abbreviation for 'for your information'",
+    "answer": "FYI"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A place where books are kept for public use",
+    "answer": "Library"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A musical instrument with keys and strings",
+    "answer": "Piano"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A famous tower in Paris",
+    "answer": "Eiffel Tower"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A common pet that purrs",
+    "answer": "Cat"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The sport played at Wimbledon",
+    "answer": "Tennis"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A blood-sucking insect",
+    "answer": "Mosquito"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A device to compute numbers",
+    "answer": "Calculator"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The language primarily spoken in Brazil",
+    "answer": "Portuguese"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A person who explores the ocean depths",
+    "answer": "Diver"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A small, narrow boat propelled by oars",
+    "answer": "Rowboat"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A sweet crystalline substance used in food",
+    "answer": "Sugar"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A system for sending written messages electrically",
+    "answer": "Telegraph"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A shape with four equal sides and angles",
+    "answer": "Square"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A famous scientist known for laws of motion",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "The largest planet in our solar system",
+    "answer": "Jupiter"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A thin, flat piece used for writing: ___ of paper",
+    "answer": "Sheet"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A public transportation system on rails",
+    "answer": "Train"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "A unit used to measure angles",
+    "answer": "Degree"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Placeholder question 49 in General Knowledge",
+    "answer": "Answer49"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Placeholder question 50 in General Knowledge",
+    "answer": "Answer50"
+  }
+]
