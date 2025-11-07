@@ -26,7 +26,7 @@ const GameScreen = ({ route, navigation }) => {
       return { ...q, question: decodedQuestionText, text: decodedQuestionText, correct_answer: normalizedCorrectAnswer };
     });
     
-    // Filter questions to get 6 with the same answer length
+    // Filter questions to get 5 with the same answer length
     const questionLengths = {};
     decodedQuestions.forEach(q => {
       const len = q.correct_answer.length;
@@ -37,14 +37,14 @@ const GameScreen = ({ route, navigation }) => {
     });
 
     let selectedQuestions = [];
-    const availableLengths = Object.keys(questionLengths).filter(len => questionLengths[len].length >= 6);
+    const availableLengths = Object.keys(questionLengths).filter(len => questionLengths[len].length >= 5);
 
     if (availableLengths.length > 0) {
       const randomLength = availableLengths[Math.floor(Math.random() * availableLengths.length)];
-      selectedQuestions = questionLengths[randomLength].slice(0, 6);
+      selectedQuestions = questionLengths[randomLength].slice(0, 5);
     } else {
-      // Fallback if not enough questions of same length, just take first 6
-      selectedQuestions = decodedQuestions.slice(0, 6);
+      // Fallback if not enough questions of same length, just take first 5
+      selectedQuestions = decodedQuestions.slice(0, 5);
     }
 
     setQuestions(selectedQuestions);
@@ -235,7 +235,7 @@ const GameScreen = ({ route, navigation }) => {
 
         
 
-                  keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0} // Adjust this value as needed
+                  keyboardVerticalOffset={Platform.OS === "ios" ? 180 : 80} // Adjusted this value as needed
 
         
 
@@ -304,7 +304,7 @@ const GameScreen = ({ route, navigation }) => {
 
         
 
-                                  { width: dynamicCellSize, height: 80 }, // Fixed height for better appearance
+                                  { width: dynamicCellSize, height: 60 }, // Fixed height for better appearance
 
         
 
@@ -466,6 +466,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 8,
     paddingTop: 12,
+    paddingBottom: 20, // Added padding to ensure space above the keyboard
   },
   questionAnswerRow: {
     flexDirection: 'row',
@@ -483,8 +484,8 @@ const styles = StyleSheet.create({
   },
   questionText: {
     color: '#d9d0c1',
-    fontSize: 10,
-    lineHeight: 13,
+    fontSize: 14,
+    lineHeight: 18,
     fontFamily: 'Papyrus',
   },
   answerBoxesContainer: {

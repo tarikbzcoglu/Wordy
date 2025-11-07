@@ -27,7 +27,7 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
     },
     key: {
       width: keyWidth,
-      height: 40,
+      height: 35,
       margin: keyMargin,
       backgroundColor: '#d9d0c1',
       alignItems: 'center',
@@ -54,7 +54,7 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
     keyShadow: {
       backgroundColor: '#a69c88',
       width: keyWidth,
-      height: 40,
+      height: 35,
       margin: keyMargin,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 4,
