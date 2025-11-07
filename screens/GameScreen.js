@@ -15,6 +15,48 @@ const GameScreen = ({ route, navigation }) => {
   const [correctlyAnswered, setCorrectlyAnswered] = useState([]); // Track correctly answered questions
   const [showMenu, setShowMenu] = useState(false);
 
+  const handleHint = () => {
+    // Find all unanswered questions
+    const unansweredQuestionIndices = questions
+      .map((_, index) => index)
+      .filter(index => !correctlyAnswered[index]);
+
+    if (unansweredQuestionIndices.length === 0) {
+      Alert.alert('Hint', 'All questions are answered!');
+      return;
+    }
+
+    // Pick a random unanswered question
+    const randomQuestionIndex = unansweredQuestionIndices[Math.floor(Math.random() * unansweredQuestionIndices.length)];
+    const randomQuestion = questions[randomQuestionIndex];
+    const randomAnswer = answers[randomQuestionIndex];
+    const correctAnswer = randomQuestion.correct_answer;
+
+    // Find all unrevealed, empty cells in the random question's answer
+    const unrevealedEmptyCellIndices = randomAnswer
+      .map((cell, index) => ({ cell, index }))
+      .filter(item => item.cell.letter === '' && item.cell.status !== 'revealed')
+      .map(item => item.index);
+
+    if (unrevealedEmptyCellIndices.length === 0) {
+      Alert.alert('Hint', 'No more hints available for this question.');
+      return;
+    }
+
+    // Pick a random unrevealed, empty cell
+    const randomHintIndex = unrevealedEmptyCellIndices[Math.floor(Math.random() * unrevealedEmptyCellIndices.length)];
+
+    const newAnswers = [...answers];
+    newAnswers[randomQuestionIndex][randomHintIndex] = { letter: correctAnswer[randomHintIndex], status: 'hint' };
+    setAnswers(newAnswers);
+
+    // After giving a hint, check if the question is now complete
+    const isQuestionComplete = newAnswers[randomQuestionIndex].every(cell => cell.letter !== '');
+    if (isQuestionComplete) {
+      checkAnswer(randomQuestionIndex);
+    }
+  };
+
   useEffect(() => {
     const filteredQuestions = questionsData.filter(q => q.category === category);
 
@@ -54,6 +96,7 @@ const GameScreen = ({ route, navigation }) => {
   }, [category]);
 
   const checkAnswer = (questionIndex) => {
+    if (correctlyAnswered[questionIndex]) return; // Prevent re-checking already answered questions
     const userAnswer = answers[questionIndex].map(cell => cell.letter).join('');
     const correctAnswer = questions[questionIndex].correct_answer;
 
@@ -104,6 +147,16 @@ const GameScreen = ({ route, navigation }) => {
       }
     });
     setAnswers(newAnswers);
+
+    // After revealing letters, check if any other questions are now complete
+    questions.forEach((q, qIndex) => {
+      if (!correctlyAnswered[qIndex]) {
+        const isQuestionComplete = newAnswers[qIndex].every(cell => cell.letter !== '');
+        if (isQuestionComplete) {
+          checkAnswer(qIndex);
+        }
+      }
+    });
   };
 
   const handleAnswerBoxPress = (questionIndex, inputIndex) => {
@@ -201,6 +254,10 @@ const GameScreen = ({ route, navigation }) => {
             <Text style={styles.planetName}>Wordy</Text>
             <Text style={styles.levelText}>{category}</Text>
           </View>
+          <TouchableOpacity style={[styles.headerButton, styles.hintButton]} onPress={handleHint}>
+            <Text style={styles.headerButtonText}>💡</Text>
+            <Text style={styles.hintButtonText}>Hint</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.headerButton} onPress={() => setShowMenu(!showMenu)}>
             <Text style={styles.headerButtonText}>☰</Text>
           </TouchableOpacity>
@@ -312,11 +369,15 @@ const GameScreen = ({ route, navigation }) => {
 
         
 
-                                  correctlyAnswered[questionIndex] && styles.correctAnswerCell,
+                                                                    correctlyAnswered[questionIndex] && styles.correctAnswerCell,
 
         
 
-                                                                    cell.status === 'incorrect' && styles.incorrectAnswerCell
+                                                                    cell.status === 'incorrect' && styles.incorrectAnswerCell,
+
+        
+
+                                                                    cell.status === 'hint' && styles.hintLetterCell
 
         
 
@@ -394,19 +455,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingVertical: 8,
-    paddingTop: 45, // Safe area for iOS
+    paddingVertical: 4,
+    paddingTop: 30, // Safe area for iOS
     backgroundColor: '#1a1a1a',
     borderBottomWidth: 1,
     borderBottomColor: '#333333',
   },
   headerButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#333333',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  hintButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 10, // Move slightly to the left
+  },
+  hintButtonText: {
+    color: '#d9d0c1',
+    fontSize: 10,
+    fontFamily: 'Papyrus',
+    marginTop: 2,
   },
   headerButtonText: {
     color: '#d9d0c1',
@@ -510,6 +583,9 @@ const styles = StyleSheet.create({
   },
   incorrectAnswerCell: {
     backgroundColor: '#FF6B6B',
+  },
+  hintLetterCell: {
+    backgroundColor: '#ADD8E6', // Light blue for hint
   },
   letterText: {
     fontSize: 20,
