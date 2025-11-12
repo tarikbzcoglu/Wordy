@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import questionsData from '../questions_db.json';
 import { decode } from 'html-entities';
 import Keyboard from '../components/Keyboard';
 import { useSound } from '../hooks/useSound';
+import CustomAlert from '../components/CustomAlert';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// IMPORTANT: This is a test ID. Replace with your own AdMob Unit ID for production.
+const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios' 
+  ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx' // Replace with your real iOS ad unit ID
+  : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'); // Replace with your real Android ad unit ID
 
 const GameScreen = ({ route, navigation }) => {
   const { category } = route.params;
   const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState([]); // User's input for each answer
+  const [answers, setAnswers] = useState([]);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
   const [activeInputIndex, setActiveInputIndex] = useState(null);
-  const [correctlyAnswered, setCorrectlyAnswered] = useState([]); // Track correctly answered questions
+  const [correctlyAnswered, setCorrectlyAnswered] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
+  const [hintsLeft, setHintsLeft] = useState(3);
+  const [alertInfo, setAlertInfo] = useState({ isVisible: false, message: '', buttonText: null, onButtonPress: null });
+
+  const adRef = useRef(null);
+  const [adLoaded, setAdLoaded] = useState(false);
 
   // Sound effects
   const playCorrectSound = useSound(require('../assets/sounds/correct.mp3'));
@@ -22,92 +34,113 @@ const GameScreen = ({ route, navigation }) => {
   const playLevelUpSound = useSound(require('../assets/sounds/levelup.mp3'));
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
+  // Alert handler
+  const showAlert = (message, buttonText = null, onButtonPress = null) => {
+    if (alertInfo.isVisible) return;
+    setAlertInfo({ isVisible: true, message, buttonText, onButtonPress });
+    if (!buttonText) {
+      setTimeout(() => hideAlert(), 2000);
+    }
+  };
+  const hideAlert = () => setAlertInfo({ isVisible: false, message: '', buttonText: null, onButtonPress: null });
+
+  // AdMob Rewarded Ad Logic
+  useEffect(() => {
+    const rewardedAd = RewardedAd.createForAdRequest(adUnitId, {
+      requestNonPersonalizedAdsOnly: true,
+    });
+
+    const unsubscribeLoaded = rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      setAdLoaded(true);
+    });
+    const unsubscribeEarned = rewardedAd.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+      showAlert(`You earned ${reward.amount} hint!`);
+      setHintsLeft(prev => prev + reward.amount);
+    });
+    const unsubscribeClosed = rewardedAd.addAdEventListener('closed', () => {
+      setAdLoaded(false);
+      rewardedAd.load(); // Pre-load next ad
+    });
+
+    rewardedAd.load();
+    adRef.current = rewardedAd;
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+      unsubscribeClosed();
+    };
+  }, []);
+
+  const showRewardedAd = async () => {
+    hideAlert();
+    if (adRef.current && adLoaded) {
+      adRef.current.show();
+    } else {
+      showAlert('Ad not ready yet. Please try again in a moment.');
+    }
+  };
+
   // Effect to check for level completion
   useEffect(() => {
     if (questions.length > 0 && correctlyAnswered.every(Boolean)) {
       playLevelUpSound();
-      // Optionally, navigate away or show a completion message after a delay
     }
   }, [correctlyAnswered, questions.length, playLevelUpSound]);
 
-
   const handleHint = () => {
     playTapSound();
-    // Find all unanswered questions
-    const unansweredQuestionIndices = questions
-      .map((_, index) => index)
-      .filter(index => !correctlyAnswered[index]);
-
+    if (hintsLeft <= 0) {
+      showAlert('You have no hints left. Watch an ad to get more!', 'Watch Ad', showRewardedAd);
+      return;
+    }
+    const unansweredQuestionIndices = questions.map((_, index) => index).filter(index => !correctlyAnswered[index]);
     if (unansweredQuestionIndices.length === 0) {
-      Alert.alert('Hint', 'All questions are answered!');
+      showAlert('All questions are answered!');
       return;
     }
-
-    // Pick a random unanswered question
     const randomQuestionIndex = unansweredQuestionIndices[Math.floor(Math.random() * unansweredQuestionIndices.length)];
-    const randomQuestion = questions[randomQuestionIndex];
     const randomAnswer = answers[randomQuestionIndex];
-    const correctAnswer = randomQuestion.correct_answer;
-
-    // Find all unrevealed, empty cells in the random question's answer
-    const unrevealedEmptyCellIndices = randomAnswer
-      .map((cell, index) => ({ cell, index }))
-      .filter(item => item.cell.letter === '' && item.cell.status !== 'revealed')
-      .map(item => item.index);
-
+    const correctAnswer = questions[randomQuestionIndex].correct_answer;
+    const unrevealedEmptyCellIndices = randomAnswer.map((cell, index) => ({ cell, index })).filter(item => item.cell.letter === '' && item.cell.status !== 'revealed').map(item => item.index);
     if (unrevealedEmptyCellIndices.length === 0) {
-      Alert.alert('Hint', 'No more hints available for this question.');
+      showAlert('No more hints available for this question.');
       return;
     }
-
-    // Pick a random unrevealed, empty cell
     const randomHintIndex = unrevealedEmptyCellIndices[Math.floor(Math.random() * unrevealedEmptyCellIndices.length)];
-
     const newAnswers = [...answers];
     newAnswers[randomQuestionIndex][randomHintIndex] = { letter: correctAnswer[randomHintIndex], status: 'hint' };
     setAnswers(newAnswers);
-
-    // After giving a hint, check if the question is now complete
-    const isQuestionComplete = newAnswers[randomQuestionIndex].every(cell => cell.letter !== '');
-    if (isQuestionComplete) {
+    setHintsLeft(prevHints => prevHints - 1);
+    if (newAnswers[randomQuestionIndex].every(cell => cell.letter !== '')) {
       checkAnswer(randomQuestionIndex);
     }
   };
 
   useEffect(() => {
     const filteredQuestions = questionsData.filter(q => q.category === category);
-
     const decodedQuestions = filteredQuestions.map(q => {
-      const decodedQuestionText = decode(q.question);
-      const decodedCorrectAnswer = decode(q.answer);
-      // Normalize correct answer: remove diacritics and convert to uppercase
-      const normalizedCorrectAnswer = decodedCorrectAnswer.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-      return { ...q, question: decodedQuestionText, text: decodedQuestionText, correct_answer: normalizedCorrectAnswer };
+      const decodedCorrectAnswer = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+      return { ...q, question: decode(q.question), text: decode(q.question), correct_answer: decodedCorrectAnswer };
     });
     
-    // Filter questions to get 5 with the same answer length
     const questionLengths = {};
     decodedQuestions.forEach(q => {
       const len = q.correct_answer.length;
-      if (!questionLengths[len]) {
-        questionLengths[len] = [];
-      }
+      if (!questionLengths[len]) questionLengths[len] = [];
       questionLengths[len].push(q);
     });
 
     let selectedQuestions = [];
     const availableLengths = Object.keys(questionLengths).filter(len => questionLengths[len].length >= 5);
-
     if (availableLengths.length > 0) {
       const randomLength = availableLengths[Math.floor(Math.random() * availableLengths.length)];
       selectedQuestions = questionLengths[randomLength].slice(0, 5);
     } else {
-      // Fallback if not enough questions of same length, just take first 5
       selectedQuestions = decodedQuestions.slice(0, 5);
     }
 
     setQuestions(selectedQuestions);
-    // Initialize answers with empty strings for each letter
     setAnswers(selectedQuestions.map(q => Array(q.correct_answer.length).fill({ letter: '', status: 'empty' })));
     setCorrectlyAnswered(Array(selectedQuestions.length).fill(false));
   }, [category]);
@@ -119,30 +152,17 @@ const GameScreen = ({ route, navigation }) => {
 
     if (userAnswer === correctAnswer) {
         playCorrectSound();
-        // Start the cascade calculation
         let newCorrectlyAnswered = [...correctlyAnswered];
-        let newAnswers = JSON.parse(JSON.stringify(answers)); // Deep copy
-
-        let queue = [questionIndex]; // Questions to process for reveals
-
-        // Use a Set to track questions already processed in this cascade to prevent infinite loops
+        let newAnswers = JSON.parse(JSON.stringify(answers));
+        let queue = [questionIndex];
         let processedInCascade = new Set();
-
         while (queue.length > 0) {
             const currentIdx = queue.shift();
-
-            if (processedInCascade.has(currentIdx)) {
-                continue;
-            }
+            if (processedInCascade.has(currentIdx)) continue;
             processedInCascade.add(currentIdx);
-
-            // Mark as correct in our temporary state
             newCorrectlyAnswered[currentIdx] = true;
             const answeredWord = questions[currentIdx].correct_answer;
-
-            // Reveal letters in other questions
             questions.forEach((q, qIdx) => {
-                // Only check questions not yet marked as correct
                 if (!newCorrectlyAnswered[qIdx]) {
                     const otherAnswer = q.correct_answer;
                     let wasChanged = false;
@@ -155,83 +175,60 @@ const GameScreen = ({ route, navigation }) => {
                             }
                         }
                     }
-
-                    // If the other question was changed, check if it's now complete
                     if (wasChanged) {
                         const isComplete = newAnswers[qIdx].every(cell => cell.letter !== '');
                         const completedAnswer = newAnswers[qIdx].map(c => c.letter).join('');
                         if (isComplete && completedAnswer === otherAnswer) {
-                            // If it's complete and correct, add it to the queue to be processed
                             queue.push(qIdx);
                         }
                     }
                 }
             });
         }
-
-        // After the whole cascade is calculated, update the state ONCE.
         setCorrectlyAnswered(newCorrectlyAnswered);
         setAnswers(newAnswers);
-
     } else if (userAnswer.length === correctAnswer.length) {
       playWrongSound();
-      // Visual feedback for incorrect answer
       setAnswers(currentAnswers => {
           const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
-          // Temporarily mark only user-inputted cells as incorrect for styling
           newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => {
-              if (cell.status === 'input') {
-                  return { ...cell, status: 'incorrect' };
-              }
+              if (cell.status === 'input') return { ...cell, status: 'incorrect' };
               return cell;
           });
           return newAnswers;
       });
-
       setTimeout(() => {
-        // Use functional update to avoid stale state
         setAnswers(currentAnswers => {
             const resetAnswers = JSON.parse(JSON.stringify(currentAnswers));
             resetAnswers[questionIndex] = resetAnswers[questionIndex].map(cell => {
-              // Clear the letters that were marked as incorrect
-              if (cell.status === 'incorrect') {
-                return { letter: '', status: 'empty' };
-              } else {
-                return cell;
-              }
+              if (cell.status === 'incorrect') return { letter: '', status: 'empty' };
+              return cell;
             });
             return resetAnswers;
         });
         setActiveQuestionIndex(null);
         setActiveInputIndex(null);
-      }, 1000); // 1 second delay for visual feedback
+      }, 1000);
     }
   };
 
   const handleAnswerBoxPress = (questionIndex, inputIndex) => {
-    if (correctlyAnswered[questionIndex]) return; // Don't allow editing if already correct
-    if (answers[questionIndex][inputIndex].status === 'revealed') return; // Don't allow selecting revealed letters
+    if (correctlyAnswered[questionIndex] || (answers[questionIndex] && answers[questionIndex][inputIndex].status === 'revealed')) return;
     setActiveQuestionIndex(questionIndex);
     setActiveInputIndex(inputIndex);
   };
 
   const handleKeyPress = (key) => {
-    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex]) return;
-    if (answers[activeQuestionIndex][activeInputIndex].status === 'revealed') return; // Ignore key press on revealed letter
-
+    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && answers[activeQuestionIndex][activeInputIndex].status === 'revealed')) return;
     const newAnswers = [...answers];
     newAnswers[activeQuestionIndex][activeInputIndex] = { letter: key, status: 'input' };
     setAnswers(newAnswers);
-
     const currentQuestion = questions[activeQuestionIndex];
-    const isAnswerComplete = newAnswers[activeQuestionIndex].every(cell => cell.letter !== '');
-
-    if (isAnswerComplete) {
+    if (newAnswers[activeQuestionIndex].every(cell => cell.letter !== '')) {
       checkAnswer(activeQuestionIndex);
       setActiveQuestionIndex(null);
       setActiveInputIndex(null);
     } else {
-      // Find the next editable cell
       let nextInputIndex = activeInputIndex + 1;
       while (nextInputIndex < currentQuestion.correct_answer.length && newAnswers[activeQuestionIndex][nextInputIndex].status === 'revealed') {
         nextInputIndex++;
@@ -239,7 +236,6 @@ const GameScreen = ({ route, navigation }) => {
       if (nextInputIndex < currentQuestion.correct_answer.length) {
         setActiveInputIndex(nextInputIndex);
       } else {
-        // If no more editable cells, deselect
         setActiveQuestionIndex(null);
         setActiveInputIndex(null);
       }
@@ -247,14 +243,10 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleBackspace = () => {
-    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex]) return;
-    if (answers[activeQuestionIndex][activeInputIndex].status === 'revealed') return; // Ignore backspace on revealed letter
-
+    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && answers[activeQuestionIndex][activeInputIndex].status === 'revealed')) return;
     const newAnswers = [...answers];
     newAnswers[activeQuestionIndex][activeInputIndex] = { letter: '', status: 'empty' };
     setAnswers(newAnswers);
-
-    // Find the previous editable cell
     let prevInputIndex = activeInputIndex - 1;
     while (prevInputIndex >= 0 && newAnswers[activeQuestionIndex][prevInputIndex].status === 'revealed') {
       prevInputIndex--;
@@ -262,7 +254,6 @@ const GameScreen = ({ route, navigation }) => {
     if (prevInputIndex >= 0) {
       setActiveInputIndex(prevInputIndex);
     } else {
-      // If no more editable cells, deselect
       setActiveQuestionIndex(null);
       setActiveInputIndex(null);
     }
@@ -270,31 +261,17 @@ const GameScreen = ({ route, navigation }) => {
 
   const handleEnter = () => {
     if (activeQuestionIndex === null || correctlyAnswered[activeQuestionIndex]) return;
-
-    const currentQuestion = questions[activeQuestionIndex];
-    const isAnswerComplete = answers[activeQuestionIndex].every(cell => cell.letter !== '');
-
-    if (isAnswerComplete) {
+    if (answers[activeQuestionIndex].every(cell => cell.letter !== '')) {
       checkAnswer(activeQuestionIndex);
     }
   };
 
-    // Layout calculations
-
-    const questionColumnWidth = SCREEN_WIDTH * 0.3; // 30% for questions
-
-    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 16; // 70% for answers minus padding
-
-    const cellMargin = 1; // for the marginHorizontal
-
-  
+    const questionColumnWidth = SCREEN_WIDTH * 0.3;
+    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 16;
+    const cellMargin = 1;
 
     return (
-
       <View style={styles.container}>
-
-        {/* Header */}
-
         <View style={styles.header}>
           <TouchableOpacity style={styles.headerButton} onPress={() => { playTapSound(); navigation.goBack(); }}>
             <Text style={styles.headerButtonText}>◄</Text>
@@ -305,7 +282,7 @@ const GameScreen = ({ route, navigation }) => {
           </View>
           <TouchableOpacity style={[styles.headerButton, styles.hintButton]} onPress={handleHint}>
             <Text style={styles.headerButtonText}>💡</Text>
-            <Text style={styles.hintButtonText}>Hint</Text>
+            <Text style={styles.hintButtonText}>Hint: {hintsLeft}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerButton} onPress={() => { playTapSound(); setShowMenu(!showMenu); }}>
             <Text style={styles.headerButtonText}>☰</Text>
@@ -314,7 +291,7 @@ const GameScreen = ({ route, navigation }) => {
 
         {showMenu && (
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); Alert.alert('Settings', 'Settings not implemented yet'); }}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); showAlert('Settings not implemented yet'); }}>
               <Text style={styles.menuItemText}>Settings</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); navigation.popToTop(); }}>
@@ -322,176 +299,56 @@ const GameScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
         )}
-
-  
-
-                {/* Main Content */}
-
         
-
-                <KeyboardAvoidingView 
-
-        
-
-                  behavior={Platform.OS === "ios" ? "padding" : "height"} 
-
-        
-
-                  style={{ flex: 1 }}
-
-        
-
-                  keyboardVerticalOffset={Platform.OS === "ios" ? 180 : 80} // Adjusted this value as needed
-
-        
-
-                >
-
-        
-
-                  <View style={styles.gameBoard}>
-
-        
-
-                    {questions.map((question, questionIndex) => {
-
-        
-
-                      const currentAnswerLength = question.correct_answer.length;
-
-        
-
-                      const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
-
-        
-
-          
-
-        
-
-                      return (
-
-        
-
-                        <View key={questionIndex} style={styles.questionAnswerRow}>
-
-        
-
-                          <TouchableOpacity 
-
-        
-
-                            style={[styles.questionRow, { width: questionColumnWidth }]}>
-                            <Text style={styles.questionText}>
-                              {question.text}
-                            </Text>
-                          </TouchableOpacity>
-                          <View style={[styles.answerBoxesContainer, { width: answerColumnWidth, minHeight: 100 }]}>
-
-        
-
-                            {answers[questionIndex].map((cell, inputIndex) => (
-
-        
-
-                              <TouchableOpacity
-
-        
-
-                                key={inputIndex}
-
-        
-
-                                style={[
-
-        
-
-                                  styles.letterCell,
-
-        
-
-                                  { width: dynamicCellSize, height: 60 }, // Fixed height for better appearance
-
-        
-
-                                  activeQuestionIndex === questionIndex && activeInputIndex === inputIndex && styles.selectedCell,
-
-        
-
-                                                                    correctlyAnswered[questionIndex] && styles.correctAnswerCell,
-
-        
-
-                                                                    cell.status === 'incorrect' && styles.incorrectAnswerCell,
-
-        
-
-                                                                    cell.status === 'hint' && styles.hintLetterCell
-
-        
-
-                                                                  ]}
-
-        
-
-                                onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
-
-        
-
-                                disabled={correctlyAnswered[questionIndex]} // Disable if already correct
-
-        
-
-                              >
-
-        
-
-                                <Text style={styles.letterText}>{cell.letter}</Text>
-
-        
-
-                              </TouchableOpacity>
-
-        
-
-                            ))}
-
-        
-
-                          </View>
-
-        
-
-                        </View>
-
-        
-
-                      );
-
-        
-
-                    })}
-
-        
-
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === "ios" ? "padding" : "height"} 
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+        >
+          <ScrollView contentContainerStyle={styles.gameBoard}>
+            {questions.map((question, questionIndex) => {
+              const currentAnswerLength = question.correct_answer.length;
+              const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
+              return (
+                <View key={questionIndex} style={styles.questionAnswerRow}>
+                  <View style={[styles.questionRow, { width: questionColumnWidth }]}>
+                    <Text style={styles.questionText}>{question.text}</Text>
                   </View>
-
-        
-
-                </KeyboardAvoidingView>
-
+                  <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
+                    {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
+                      <TouchableOpacity
+                        key={inputIndex}
+                        style={[
+                          styles.letterCell,
+                          { width: dynamicCellSize, height: 60 },
+                          activeQuestionIndex === questionIndex && activeInputIndex === inputIndex && styles.selectedCell,
+                          correctlyAnswered[questionIndex] && styles.correctAnswerCell,
+                          cell.status === 'incorrect' && styles.incorrectAnswerCell,
+                          cell.status === 'hint' && styles.hintLetterCell
+                        ]}
+                        onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
+                        disabled={correctlyAnswered[questionIndex]}
+                      >
+                        <Text style={styles.letterText}>{cell.letter}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              );
+            })}
+          </ScrollView>
+        </KeyboardAvoidingView>
   
+        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
 
-        <View style={styles.keyboardContainer}>
-
-          <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
-
-        </View>
-
+        <CustomAlert
+          message={alertInfo.message}
+          isVisible={alertInfo.isVisible}
+          buttonText={alertInfo.buttonText}
+          onButtonPress={alertInfo.onButtonPress}
+        />
       </View>
-
     );
-
   };
 
 const styles = StyleSheet.create({
@@ -526,7 +383,7 @@ const styles = StyleSheet.create({
   },
   hintButtonText: {
     color: '#d9d0c1',
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: 'Papyrus',
     marginTop: 2,
   },
@@ -557,7 +414,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a1a',
     borderRadius: 5,
     padding: 10,
-    zIndex: 1,
+    zIndex: 1001,
   },
   menuItem: {
     paddingVertical: 10,
@@ -567,28 +424,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Papyrus',
   },
-  coinBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#333333',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 15,
-  },
-  coinIcon: {
-    fontSize: 16,
-    marginRight: 4,
-  },
-  coinText: {
-    color: '#d9d0c1',
-    fontSize: 14,
-    fontFamily: 'Papyrus',
-  },
   gameBoard: {
-    flexDirection: 'column',
     padding: 8,
     paddingTop: 12,
-    paddingBottom: 20, // Added padding to ensure space above the keyboard
   },
   questionAnswerRow: {
     flexDirection: 'row',
@@ -601,7 +439,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 4,
-    minHeight: 100, // Increased minHeight for more text
+    minHeight: 100,
     marginRight: 8,
   },
   questionText: {
@@ -612,10 +450,8 @@ const styles = StyleSheet.create({
   },
   answerBoxesContainer: {
     flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 4, // Add padding inside the container
+    padding: 4,
   },
   letterCell: {
     backgroundColor: '#d9d0c1',
@@ -634,7 +470,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF6B6B',
   },
   hintLetterCell: {
-    backgroundColor: '#ADD8E6', // Light blue for hint
+    backgroundColor: '#ADD8E6',
   },
   letterText: {
     fontSize: 20,
@@ -642,7 +478,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Papyrus',
   },
   keyboardContainer: {
-    width: '100%',
+    // No specific styles needed here now
   },
 });
 
