@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import questionsData from '../questions_db.json';
@@ -6,16 +6,17 @@ import { decode } from 'html-entities';
 import Keyboard from '../components/Keyboard';
 import { useSound } from '../hooks/useSound';
 import CustomAlert from '../components/CustomAlert';
+import LevelCompleteModal from '../components/LevelCompleteModal';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-// IMPORTANT: This is a test ID. Replace with your own AdMob Unit ID for production.
 const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios' 
-  ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx' // Replace with your real iOS ad unit ID
-  : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'); // Replace with your real Android ad unit ID
+  ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
+  : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
 
 const GameScreen = ({ route, navigation }) => {
   const { category } = route.params;
+  const [level, setLevel] = useState(1);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
@@ -24,17 +25,16 @@ const GameScreen = ({ route, navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [hintsLeft, setHintsLeft] = useState(3);
   const [alertInfo, setAlertInfo] = useState({ isVisible: false, message: '', buttonText: null, onButtonPress: null });
+  const [isLevelComplete, setIsLevelComplete] = useState(false);
 
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
 
-  // Sound effects
   const playCorrectSound = useSound(require('../assets/sounds/correct.mp3'));
   const playWrongSound = useSound(require('../assets/sounds/wrong.mp3'));
   const playLevelUpSound = useSound(require('../assets/sounds/levelup.mp3'));
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
-  // Alert handler
   const showAlert = (message, buttonText = null, onButtonPress = null) => {
     if (alertInfo.isVisible) return;
     setAlertInfo({ isVisible: true, message, buttonText, onButtonPress });
@@ -44,27 +44,67 @@ const GameScreen = ({ route, navigation }) => {
   };
   const hideAlert = () => setAlertInfo({ isVisible: false, message: '', buttonText: null, onButtonPress: null });
 
-  // AdMob Rewarded Ad Logic
-  useEffect(() => {
-    const rewardedAd = RewardedAd.createForAdRequest(adUnitId, {
-      requestNonPersonalizedAdsOnly: true,
+  const loadLevel = useCallback((levelToLoad) => {
+    const allCategoryQuestions = questionsData.filter(q => q.category === category);
+    
+    // Group questions by answer length
+    const questionGroups = {};
+    allCategoryQuestions.forEach(q => {
+      const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
+      if (!questionGroups[len]) {
+        questionGroups[len] = [];
+      }
+      questionGroups[len].push(q);
     });
 
-    const unsubscribeLoaded = rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => {
-      setAdLoaded(true);
+    // Create a deterministic list of 5-question "level packs" from valid groups
+    const levelPacks = [];
+    const sortedGroupKeys = Object.keys(questionGroups).sort((a, b) => a - b);
+    sortedGroupKeys.forEach(key => {
+      const group = questionGroups[key];
+      if (group.length >= 5) {
+        for (let i = 0; i < Math.floor(group.length / 5); i++) {
+          levelPacks.push(group.slice(i * 5, (i + 1) * 5));
+        }
+      }
     });
+
+    const levelIndex = levelToLoad - 1;
+    if (levelIndex >= levelPacks.length) {
+      showAlert('Category Complete! Restarting from Level 1.');
+      setLevel(1);
+      return;
+    }
+
+    const selectedQuestions = levelPacks[levelIndex];
+    const decodedQuestions = selectedQuestions.map(q => {
+      const decodedCorrectAnswer = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+      return { ...q, question: decode(q.question), text: decode(q.question), correct_answer: decodedCorrectAnswer };
+    });
+
+    setQuestions(decodedQuestions);
+    setAnswers(decodedQuestions.map(q => Array(q.correct_answer.length).fill({ letter: '', status: 'empty' })));
+    setCorrectlyAnswered(Array(decodedQuestions.length).fill(false));
+    setIsLevelComplete(false);
+  }, [category]);
+
+  useEffect(() => {
+    loadLevel(level);
+  }, [level, loadLevel]);
+
+  useEffect(() => {
+    const rewardedAd = RewardedAd.createForAdRequest(adUnitId, { requestNonPersonalizedAdsOnly: true });
+    const unsubscribeLoaded = rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => setAdLoaded(true));
     const unsubscribeEarned = rewardedAd.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       showAlert(`You earned ${reward.amount} hint!`);
       setHintsLeft(prev => prev + reward.amount);
     });
     const unsubscribeClosed = rewardedAd.addAdEventListener('closed', () => {
       setAdLoaded(false);
-      rewardedAd.load(); // Pre-load next ad
+      rewardedAd.load();
     });
-
     rewardedAd.load();
     adRef.current = rewardedAd;
-
     return () => {
       unsubscribeLoaded();
       unsubscribeEarned();
@@ -81,10 +121,10 @@ const GameScreen = ({ route, navigation }) => {
     }
   };
 
-  // Effect to check for level completion
   useEffect(() => {
-    if (questions.length > 0 && correctlyAnswered.every(Boolean)) {
+    if (questions.length > 0 && correctlyAnswered.length === questions.length && correctlyAnswered.every(Boolean)) {
       playLevelUpSound();
+      setTimeout(() => setIsLevelComplete(true), 500); // Delay modal slightly
     }
   }, [correctlyAnswered, questions.length, playLevelUpSound]);
 
@@ -116,34 +156,6 @@ const GameScreen = ({ route, navigation }) => {
       checkAnswer(randomQuestionIndex);
     }
   };
-
-  useEffect(() => {
-    const filteredQuestions = questionsData.filter(q => q.category === category);
-    const decodedQuestions = filteredQuestions.map(q => {
-      const decodedCorrectAnswer = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-      return { ...q, question: decode(q.question), text: decode(q.question), correct_answer: decodedCorrectAnswer };
-    });
-    
-    const questionLengths = {};
-    decodedQuestions.forEach(q => {
-      const len = q.correct_answer.length;
-      if (!questionLengths[len]) questionLengths[len] = [];
-      questionLengths[len].push(q);
-    });
-
-    let selectedQuestions = [];
-    const availableLengths = Object.keys(questionLengths).filter(len => questionLengths[len].length >= 5);
-    if (availableLengths.length > 0) {
-      const randomLength = availableLengths[Math.floor(Math.random() * availableLengths.length)];
-      selectedQuestions = questionLengths[randomLength].slice(0, 5);
-    } else {
-      selectedQuestions = decodedQuestions.slice(0, 5);
-    }
-
-    setQuestions(selectedQuestions);
-    setAnswers(selectedQuestions.map(q => Array(q.correct_answer.length).fill({ letter: '', status: 'empty' })));
-    setCorrectlyAnswered(Array(selectedQuestions.length).fill(false));
-  }, [category]);
 
   const checkAnswer = (questionIndex) => {
     if (correctlyAnswered[questionIndex]) return;
@@ -266,6 +278,17 @@ const GameScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleNextLevel = () => {
+    playTapSound();
+    setIsLevelComplete(false);
+    setLevel(prevLevel => prevLevel + 1);
+  };
+
+  const handleBackToMenu = () => {
+    playTapSound();
+    navigation.popToTop();
+  };
+
     const questionColumnWidth = SCREEN_WIDTH * 0.3;
     const answerColumnWidth = SCREEN_WIDTH * 0.7 - 16;
     const cellMargin = 1;
@@ -278,7 +301,7 @@ const GameScreen = ({ route, navigation }) => {
           </TouchableOpacity>
           <View style={styles.planetInfo}>
             <Text style={styles.planetName}>Wordy</Text>
-            <Text style={styles.levelText}>{category}</Text>
+            <Text style={styles.levelText}>{category} - Level {level}</Text>
           </View>
           <TouchableOpacity style={[styles.headerButton, styles.hintButton]} onPress={handleHint}>
             <Text style={styles.headerButtonText}>💡</Text>
@@ -294,7 +317,7 @@ const GameScreen = ({ route, navigation }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); showAlert('Settings not implemented yet'); }}>
               <Text style={styles.menuItemText}>Settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); navigation.popToTop(); }}>
+            <TouchableOpacity style={styles.menuItem} onPress={handleBackToMenu}>
               <Text style={styles.menuItemText}>Quit</Text>
             </TouchableOpacity>
           </View>
@@ -346,6 +369,12 @@ const GameScreen = ({ route, navigation }) => {
           isVisible={alertInfo.isVisible}
           buttonText={alertInfo.buttonText}
           onButtonPress={alertInfo.onButtonPress}
+          onBackdropPress={hideAlert}
+        />
+        <LevelCompleteModal 
+          isVisible={isLevelComplete}
+          onNextLevel={handleNextLevel}
+          onBackToMenu={handleBackToMenu}
         />
       </View>
     );
@@ -409,7 +438,7 @@ const styles = StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    top: 80, // Adjust this value to position the menu correctly
+    top: 80,
     right: 10,
     backgroundColor: '#1a1a1a',
     borderRadius: 5,

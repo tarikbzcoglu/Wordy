@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableOpacity, Pressable } from 'react-native';
 
-const CustomAlert = ({ message, isVisible, buttonText, onButtonPress }) => {
+const CustomAlert = ({ message, isVisible, buttonText, onButtonPress, onBackdropPress }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const CustomAlert = ({ message, isVisible, buttonText, onButtonPress }) => {
       style={[styles.container, { opacity: fadeAnim }]}
       pointerEvents={isVisible ? 'auto' : 'none'} // Control touchability
     >
+      <Pressable style={StyleSheet.absoluteFill} onPress={onBackdropPress} />
       <View style={styles.alertBox}>
         <Text style={styles.messageText}>{message}</Text>
         {buttonText && onButtonPress && (
