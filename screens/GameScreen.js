@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert, KeyboardAv
 import questionsData from '../questions_db.json';
 import { decode } from 'html-entities';
 import Keyboard from '../components/Keyboard';
+import { useSound } from '../hooks/useSound';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -15,7 +16,23 @@ const GameScreen = ({ route, navigation }) => {
   const [correctlyAnswered, setCorrectlyAnswered] = useState([]); // Track correctly answered questions
   const [showMenu, setShowMenu] = useState(false);
 
+  // Sound effects
+  const playCorrectSound = useSound(require('../assets/sounds/correct.mp3'));
+  const playWrongSound = useSound(require('../assets/sounds/wrong.mp3'));
+  const playLevelUpSound = useSound(require('../assets/sounds/levelup.mp3'));
+  const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
+
+  // Effect to check for level completion
+  useEffect(() => {
+    if (questions.length > 0 && correctlyAnswered.every(Boolean)) {
+      playLevelUpSound();
+      // Optionally, navigate away or show a completion message after a delay
+    }
+  }, [correctlyAnswered, questions.length, playLevelUpSound]);
+
+
   const handleHint = () => {
+    playTapSound();
     // Find all unanswered questions
     const unansweredQuestionIndices = questions
       .map((_, index) => index)
@@ -96,67 +113,99 @@ const GameScreen = ({ route, navigation }) => {
   }, [category]);
 
   const checkAnswer = (questionIndex) => {
-    if (correctlyAnswered[questionIndex]) return; // Prevent re-checking already answered questions
+    if (correctlyAnswered[questionIndex]) return;
     const userAnswer = answers[questionIndex].map(cell => cell.letter).join('');
     const correctAnswer = questions[questionIndex].correct_answer;
 
     if (userAnswer === correctAnswer) {
-      const newCorrectlyAnswered = [...correctlyAnswered];
-      newCorrectlyAnswered[questionIndex] = true;
-      setCorrectlyAnswered(newCorrectlyAnswered);
-      revealLetters(questionIndex);
+        playCorrectSound();
+        // Start the cascade calculation
+        let newCorrectlyAnswered = [...correctlyAnswered];
+        let newAnswers = JSON.parse(JSON.stringify(answers)); // Deep copy
+
+        let queue = [questionIndex]; // Questions to process for reveals
+
+        // Use a Set to track questions already processed in this cascade to prevent infinite loops
+        let processedInCascade = new Set();
+
+        while (queue.length > 0) {
+            const currentIdx = queue.shift();
+
+            if (processedInCascade.has(currentIdx)) {
+                continue;
+            }
+            processedInCascade.add(currentIdx);
+
+            // Mark as correct in our temporary state
+            newCorrectlyAnswered[currentIdx] = true;
+            const answeredWord = questions[currentIdx].correct_answer;
+
+            // Reveal letters in other questions
+            questions.forEach((q, qIdx) => {
+                // Only check questions not yet marked as correct
+                if (!newCorrectlyAnswered[qIdx]) {
+                    const otherAnswer = q.correct_answer;
+                    let wasChanged = false;
+                    for (let i = 0; i < answeredWord.length; i++) {
+                        const revealedLetter = answeredWord[i];
+                        for (let j = 0; j < otherAnswer.length; j++) {
+                            if (otherAnswer[j] === revealedLetter && newAnswers[qIdx][j].letter === '') {
+                                newAnswers[qIdx][j] = { letter: revealedLetter, status: 'revealed' };
+                                wasChanged = true;
+                            }
+                        }
+                    }
+
+                    // If the other question was changed, check if it's now complete
+                    if (wasChanged) {
+                        const isComplete = newAnswers[qIdx].every(cell => cell.letter !== '');
+                        const completedAnswer = newAnswers[qIdx].map(c => c.letter).join('');
+                        if (isComplete && completedAnswer === otherAnswer) {
+                            // If it's complete and correct, add it to the queue to be processed
+                            queue.push(qIdx);
+                        }
+                    }
+                }
+            });
+        }
+
+        // After the whole cascade is calculated, update the state ONCE.
+        setCorrectlyAnswered(newCorrectlyAnswered);
+        setAnswers(newAnswers);
+
     } else if (userAnswer.length === correctAnswer.length) {
+      playWrongSound();
       // Visual feedback for incorrect answer
-      const newAnswers = [...answers];
-      // Temporarily mark as incorrect for styling
-      newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => ({ ...cell, status: 'incorrect' }));
-      setAnswers(newAnswers);
+      setAnswers(currentAnswers => {
+          const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
+          // Temporarily mark only user-inputted cells as incorrect for styling
+          newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => {
+              if (cell.status === 'input') {
+                  return { ...cell, status: 'incorrect' };
+              }
+              return cell;
+          });
+          return newAnswers;
+      });
 
       setTimeout(() => {
-        // Clear the incorrect answer after a short delay, preserving revealed letters
-        const resetAnswers = [...answers];
-        resetAnswers[questionIndex] = resetAnswers[questionIndex].map(cell => {
-          if (cell.status === 'input') {
-            return { letter: '', status: 'empty' };
-          } else {
-            return cell;
-          }
+        // Use functional update to avoid stale state
+        setAnswers(currentAnswers => {
+            const resetAnswers = JSON.parse(JSON.stringify(currentAnswers));
+            resetAnswers[questionIndex] = resetAnswers[questionIndex].map(cell => {
+              // Clear the letters that were marked as incorrect
+              if (cell.status === 'incorrect') {
+                return { letter: '', status: 'empty' };
+              } else {
+                return cell;
+              }
+            });
+            return resetAnswers;
         });
-        setAnswers(resetAnswers);
         setActiveQuestionIndex(null);
         setActiveInputIndex(null);
       }, 1000); // 1 second delay for visual feedback
     }
-  };
-
-  const revealLetters = (answeredQuestionIndex) => {
-    const answeredWord = questions[answeredQuestionIndex].correct_answer;
-    const newAnswers = [...answers];
-
-    questions.forEach((q, qIndex) => {
-      if (qIndex !== answeredQuestionIndex && !correctlyAnswered[qIndex]) {
-        const otherAnswer = q.correct_answer;
-        for (let i = 0; i < answeredWord.length; i++) {
-          const revealedLetter = answeredWord[i];
-          for (let j = 0; j < otherAnswer.length; j++) {
-            if (otherAnswer[j] === revealedLetter && newAnswers[qIndex][j].letter === '') {
-              newAnswers[qIndex][j] = { letter: revealedLetter, status: 'revealed' };
-            }
-          }
-        }
-      }
-    });
-    setAnswers(newAnswers);
-
-    // After revealing letters, check if any other questions are now complete
-    questions.forEach((q, qIndex) => {
-      if (!correctlyAnswered[qIndex]) {
-        const isQuestionComplete = newAnswers[qIndex].every(cell => cell.letter !== '');
-        if (isQuestionComplete) {
-          checkAnswer(qIndex);
-        }
-      }
-    });
   };
 
   const handleAnswerBoxPress = (questionIndex, inputIndex) => {
@@ -247,7 +296,7 @@ const GameScreen = ({ route, navigation }) => {
         {/* Header */}
 
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.headerButton} onPress={() => { playTapSound(); navigation.goBack(); }}>
             <Text style={styles.headerButtonText}>◄</Text>
           </TouchableOpacity>
           <View style={styles.planetInfo}>
@@ -258,17 +307,17 @@ const GameScreen = ({ route, navigation }) => {
             <Text style={styles.headerButtonText}>💡</Text>
             <Text style={styles.hintButtonText}>Hint</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.headerButton} onPress={() => setShowMenu(!showMenu)}>
+          <TouchableOpacity style={styles.headerButton} onPress={() => { playTapSound(); setShowMenu(!showMenu); }}>
             <Text style={styles.headerButtonText}>☰</Text>
           </TouchableOpacity>
         </View>
 
         {showMenu && (
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => Alert.alert('Settings', 'Settings not implemented yet')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); Alert.alert('Settings', 'Settings not implemented yet'); }}>
               <Text style={styles.menuItemText}>Settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.popToTop()}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); navigation.popToTop(); }}>
               <Text style={styles.menuItemText}>Quit</Text>
             </TouchableOpacity>
           </View>

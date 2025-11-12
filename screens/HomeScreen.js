@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView, Animated, ImageBackground } from 'react-native';
 import questionsData from '../questions_db.json';
+import { useSound } from '../hooks/useSound';
 
 const image = require('../assets/images/Gemini_Generated_Image_tk5huxtk5huxtk5h.png');
 
@@ -10,6 +11,8 @@ export default function HomeScreen({ navigation }) {
   const word = 'Wordy'.split('');
   const animatedValues = useRef(word.map(() => new Animated.Value(0))).current;
   const floatAnim = useRef(new Animated.Value(0)).current;
+
+  const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
   useEffect(() => {
     const staggerAnimation = Animated.stagger(100, 
@@ -48,18 +51,31 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const handlePlay = () => {
+    playTapSound();
     setShowCategories(true);
   };
 
   const handleSettings = () => {
+    playTapSound();
     Alert.alert('Settings', 'Settings screen is not implemented yet.');
   };
 
   const handleExit = () => {
+    playTapSound();
     Alert.alert('Exit', 'Are you sure you want to exit?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'OK', onPress: () => {} }, // RNExitApp.exitApp() could be used here
     ]);
+  };
+
+  const handleCategoryPress = (category) => {
+    playTapSound();
+    navigation.navigate('Game', { category });
+  };
+
+  const handleBackPress = () => {
+    playTapSound();
+    setShowCategories(false);
   };
 
   const renderCategories = () => (
@@ -70,13 +86,13 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity
             key={category}
             style={styles.button}
-            onPress={() => navigation.navigate('Game', { category })}
+            onPress={() => handleCategoryPress(category)}
           >
             <Text style={styles.buttonText}>{category}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.backButton} onPress={() => setShowCategories(false)}>
+      <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
     </View>
