@@ -18,12 +18,12 @@ export const Colors = {
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: '#E1E2E1',
+    background: '#1C3B4F',
+    tint: '#68919E',
+    icon: '#858882',
+    tabIconDefault: '#858882',
+    tabIconSelected: '#68919E',
   },
 };
 

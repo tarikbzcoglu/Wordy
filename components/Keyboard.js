@@ -23,13 +23,13 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
     keyboardContainer: {
       justifyContent: 'center',
       paddingVertical: 5,
-      backgroundColor: '#212121',
+      backgroundColor: 'rgba(28, 59, 79, 0.3)',
     },
     key: {
       width: keyWidth,
       height: 35,
       margin: keyMargin,
-      backgroundColor: '#d9d0c1',
+      backgroundColor: '#68919E',
       alignItems: 'center',
       justifyContent: 'center',
       borderTopLeftRadius: 0,
@@ -39,7 +39,7 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
     },
     keyText: {
       fontSize: 18,
-      color: '#333333',
+      color: '#E1E2E1',
       fontWeight: 'bold',
     },
     keyRow: {
@@ -52,7 +52,7 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
       width: wideKeyWidth,
     },
     keyShadow: {
-      backgroundColor: '#a69c88',
+      backgroundColor: '#4A7E8E',
       width: keyWidth,
       height: 35,
       margin: keyMargin,

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Dimensions, Platform, KeyboardAvoidingView, ScrollView, ImageBackground } from 'react-native';
+import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import questionsData from '../questions_db.json';
 import { decode } from 'html-entities';
@@ -35,6 +37,29 @@ const GameScreen = ({ route, navigation }) => {
   const playLevelUpSound = useSound(require('../assets/sounds/levelup.mp3'));
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
+  const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
+
+  useEffect(() => {
+    const loadSavedLevel = async () => {
+      const storageKey = getLevelStorageKey(category);
+      console.log(`Loading level for key: ${storageKey}`);
+      try {
+        const savedLevel = await AsyncStorage.getItem(storageKey);
+        console.log(`Loaded level value: ${savedLevel}`);
+        if (savedLevel !== null) {
+          setLevel(parseInt(savedLevel, 10));
+        } else {
+          console.log('No level saved, defaulting to 1.');
+          setLevel(1);
+        }
+      } catch (e) {
+        console.error('Failed to load level.', e);
+        setLevel(1);
+      }
+    };
+    loadSavedLevel();
+  }, [category]);
+
   const showAlert = (message, buttonText = null, onButtonPress = null) => {
     if (alertInfo.isVisible) return;
     setAlertInfo({ isVisible: true, message, buttonText, onButtonPress });
@@ -45,9 +70,9 @@ const GameScreen = ({ route, navigation }) => {
   const hideAlert = () => setAlertInfo({ isVisible: false, message: '', buttonText: null, onButtonPress: null });
 
   const loadLevel = useCallback((levelToLoad) => {
+    if (levelToLoad === 0) return; // Don't load level 0
     const allCategoryQuestions = questionsData.filter(q => q.category === category);
     
-    // Group questions by answer length
     const questionGroups = {};
     allCategoryQuestions.forEach(q => {
       const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
@@ -57,7 +82,6 @@ const GameScreen = ({ route, navigation }) => {
       questionGroups[len].push(q);
     });
 
-    // Create a deterministic list of 5-question "level packs" from valid groups
     const levelPacks = [];
     const sortedGroupKeys = Object.keys(questionGroups).sort((a, b) => a - b);
     sortedGroupKeys.forEach(key => {
@@ -73,6 +97,7 @@ const GameScreen = ({ route, navigation }) => {
     if (levelIndex >= levelPacks.length) {
       showAlert('Category Complete! Restarting from Level 1.');
       setLevel(1);
+      AsyncStorage.setItem(getLevelStorageKey(category), '1');
       return;
     }
 
@@ -122,11 +147,22 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (questions.length > 0 && correctlyAnswered.length === questions.length && correctlyAnswered.every(Boolean)) {
+    if (questions.length > 0 && correctlyAnswered.length > 0 && correctlyAnswered.every(Boolean)) {
       playLevelUpSound();
-      setTimeout(() => setIsLevelComplete(true), 500); // Delay modal slightly
+      const newLevel = level + 1;
+      const saveProgress = async () => {
+        try {
+          const storageKey = getLevelStorageKey(category);
+          console.log(`Level ${level} completed! Saving next level ${newLevel} for key: ${storageKey}`);
+          await AsyncStorage.setItem(storageKey, newLevel.toString());
+        } catch (e) {
+          console.error('Failed to save level.', e);
+        }
+      };
+      saveProgress();
+      setTimeout(() => setIsLevelComplete(true), 500);
     }
-  }, [correctlyAnswered, questions.length, playLevelUpSound]);
+  }, [correctlyAnswered, questions, level, category, playLevelUpSound]);
 
   const handleHint = () => {
     playTapSound();
@@ -210,16 +246,26 @@ const GameScreen = ({ route, navigation }) => {
           return newAnswers;
       });
       setTimeout(() => {
+        let firstEmptyIndex = -1;
         setAnswers(currentAnswers => {
-            const resetAnswers = JSON.parse(JSON.stringify(currentAnswers));
-            resetAnswers[questionIndex] = resetAnswers[questionIndex].map(cell => {
-              if (cell.status === 'incorrect') return { letter: '', status: 'empty' };
+            const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
+            newAnswers[questionIndex] = newAnswers[questionIndex].map((cell, index) => {
+              if (cell.status !== 'hint' && cell.status !== 'revealed') {
+                if (firstEmptyIndex === -1) {
+                  firstEmptyIndex = index;
+                }
+                return { letter: '', status: 'empty' };
+              }
               return cell;
             });
-            return resetAnswers;
+            return newAnswers;
         });
-        setActiveQuestionIndex(null);
-        setActiveInputIndex(null);
+        
+        if (firstEmptyIndex === -1) {
+          firstEmptyIndex = 0;
+        }
+        setActiveQuestionIndex(questionIndex);
+        setActiveInputIndex(firstEmptyIndex);
       }, 1000);
     }
   };
@@ -265,10 +311,8 @@ const GameScreen = ({ route, navigation }) => {
     }
     if (prevInputIndex >= 0) {
       setActiveInputIndex(prevInputIndex);
-    } else {
-      setActiveQuestionIndex(null);
-      setActiveInputIndex(null);
     }
+    // If prevInputIndex is less than 0, do nothing, keeping the focus on the first cell.
   };
 
   const handleEnter = () => {
@@ -290,36 +334,58 @@ const GameScreen = ({ route, navigation }) => {
   };
 
     const questionColumnWidth = SCREEN_WIDTH * 0.3;
-    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 16;
+    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 1;
     const cellMargin = 1;
 
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require('../assets/images/background3.jpeg')} style={{flex: 1}}>
+        <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerButton} onPress={() => { playTapSound(); navigation.goBack(); }}>
+          <Pressable style={({ pressed }) => [
+              styles.headerButton,
+              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+            ]} onPress={() => { playTapSound(); navigation.goBack(); }}>
             <Text style={styles.headerButtonText}>◄</Text>
-          </TouchableOpacity>
+          </Pressable>
           <View style={styles.planetInfo}>
             <Text style={styles.planetName}>Wordy</Text>
             <Text style={styles.levelText}>{category} - Level {level}</Text>
           </View>
-          <TouchableOpacity style={[styles.headerButton, styles.hintButton]} onPress={handleHint}>
-            <Text style={styles.headerButtonText}>💡</Text>
+          <Pressable style={({ pressed }) => [
+              styles.headerButton,
+              styles.hintButton,
+              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+            ]} onPress={handleHint}>
+            <LottieView
+              source={require('../assets/images/hint.json')}
+              autoPlay
+              loop
+              style={styles.hintAnimation}
+            />
             <Text style={styles.hintButtonText}>Hint: {hintsLeft}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.headerButton} onPress={() => { playTapSound(); setShowMenu(!showMenu); }}>
+          </Pressable>
+          <Pressable style={({ pressed }) => [
+              styles.headerButton,
+              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+            ]} onPress={() => { playTapSound(); setShowMenu(!showMenu); }}>
             <Text style={styles.headerButtonText}>☰</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {showMenu && (
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => { playTapSound(); showAlert('Settings not implemented yet'); }}>
+            <Pressable style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : 'transparent' }
+              ]} onPress={() => { playTapSound(); showAlert('Settings not implemented yet'); }}>
               <Text style={styles.menuItemText}>Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={handleBackToMenu}>
+            </Pressable>
+            <Pressable style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : 'transparent' }
+              ]} onPress={handleBackToMenu}>
               <Text style={styles.menuItemText}>Quit</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         )}
         
@@ -328,7 +394,10 @@ const GameScreen = ({ route, navigation }) => {
           style={{ flex: 1 }}
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
-          <ScrollView contentContainerStyle={styles.gameBoard}>
+          <ScrollView 
+            contentContainerStyle={styles.gameBoard}
+            scrollEnabled={false}
+          >
             {questions.map((question, questionIndex) => {
               const currentAnswerLength = question.correct_answer.length;
               const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
@@ -339,7 +408,7 @@ const GameScreen = ({ route, navigation }) => {
                   </View>
                   <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
                     {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
-                      <TouchableOpacity
+                      <Pressable
                         key={inputIndex}
                         style={[
                           styles.letterCell,
@@ -353,7 +422,7 @@ const GameScreen = ({ route, navigation }) => {
                         disabled={correctlyAnswered[questionIndex]}
                       >
                         <Text style={styles.letterText}>{cell.letter}</Text>
-                      </TouchableOpacity>
+                      </Pressable>
                     ))}
                   </View>
                 </View>
@@ -373,17 +442,19 @@ const GameScreen = ({ route, navigation }) => {
         />
         <LevelCompleteModal 
           isVisible={isLevelComplete}
+          level={level}
           onNextLevel={handleNextLevel}
           onBackToMenu={handleBackToMenu}
         />
       </View>
+      </ImageBackground>
     );
   };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#212121',
+    backgroundColor: 'rgba(28, 59, 79, 0.7)',
   },
   header: {
     flexDirection: 'row',
@@ -392,15 +463,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     paddingTop: 30, // Safe area for iOS
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#1C3B4F',
     borderBottomWidth: 1,
-    borderBottomColor: '#333333',
+    borderBottomColor: '#4A7E8E',
   },
   headerButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#333333',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -410,14 +480,18 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginRight: 10, // Move slightly to the left
   },
+  hintAnimation: {
+    width: 40,
+    height: 40,
+  },
   hintButtonText: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 12,
     fontFamily: 'Papyrus',
-    marginTop: 2,
+    marginTop: -5,
   },
   headerButtonText: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 20,
     fontFamily: 'Papyrus',
   },
@@ -427,12 +501,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   planetName: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 24,
     fontFamily: 'Papyrus',
   },
   levelText: {
-    color: '#a69c88',
+    color: '#858882',
     fontSize: 14,
     fontFamily: 'Papyrus',
   },
@@ -440,7 +514,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 80,
     right: 10,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#1C3B4F',
     borderRadius: 5,
     padding: 10,
     zIndex: 1001,
@@ -449,12 +523,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   menuItemText: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 16,
     fontFamily: 'Papyrus',
   },
   gameBoard: {
-    padding: 8,
+    paddingLeft: 0,
+    paddingRight: 1,
+    paddingVertical: 8,
     paddingTop: 12,
   },
   questionAnswerRow: {
@@ -463,16 +539,16 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   questionRow: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#1C3B4F',
     borderRadius: 6,
     justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 4,
     minHeight: 100,
-    marginRight: 8,
+    marginRight: 0,
   },
   questionText: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 14,
     lineHeight: 18,
     fontFamily: 'Papyrus',
@@ -480,10 +556,10 @@ const styles = StyleSheet.create({
   answerBoxesContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 4,
+    padding: 2,
   },
   letterCell: {
-    backgroundColor: '#d9d0c1',
+    backgroundColor: '#E1E2E1',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
@@ -503,7 +579,7 @@ const styles = StyleSheet.create({
   },
   letterText: {
     fontSize: 20,
-    color: '#333333',
+    color: '#1C3B4F',
     fontFamily: 'Papyrus',
   },
   keyboardContainer: {

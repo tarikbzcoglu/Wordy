@@ -1,7 +1,8 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView, Animated, ImageBackground } from 'react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { View, Text, StyleSheet, Alert, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
 import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import questionsData from '../questions_db.json';
 import { useSound } from '../hooks/useSound';
 
@@ -128,16 +129,59 @@ const PULSING_CIRCLE_ANIMATION = {
   ]
 };
 
-const image = require('../assets/images/Gemini_Generated_Image_tk5huxtk5huxtk5h.png');
-const planetEarthAnimation = require('../assets/images/planetEarth.json');
+  const image = require('../assets/images/background.jpeg');
+  const planetEarthAnimation = require('../assets/images/planetEarth.json');
+  const artAndLiteratureAnimation = require('../assets/images/Art&literature.json');
+  const foodsAndCultureAnimation = require('../assets/images/foods&culture.json');
+  const gamesAndTechnologyAnimation = require('../assets/images/games&technology.json');
+  const generalKnowledgeAnimation = require('../assets/images/generalKnowledge.json');
+  const historyAndCivilizationAnimation = require('../assets/images/history&civilization.json');
+  const moviesAndPopCultureAnimation = require('../assets/images/movies&popculture.json');
+  const scienceAndNatureAnimation = require('../assets/images/science&nature.json');
+  const travelAndGeographyAnimation = require('../assets/images/travel&geography.json');
+
+  const categoryAnimationsMap = {
+    'Art & Literature': artAndLiteratureAnimation,
+    'Food & Culture': foodsAndCultureAnimation,
+    'Games & Technology': gamesAndTechnologyAnimation,
+    'General Knowledge': generalKnowledgeAnimation,
+    'History & Civilization': historyAndCivilizationAnimation,
+    'Movies & Pop Culture': moviesAndPopCultureAnimation,
+    'Planet Earth': planetEarthAnimation,
+    'Science & Nature': scienceAndNatureAnimation,
+    'Travel & Geography': travelAndGeographyAnimation,
+  };
+
+const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
+const allCategories = [...new Set(questionsData.map(q => q.category))];
 
 export default function HomeScreen({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
+  const [categoryLevels, setCategoryLevels] = useState({});
   const word = 'Wordy'.split('');
   const animatedValues = useRef(word.map(() => new Animated.Value(0))).current;
   const floatAnim = useRef(new Animated.Value(0)).current;
 
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadCategoryLevels = async () => {
+        try {
+          const levels = {};
+          for (const category of allCategories) {
+            const key = getLevelStorageKey(category);
+            const savedLevel = await AsyncStorage.getItem(key);
+            levels[category] = savedLevel ? parseInt(savedLevel, 10) : 1;
+          }
+          setCategoryLevels(levels);
+        } catch (e) {
+          console.error('Failed to load category levels.', e);
+        }
+      };
+      loadCategoryLevels();
+    }, [])
+  );
 
   useEffect(() => {
     const staggerAnimation = Animated.stagger(100, 
@@ -207,25 +251,35 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.categoryMenuContainer}>
       <Text style={styles.subtitle}>Select a Category</Text>
       <ScrollView style={styles.scrollView}>
-        {[...new Set(questionsData.map(q => q.category))].map(category => (
-          <TouchableOpacity
+        {allCategories.map(category => (
+          <Pressable
             key={category}
-            style={[styles.button, styles.categoryButtonWithAnimation]} // Apply new style for layout
+            style={({ pressed }) => [
+              styles.button,
+              styles.categoryButtonWithAnimation,
+              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+            ]}
             onPress={() => handleCategoryPress(category)}
           >
             <LottieView
-              source={category === 'Planet Earth' ? planetEarthAnimation : PULSING_CIRCLE_ANIMATION}
+              source={categoryAnimationsMap[category] || PULSING_CIRCLE_ANIMATION}
               autoPlay
               loop
               style={styles.categoryAnimation}
             />
-            <Text style={styles.buttonText}>{category}</Text>
-          </TouchableOpacity>
+            <View style={styles.categoryButtonTextContainer}>
+              <Text style={styles.buttonText}>{category}</Text>
+              <Text style={styles.levelText}>Level: {categoryLevels[category] || 1}</Text>
+            </View>
+          </Pressable>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+      <Pressable style={({ pressed }) => [
+          styles.backButton,
+          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+        ]} onPress={handleBackPress}>
         <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 
@@ -255,15 +309,24 @@ export default function HomeScreen({ navigation }) {
         ))}
       </View>
       <View style={styles.menu}>
-        <TouchableOpacity style={styles.button} onPress={handlePlay}>
+        <Pressable style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+          ]} onPress={handlePlay}>
           <Text style={styles.buttonText}>Play</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleSettings}>
+        </Pressable>
+        <Pressable style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+          ]} onPress={handleSettings}>
           <Text style={styles.buttonText}>Settings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleExit}>
+        </Pressable>
+        <Pressable style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+          ]} onPress={handleExit}>
           <Text style={styles.buttonText}>Exit</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -272,7 +335,6 @@ export default function HomeScreen({ navigation }) {
     <ImageBackground source={image} style={styles.backgroundImage}>
       <View style={styles.overlay} />
       <LottieView
-        // IMPORTANT: Replace 'character.json' with the actual name of your animation file.
         source={require('../assets/images/feather.json')}
         style={styles.lottieAnimation}
         autoPlay
@@ -293,7 +355,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(28, 59, 79, 0.6)',
   },
   lottieAnimation: {
     width: 300,
@@ -324,7 +386,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 72,
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     marginBottom: 50,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: -1, height: 1 },
@@ -333,7 +395,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 32,
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontFamily: 'Papyrus',
   },
   menu: {
@@ -341,7 +403,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   button: {
-    backgroundColor: '#333333',
     paddingVertical: 10, // Reduced from 15
     paddingHorizontal: 30,
     borderRadius: 25,
@@ -350,7 +411,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 16, // Reduced from 18
     fontFamily: 'Papyrus',
   },
@@ -364,19 +425,30 @@ const styles = StyleSheet.create({
     marginRight: 10, // Space between animation and text
     marginLeft: 10, // Add margin to the left to push it inward
   },
+  categoryButtonTextContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  levelText: {
+    color: '#E1E2E1',
+    fontSize: 14,
+    fontFamily: 'Papyrus',
+    opacity: 0.7,
+  },
   scrollView: {
     width: '100%',
     flex: 1,
   },
   backButton: {
-    backgroundColor: '#333333',
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 20,
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#d9d0c1',
+    color: '#E1E2E1',
     fontSize: 18,
     fontFamily: 'Papyrus',
   },
