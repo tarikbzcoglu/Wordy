@@ -28,6 +28,8 @@ const GameScreen = ({ route, navigation }) => {
   const [hintsLeft, setHintsLeft] = useState(3);
   const [alertInfo, setAlertInfo] = useState({ isVisible: false, message: '', buttonText: null, onButtonPress: null });
   const [isLevelComplete, setIsLevelComplete] = useState(false);
+  const [hintReminder, setHintReminder] = useState({ isVisible: false, message: '' });
+  const [highlightHintButton, setHighlightHintButton] = useState(false);
 
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
@@ -38,6 +40,7 @@ const GameScreen = ({ route, navigation }) => {
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
   const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
+  const getFirstTimeHintKey = (cat) => `first_time_hint_${cat.replace(/ & /g, '_')}`;
 
   useEffect(() => {
     const loadSavedLevel = async () => {
@@ -51,6 +54,17 @@ const GameScreen = ({ route, navigation }) => {
         } else {
           console.log('No level saved, defaulting to 1.');
           setLevel(1);
+          // Show first-time hint reminder
+          const firstTimeHintShown = await AsyncStorage.getItem(getFirstTimeHintKey(category));
+          if (!firstTimeHintShown) {
+            setHintReminder({ isVisible: true, message: 'Use hints if you get stuck!' });
+            setHighlightHintButton(true);
+            setTimeout(() => {
+              setHintReminder({ isVisible: false, message: '' });
+              setHighlightHintButton(false);
+            }, 4000);
+            await AsyncStorage.setItem(getFirstTimeHintKey(category), 'true');
+          }
         }
       } catch (e) {
         console.error('Failed to load level.', e);
@@ -266,6 +280,13 @@ const GameScreen = ({ route, navigation }) => {
         }
         setActiveQuestionIndex(questionIndex);
         setActiveInputIndex(firstEmptyIndex);
+        // Show hint reminder after wrong answer
+        setHintReminder({ isVisible: true, message: 'Stuck? Try using a hint!' });
+        setHighlightHintButton(true);
+        setTimeout(() => {
+          setHintReminder({ isVisible: false, message: '' });
+          setHighlightHintButton(false);
+        }, 3000);
       }, 1000);
     }
   };
@@ -316,9 +337,9 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleEnter = () => {
-    if (activeQuestionIndex === null || correctlyAnswered[activeQuestionIndex]) return;
-    if (answers[activeQuestionIndex].every(cell => cell.letter !== '')) {
-      checkAnswer(activeQuestionIndex);
+    if (activeQuestionIndex === null || correctlyAnswered[questionIndex]) return;
+    if (answers[questionIndex].every(cell => cell.letter !== '')) {
+      checkAnswer(questionIndex);
     }
   };
 
@@ -334,7 +355,7 @@ const GameScreen = ({ route, navigation }) => {
   };
 
     const questionColumnWidth = SCREEN_WIDTH * 0.3;
-    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 1;
+    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 4;
     const cellMargin = 1;
 
     return (
@@ -354,7 +375,8 @@ const GameScreen = ({ route, navigation }) => {
           <Pressable style={({ pressed }) => [
               styles.headerButton,
               styles.hintButton,
-              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' },
+              highlightHintButton && styles.hintButtonHighlight // Apply highlight style
             ]} onPress={handleHint}>
             <LottieView
               source={require('../assets/images/hint.json')}
@@ -446,6 +468,11 @@ const GameScreen = ({ route, navigation }) => {
           onNextLevel={handleNextLevel}
           onBackToMenu={handleBackToMenu}
         />
+        {hintReminder.isVisible && (
+          <View style={styles.hintReminderContainer}>
+            <Text style={styles.hintReminderText}>{hintReminder.message}</Text>
+          </View>
+        )}
       </View>
       </ImageBackground>
     );
@@ -479,6 +506,10 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginRight: 10, // Move slightly to the left
+  },
+  hintButtonHighlight: {
+    borderColor: '#FFD700', // Gold color for highlight
+    borderWidth: 3,
   },
   hintAnimation: {
     width: 40,
@@ -529,7 +560,7 @@ const styles = StyleSheet.create({
   },
   gameBoard: {
     paddingLeft: 0,
-    paddingRight: 1,
+    paddingRight: 4, // Increased for a visible gap
     paddingVertical: 8,
     paddingTop: 12,
   },
@@ -584,6 +615,22 @@ const styles = StyleSheet.create({
   },
   keyboardContainer: {
     // No specific styles needed here now
+  },
+  hintReminderContainer: {
+    position: 'absolute',
+    top: 100, // Adjust as needed
+    alignSelf: 'center',
+    backgroundColor: 'rgba(28, 59, 79, 0.9)', // Charcoal
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    zIndex: 3000,
+  },
+  hintReminderText: {
+    color: '#E1E2E1', // light_gray
+    fontSize: 16,
+    fontFamily: 'Papyrus',
+    textAlign: 'center',
   },
 });
 

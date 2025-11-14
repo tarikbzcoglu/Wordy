@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { View, Text, StyleSheet, Alert, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { Audio } from 'expo-av'; // Import Audio from expo-av
 import questionsData from '../questions_db.json';
 import { useSound } from '../hooks/useSound';
+import { MusicContext } from '../context/MusicContext'; // Import MusicContext
 
 const PULSING_CIRCLE_ANIMATION = {
   "v": "5.7.4",
@@ -158,11 +160,20 @@ const allCategories = [...new Set(questionsData.map(q => q.category))];
 export default function HomeScreen({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
   const [categoryLevels, setCategoryLevels] = useState({});
+  const { isMusicEnabled, setIsMusicEnabled } = useContext(MusicContext); // Use MusicContext
+
   const word = 'Wordy'.split('');
   const animatedValues = useRef(word.map(() => new Animated.Value(0))).current;
   const floatAnim = useRef(new Animated.Value(0)).current;
 
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
+
+  // Music playback logic is now in MusicContext, so remove related states and effects
+  // const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  // const [soundObject, setSoundObject] = useState(null);
+  // const [isMusicEnabled, setIsMusicEnabled] = useState(true);
+
+  // Removed music-related useEffects from here.
 
   useFocusEffect(
     useCallback(() => {
@@ -226,7 +237,7 @@ export default function HomeScreen({ navigation }) {
 
   const handleSettings = () => {
     playTapSound();
-    Alert.alert('Settings', 'Settings screen is not implemented yet.');
+    navigation.navigate('Settings', { setIsMusicEnabledProp: setIsMusicEnabled });
   };
 
   const handleExit = () => {
