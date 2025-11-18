@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
-import * as Audio from 'expo-audio';
+import { Audio } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const MusicContext = createContext();
@@ -15,23 +15,6 @@ export const MusicProvider = ({ children }) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [soundObject, setSoundObject] = useState(null);
   const [isMusicEnabled, setIsMusicEnabled] = useState(true);
-
-  // Effect to load music setting from AsyncStorage
-  useEffect(() => {
-    const loadMusicSetting = async () => {
-      try {
-        const savedSetting = await AsyncStorage.getItem('isMusicEnabled');
-        if (savedSetting !== null) {
-          const enabled = JSON.parse(savedSetting);
-          setIsMusicEnabled(enabled);
-          console.log('MusicContext: Loaded isMusicEnabled from AsyncStorage:', enabled);
-        }
-      } catch (e) {
-        console.error('MusicContext: Failed to load music setting.', e);
-      }
-    };
-    loadMusicSetting();
-  }, []);
 
   // Effect to handle music playback
   useEffect(() => {

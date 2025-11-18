@@ -399,7 +399,7 @@ const GameScreen = ({ route, navigation }) => {
             <Pressable style={({ pressed }) => [
                 styles.menuItem,
                 { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : 'transparent' }
-              ]} onPress={() => { playTapSound(); showAlert('Settings not implemented yet'); }}>
+              ]} onPress={() => { playTapSound(); navigation.navigate('Settings'); }}>
               <Text style={styles.menuItemText}>Settings</Text>
             </Pressable>
             <Pressable style={({ pressed }) => [

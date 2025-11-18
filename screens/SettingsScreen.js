@@ -17,25 +17,33 @@ const SettingsScreen = ({ navigation }) => { // Removed setIsMusicEnabledProp fr
     }
   };
 
+  const handleQuit = () => {
+    // In React Native, you can use BackHandler.exitApp() to exit the app.
+    // However, it is not recommended on iOS.
+    // A better approach is to navigate to the home screen.
+    navigation.navigate('Home');
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={styles.modalView}>
+        <Text style={styles.headerTitle}>Settings</Text>
+        <View style={styles.settingItem}>
+          <Text style={styles.settingText}>Background Music</Text>
+          <Switch
+            trackColor={{ false: '#767577', true: '#4A7E8E' }}
+            thumbColor={isMusicEnabled ? '#68919E' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleMusic}
+            value={isMusicEnabled}
+          />
+        </View>
+        <TouchableOpacity style={styles.quitButton} onPress={handleQuit}>
+          <Text style={styles.quitButtonText}>Quit</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.headerButton} onPress={() => navigation.goBack()}>
           <Text style={styles.headerButtonText}>◄</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Settings</Text>
-        <View style={styles.headerButtonPlaceholder} />
-      </View>
-
-      <View style={styles.settingItem}>
-        <Text style={styles.settingText}>Background Music</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#4A7E8E' }}
-          thumbColor={isMusicEnabled ? '#68919E' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleMusic}
-          value={isMusicEnabled}
-        />
       </View>
     </View>
   );
@@ -44,7 +52,24 @@ const SettingsScreen = ({ navigation }) => { // Removed setIsMusicEnabledProp fr
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(28, 59, 79, 0.7)', // Use a semi-transparent charcoal
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: '#1C3B4F',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   header: {
     flexDirection: 'row',
@@ -52,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 4,
-    paddingTop: 30, // Safe area for iOS
+    paddingTop: 10,
     backgroundColor: '#1C3B4F', // charcoal
     borderBottomWidth: 1,
     borderBottomColor: '#4A7E8E', // air_force_blue
@@ -90,6 +115,18 @@ const styles = StyleSheet.create({
     color: '#E1E2E1', // light_gray
     fontSize: 18,
     fontFamily: 'Papyrus',
+  },
+  quitButton: {
+    marginTop: 20,
+    backgroundColor: '#4A7E8E',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  quitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

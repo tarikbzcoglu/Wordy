@@ -237,7 +237,7 @@ export default function HomeScreen({ navigation }) {
 
   const handleSettings = () => {
     playTapSound();
-    navigation.navigate('Settings', { setIsMusicEnabledProp: setIsMusicEnabled });
+    navigation.navigate('Settings');
   };
 
   const handleExit = () => {
