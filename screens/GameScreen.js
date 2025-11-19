@@ -411,21 +411,16 @@ const GameScreen = ({ route, navigation }) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Pressable
-            style={({ pressed }) => [
-              styles.headerButton,
-              styles.backButton,
-            ]}
+            style={styles.backButtonModern}
             onPress={() => { playTapSound(); navigation.goBack(); }}
           >
             {({ pressed }) => (
-              <LinearGradient
-                colors={pressed ? ['#3A6A7A', '#2A5A6A'] : ['#5A8A9A', '#4A7E8E']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.backButtonGradient}
-              >
-                <Text style={styles.backButtonText}>←</Text>
-              </LinearGradient>
+              <View style={[
+                styles.backButtonInner,
+                { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
+              ]}>
+                <Text style={styles.backButtonTextModern}>←</Text>
+              </View>
             )}
           </Pressable>
           <View style={styles.planetInfo}>
@@ -469,11 +464,20 @@ const GameScreen = ({ route, navigation }) => {
             </Pressable>
             <Text style={styles.hintButtonTextBelow}>Hint: {hintsLeft}</Text>
           </Animated.View>
-          <Pressable style={({ pressed }) => [
-            styles.headerButton,
-            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-          ]} onPress={() => { playTapSound(); setSettingsModalVisible(true); }}>
-            <Text style={styles.headerButtonText}>☰</Text>
+          <Pressable
+            style={styles.settingsButtonModern}
+            onPress={() => { playTapSound(); setSettingsModalVisible(true); }}
+          >
+            {({ pressed }) => (
+              <View style={[
+                styles.settingsButtonInner,
+                { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
+              ]}>
+                <View style={styles.hamburgerLine} />
+                <View style={styles.hamburgerLine} />
+                <View style={styles.hamburgerLine} />
+              </View>
+            )}
           </Pressable>
         </View>
 
@@ -593,17 +597,59 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  backButtonGradient: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+  backButtonModern: {
+    width: 42,
+    height: 36,
+    borderRadius: 10,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  backButtonInner: {
+    width: 42,
+    height: 36,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
-  backButtonText: {
+  backButtonTextModern: {
     color: '#E1E2E1',
-    fontSize: 24,
+    fontSize: 34,
     fontWeight: 'bold',
+    marginTop: -14,
+  },
+  settingsButtonModern: {
+    width: 42,
+    height: 36,
+    borderRadius: 10,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  settingsButtonInner: {
+    width: 42,
+    height: 36,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: 8,
+    gap: 4,
+  },
+  hamburgerLine: {
+    width: 20,
+    height: 3,
+    backgroundColor: '#E1E2E1',
+    borderRadius: 1.5,
   },
   hintButtonContainer: {
     alignItems: 'center',
