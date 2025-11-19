@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable, Dimensions, Platform, KeyboardAvoidingView, ScrollView, ImageBackground } from 'react-native';
-import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
-import questionsData from '../questions_db.json';
+import { LinearGradient } from 'expo-linear-gradient';
 import { decode } from 'html-entities';
-import Keyboard from '../components/Keyboard';
-import { useSound } from '../hooks/useSound';
+import LottieView from 'lottie-react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, ImageBackground, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import CustomAlert from '../components/CustomAlert';
+import Keyboard from '../components/Keyboard';
 import LevelCompleteModal from '../components/LevelCompleteModal';
 import SettingsModal from '../components/SettingsModal';
+import { useSound } from '../hooks/useSound';
+import questionsData from '../questions_db.json';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios' 
+const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios'
   ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
   : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
 
@@ -32,6 +33,9 @@ const GameScreen = ({ route, navigation }) => {
   const [hintReminder, setHintReminder] = useState({ isVisible: false, message: '' });
   const [highlightHintButton, setHighlightHintButton] = useState(false);
   const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
+
+  const hintReminderAnim = useRef(new Animated.Value(0)).current;
+  const hintButtonPulseAnim = useRef(new Animated.Value(1)).current;
 
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
@@ -76,6 +80,48 @@ const GameScreen = ({ route, navigation }) => {
     loadSavedLevel();
   }, [category]);
 
+  // Animate hint reminder when it appears
+  useEffect(() => {
+    if (hintReminder.isVisible) {
+      Animated.spring(hintReminderAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        tension: 50,
+        friction: 7,
+      }).start();
+    } else {
+      Animated.timing(hintReminderAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [hintReminder.isVisible]);
+
+  // Animate hint button pulse when highlighted
+  useEffect(() => {
+    if (highlightHintButton) {
+      const pulseAnimation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(hintButtonPulseAnim, {
+            toValue: 1.1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(hintButtonPulseAnim, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      pulseAnimation.start();
+      return () => pulseAnimation.stop();
+    } else {
+      hintButtonPulseAnim.setValue(1);
+    }
+  }, [highlightHintButton]);
+
   const showAlert = (message, buttonText = null, onButtonPress = null) => {
     if (alertInfo.isVisible) return;
     setAlertInfo({ isVisible: true, message, buttonText, onButtonPress });
@@ -88,7 +134,7 @@ const GameScreen = ({ route, navigation }) => {
   const loadLevel = useCallback((levelToLoad) => {
     if (levelToLoad === 0) return; // Don't load level 0
     const allCategoryQuestions = questionsData.filter(q => q.category === category);
-    
+
     const questionGroups = {};
     allCategoryQuestions.forEach(q => {
       const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
@@ -215,68 +261,68 @@ const GameScreen = ({ route, navigation }) => {
     const correctAnswer = questions[questionIndex].correct_answer;
 
     if (userAnswer === correctAnswer) {
-        playCorrectSound();
-        let newCorrectlyAnswered = [...correctlyAnswered];
-        let newAnswers = JSON.parse(JSON.stringify(answers));
-        let queue = [questionIndex];
-        let processedInCascade = new Set();
-        while (queue.length > 0) {
-            const currentIdx = queue.shift();
-            if (processedInCascade.has(currentIdx)) continue;
-            processedInCascade.add(currentIdx);
-            newCorrectlyAnswered[currentIdx] = true;
-            const answeredWord = questions[currentIdx].correct_answer;
-            questions.forEach((q, qIdx) => {
-                if (!newCorrectlyAnswered[qIdx]) {
-                    const otherAnswer = q.correct_answer;
-                    let wasChanged = false;
-                    for (let i = 0; i < answeredWord.length; i++) {
-                        const revealedLetter = answeredWord[i];
-                        for (let j = 0; j < otherAnswer.length; j++) {
-                            if (otherAnswer[j] === revealedLetter && newAnswers[qIdx][j].letter === '') {
-                                newAnswers[qIdx][j] = { letter: revealedLetter, status: 'revealed' };
-                                wasChanged = true;
-                            }
-                        }
-                    }
-                    if (wasChanged) {
-                        const isComplete = newAnswers[qIdx].every(cell => cell.letter !== '');
-                        const completedAnswer = newAnswers[qIdx].map(c => c.letter).join('');
-                        if (isComplete && completedAnswer === otherAnswer) {
-                            queue.push(qIdx);
-                        }
-                    }
+      playCorrectSound();
+      let newCorrectlyAnswered = [...correctlyAnswered];
+      let newAnswers = JSON.parse(JSON.stringify(answers));
+      let queue = [questionIndex];
+      let processedInCascade = new Set();
+      while (queue.length > 0) {
+        const currentIdx = queue.shift();
+        if (processedInCascade.has(currentIdx)) continue;
+        processedInCascade.add(currentIdx);
+        newCorrectlyAnswered[currentIdx] = true;
+        const answeredWord = questions[currentIdx].correct_answer;
+        questions.forEach((q, qIdx) => {
+          if (!newCorrectlyAnswered[qIdx]) {
+            const otherAnswer = q.correct_answer;
+            let wasChanged = false;
+            for (let i = 0; i < answeredWord.length; i++) {
+              const revealedLetter = answeredWord[i];
+              for (let j = 0; j < otherAnswer.length; j++) {
+                if (otherAnswer[j] === revealedLetter && newAnswers[qIdx][j].letter === '') {
+                  newAnswers[qIdx][j] = { letter: revealedLetter, status: 'revealed' };
+                  wasChanged = true;
                 }
-            });
-        }
-        setCorrectlyAnswered(newCorrectlyAnswered);
-        setAnswers(newAnswers);
+              }
+            }
+            if (wasChanged) {
+              const isComplete = newAnswers[qIdx].every(cell => cell.letter !== '');
+              const completedAnswer = newAnswers[qIdx].map(c => c.letter).join('');
+              if (isComplete && completedAnswer === otherAnswer) {
+                queue.push(qIdx);
+              }
+            }
+          }
+        });
+      }
+      setCorrectlyAnswered(newCorrectlyAnswered);
+      setAnswers(newAnswers);
     } else if (userAnswer.length === correctAnswer.length) {
       playWrongSound();
       setAnswers(currentAnswers => {
-          const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
-          newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => {
-              if (cell.status === 'input') return { ...cell, status: 'incorrect' };
-              return cell;
-          });
-          return newAnswers;
+        const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
+        newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => {
+          if (cell.status === 'input') return { ...cell, status: 'incorrect' };
+          return cell;
+        });
+        return newAnswers;
       });
       setTimeout(() => {
         let firstEmptyIndex = -1;
         setAnswers(currentAnswers => {
-            const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
-            newAnswers[questionIndex] = newAnswers[questionIndex].map((cell, index) => {
-              if (cell.status !== 'hint' && cell.status !== 'revealed') {
-                if (firstEmptyIndex === -1) {
-                  firstEmptyIndex = index;
-                }
-                return { letter: '', status: 'empty' };
+          const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
+          newAnswers[questionIndex] = newAnswers[questionIndex].map((cell, index) => {
+            if (cell.status !== 'hint' && cell.status !== 'revealed') {
+              if (firstEmptyIndex === -1) {
+                firstEmptyIndex = index;
               }
-              return cell;
-            });
-            return newAnswers;
+              return { letter: '', status: 'empty' };
+            }
+            return cell;
+          });
+          return newAnswers;
         });
-        
+
         if (firstEmptyIndex === -1) {
           firstEmptyIndex = 0;
         }
@@ -339,9 +385,9 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleEnter = () => {
-    if (activeQuestionIndex === null || correctlyAnswered[questionIndex]) return;
-    if (answers[questionIndex].every(cell => cell.letter !== '')) {
-      checkAnswer(questionIndex);
+    if (activeQuestionIndex === null || correctlyAnswered[activeQuestionIndex]) return;
+    if (answers[activeQuestionIndex].every(cell => cell.letter !== '')) {
+      checkAnswer(activeQuestionIndex);
     }
   };
 
@@ -356,53 +402,88 @@ const GameScreen = ({ route, navigation }) => {
     navigation.popToTop();
   };
 
-    const questionColumnWidth = SCREEN_WIDTH * 0.3;
-    const answerColumnWidth = SCREEN_WIDTH * 0.7 - 4;
-    const cellMargin = 1;
+  const questionColumnWidth = SCREEN_WIDTH * 0.3;
+  const answerColumnWidth = SCREEN_WIDTH * 0.7 - 4;
+  const cellMargin = 1;
 
-    return (
-      <ImageBackground source={require('../assets/images/background3.jpeg')} style={{flex: 1}}>
-        <View style={styles.container}>
+  return (
+    <ImageBackground source={require('../assets/images/background3.jpeg')} style={{ flex: 1 }}>
+      <View style={styles.container}>
         <View style={styles.header}>
-          <Pressable style={({ pressed }) => [
+          <Pressable
+            style={({ pressed }) => [
               styles.headerButton,
-              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-            ]} onPress={() => { playTapSound(); navigation.goBack(); }}>
-            <Text style={styles.headerButtonText}>◄</Text>
+              styles.backButton,
+            ]}
+            onPress={() => { playTapSound(); navigation.goBack(); }}
+          >
+            {({ pressed }) => (
+              <LinearGradient
+                colors={pressed ? ['#3A6A7A', '#2A5A6A'] : ['#5A8A9A', '#4A7E8E']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.backButtonGradient}
+              >
+                <Text style={styles.backButtonText}>←</Text>
+              </LinearGradient>
+            )}
           </Pressable>
           <View style={styles.planetInfo}>
             <Text style={styles.planetName}>Wordy</Text>
             <Text style={styles.levelText}>{category} - Level {level}</Text>
           </View>
+          <Animated.View
+            style={[
+              styles.hintButtonContainer,
+              highlightHintButton && {
+                transform: [{ scale: hintButtonPulseAnim }]
+              }
+            ]}
+          >
+            <Pressable
+              onPress={handleHint}
+              style={styles.hintButtonNoBg}
+            >
+              {highlightHintButton ? (
+                <LinearGradient
+                  colors={['#DAA520', '#FF8C00', '#DAA520']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.hintButtonGradientNoBg}
+                >
+                  <LottieView
+                    source={require('../assets/images/hint.json')}
+                    autoPlay
+                    loop
+                    style={styles.hintAnimationLarge}
+                  />
+                </LinearGradient>
+              ) : (
+                <LottieView
+                  source={require('../assets/images/hint.json')}
+                  autoPlay
+                  loop
+                  style={styles.hintAnimationLarge}
+                />
+              )}
+            </Pressable>
+            <Text style={styles.hintButtonTextBelow}>Hint: {hintsLeft}</Text>
+          </Animated.View>
           <Pressable style={({ pressed }) => [
-              styles.headerButton,
-              styles.hintButton,
-              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' },
-              highlightHintButton && styles.hintButtonHighlight // Apply highlight style
-            ]} onPress={handleHint}>
-            <LottieView
-              source={require('../assets/images/hint.json')}
-              autoPlay
-              loop
-              style={styles.hintAnimation}
-            />
-            <Text style={styles.hintButtonText}>Hint: {hintsLeft}</Text>
-          </Pressable>
-          <Pressable style={({ pressed }) => [
-              styles.headerButton,
-              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-            ]} onPress={() => { playTapSound(); setSettingsModalVisible(true); }}>
+            styles.headerButton,
+            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+          ]} onPress={() => { playTapSound(); setSettingsModalVisible(true); }}>
             <Text style={styles.headerButtonText}>☰</Text>
           </Pressable>
         </View>
 
-        
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === "ios" ? "padding" : "height"} 
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
-          <ScrollView 
+          <ScrollView
             contentContainerStyle={styles.gameBoard}
             scrollEnabled={false}
           >
@@ -438,7 +519,7 @@ const GameScreen = ({ route, navigation }) => {
             })}
           </ScrollView>
         </KeyboardAvoidingView>
-  
+
         <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
 
         <CustomAlert
@@ -448,25 +529,38 @@ const GameScreen = ({ route, navigation }) => {
           onButtonPress={alertInfo.onButtonPress}
           onBackdropPress={hideAlert}
         />
-        <LevelCompleteModal 
+        <LevelCompleteModal
           isVisible={isLevelComplete}
           level={level}
           onNextLevel={handleNextLevel}
           onBackToMenu={handleBackToMenu}
         />
         {hintReminder.isVisible && (
-          <View style={styles.hintReminderContainer}>
-            <Text style={styles.hintReminderText}>{hintReminder.message}</Text>
-          </View>
+          <Animated.View
+            style={[
+              styles.hintReminderContainer,
+              {
+                opacity: hintReminderAnim,
+                transform: [{
+                  translateY: hintReminderAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-20, 0]
+                  })
+                }]
+              }
+            ]}
+          >
+            <Text style={styles.hintReminderText}>💡 {hintReminder.message}</Text>
+          </Animated.View>
         )}
-        <SettingsModal 
-          isVisible={isSettingsModalVisible} 
-          onClose={() => setSettingsModalVisible(false)} 
+        <SettingsModal
+          isVisible={isSettingsModalVisible}
+          onClose={() => setSettingsModalVisible(false)}
         />
       </View>
-      </ImageBackground>
-    );
-  };
+    </ImageBackground>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -490,26 +584,88 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  backButton: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  backButtonGradient: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: '#E1E2E1',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  hintButtonContainer: {
+    alignItems: 'center',
+    marginRight: 10,
   },
   hintButton: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    marginRight: 10, // Move slightly to the left
+    marginRight: 10,
+    overflow: 'hidden',
   },
-  hintButtonHighlight: {
-    borderColor: '#FFD700', // Gold color for highlight
-    borderWidth: 3,
+  hintButtonGradient: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 10,
   },
   hintAnimation: {
     width: 40,
     height: 40,
+  },
+  hintAnimationLarge: {
+    width: 55,
+    height: 55,
+  },
+  hintButtonNoBg: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hintButtonGradientNoBg: {
+    width: 55,
+    height: 55,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 10,
   },
   hintButtonText: {
     color: '#E1E2E1',
     fontSize: 12,
     fontFamily: 'Papyrus',
     marginTop: -5,
+  },
+  hintButtonTextBelow: {
+    color: '#E1E2E1',
+    fontSize: 14,
+    fontFamily: 'Papyrus',
+    marginTop: 2,
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   headerButtonText: {
     color: '#E1E2E1',
@@ -608,16 +764,23 @@ const styles = StyleSheet.create({
   },
   hintReminderContainer: {
     position: 'absolute',
-    top: 100, // Adjust as needed
+    top: 100,
     alignSelf: 'center',
-    backgroundColor: 'rgba(28, 59, 79, 0.9)', // Charcoal
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
+    backgroundColor: 'rgba(74, 126, 142, 0.95)',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 215, 0, 0.6)',
     zIndex: 3000,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
   hintReminderText: {
-    color: '#E1E2E1', // light_gray
+    color: '#FFFFFF',
     fontSize: 16,
     fontFamily: 'Papyrus',
     textAlign: 'center',
