@@ -15,6 +15,7 @@ export const MusicProvider = ({ children }) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [soundObject, setSoundObject] = useState(null);
   const [isMusicEnabled, setIsMusicEnabled] = useState(true);
+  const [volume, setVolume] = useState(0.5); // Add volume state
 
   // Effect to handle music playback
   useEffect(() => {
@@ -30,7 +31,7 @@ export const MusicProvider = ({ children }) => {
           console.log('MusicContext: Creating new sound for track:', musicPlaylist[currentTrackIndex]);
           const { sound } = await Audio.Sound.createAsync(
             musicPlaylist[currentTrackIndex],
-            { shouldPlay: true, isLooping: false }
+            { shouldPlay: true, isLooping: false, volume: volume }
           );
           if (isMounted) {
             setSoundObject(sound);
@@ -76,8 +77,15 @@ export const MusicProvider = ({ children }) => {
     }
   }, [isMusicEnabled, soundObject]);
 
+  // Effect to update volume
+  useEffect(() => {
+    if (soundObject) {
+      soundObject.setVolumeAsync(volume);
+    }
+  }, [volume, soundObject]);
+
   return (
-    <MusicContext.Provider value={{ isMusicEnabled, setIsMusicEnabled }}>
+    <MusicContext.Provider value={{ isMusicEnabled, setIsMusicEnabled, volume, setVolume }}>
       {children}
     </MusicContext.Provider>
   );

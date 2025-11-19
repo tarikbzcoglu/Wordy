@@ -2,9 +2,10 @@ import React, { useContext } from 'react'; // Import useContext
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MusicContext } from '../context/MusicContext'; // Import MusicContext
+import Slider from '@react-native-community/slider';
 
 const SettingsScreen = ({ navigation }) => { // Removed setIsMusicEnabledProp from props
-  const { isMusicEnabled, setIsMusicEnabled } = useContext(MusicContext); // Use MusicContext
+  const { isMusicEnabled, setIsMusicEnabled, volume, setVolume } = useContext(MusicContext); // Use MusicContext
 
   const toggleMusic = async () => {
     const newState = !isMusicEnabled;
@@ -36,6 +37,18 @@ const SettingsScreen = ({ navigation }) => { // Removed setIsMusicEnabledProp fr
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleMusic}
             value={isMusicEnabled}
+          />
+        </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.settingText}>Volume</Text>
+          <Slider
+            style={{width: 200, height: 40}}
+            minimumValue={0}
+            maximumValue={1}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#000000"
+            value={volume}
+            onValueChange={setVolume}
           />
         </View>
         <TouchableOpacity style={styles.quitButton} onPress={handleQuit}>
