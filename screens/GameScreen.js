@@ -9,6 +9,7 @@ import Keyboard from '../components/Keyboard';
 import { useSound } from '../hooks/useSound';
 import CustomAlert from '../components/CustomAlert';
 import LevelCompleteModal from '../components/LevelCompleteModal';
+import SettingsModal from '../components/SettingsModal';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -30,6 +31,7 @@ const GameScreen = ({ route, navigation }) => {
   const [isLevelComplete, setIsLevelComplete] = useState(false);
   const [hintReminder, setHintReminder] = useState({ isVisible: false, message: '' });
   const [highlightHintButton, setHighlightHintButton] = useState(false);
+  const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
 
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
@@ -389,27 +391,11 @@ const GameScreen = ({ route, navigation }) => {
           <Pressable style={({ pressed }) => [
               styles.headerButton,
               { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-            ]} onPress={() => { playTapSound(); setShowMenu(!showMenu); }}>
+            ]} onPress={() => { playTapSound(); setSettingsModalVisible(true); }}>
             <Text style={styles.headerButtonText}>☰</Text>
           </Pressable>
         </View>
 
-        {showMenu && (
-          <View style={styles.menu}>
-            <Pressable style={({ pressed }) => [
-                styles.menuItem,
-                { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : 'transparent' }
-              ]} onPress={() => { playTapSound(); navigation.navigate('Settings'); }}>
-              <Text style={styles.menuItemText}>Settings</Text>
-            </Pressable>
-            <Pressable style={({ pressed }) => [
-                styles.menuItem,
-                { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : 'transparent' }
-              ]} onPress={handleBackToMenu}>
-              <Text style={styles.menuItemText}>Quit</Text>
-            </Pressable>
-          </View>
-        )}
         
         <KeyboardAvoidingView 
           behavior={Platform.OS === "ios" ? "padding" : "height"} 
@@ -473,6 +459,10 @@ const GameScreen = ({ route, navigation }) => {
             <Text style={styles.hintReminderText}>{hintReminder.message}</Text>
           </View>
         )}
+        <SettingsModal 
+          isVisible={isSettingsModalVisible} 
+          onClose={() => setSettingsModalVisible(false)} 
+        />
       </View>
       </ImageBackground>
     );

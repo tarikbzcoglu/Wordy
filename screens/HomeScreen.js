@@ -7,6 +7,7 @@ import { Audio } from 'expo-av'; // Import Audio from expo-av
 import questionsData from '../questions_db.json';
 import { useSound } from '../hooks/useSound';
 import { MusicContext } from '../context/MusicContext'; // Import MusicContext
+import SettingsModal from '../components/SettingsModal';
 
 const PULSING_CIRCLE_ANIMATION = {
   "v": "5.7.4",
@@ -160,6 +161,7 @@ const allCategories = [...new Set(questionsData.map(q => q.category))];
 export default function HomeScreen({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
   const [categoryLevels, setCategoryLevels] = useState({});
+  const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
   const { isMusicEnabled, setIsMusicEnabled } = useContext(MusicContext); // Use MusicContext
 
   const word = 'Wordy'.split('');
@@ -237,7 +239,7 @@ export default function HomeScreen({ navigation }) {
 
   const handleSettings = () => {
     playTapSound();
-    navigation.navigate('Settings');
+    setSettingsModalVisible(true);
   };
 
   const handleExit = () => {
@@ -353,6 +355,10 @@ export default function HomeScreen({ navigation }) {
         onError={(error) => console.error('Lottie Error:', error)}
       />
       {showCategories ? renderCategories() : renderMainMenu()}
+      <SettingsModal 
+        isVisible={isSettingsModalVisible} 
+        onClose={() => setSettingsModalVisible(false)} 
+      />
     </ImageBackground>
   );
 }
@@ -372,7 +378,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     position: 'absolute',
-    top: 120, // Position it below the title
+    top: 80, // Position it below the title
     alignSelf: 'center',
     zIndex: 1, // Place it above the overlay
   },
@@ -393,7 +399,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
-    marginTop: 250, // Push the title down to make space for Lottie
+    marginTop: 100, // Push the title down to make space for Lottie
   },
   title: {
     fontSize: 72,
@@ -423,7 +429,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#E1E2E1',
-    fontSize: 16, // Reduced from 18
+    fontSize: 24, // Reduced from 18
     fontFamily: 'Papyrus',
   },
   categoryButtonWithAnimation: {
