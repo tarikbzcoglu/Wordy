@@ -21,8 +21,10 @@ const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios'
 const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorrect, onPress, disabled }) => {
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const shimmerAnim = useRef(new Animated.Value(0)).current;
+  const shimmer2Anim = useRef(new Animated.Value(0)).current;
   const bounceAnim = useRef(new Animated.Value(0)).current;
   const glowAnim = useRef(new Animated.Value(0)).current;
+  const rainbowAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (letter) {
@@ -40,14 +42,36 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
 
   useEffect(() => {
     if (status === 'revealed' || status === 'hint') {
-      // Modern reveal: shimmer + elastic bounce + glow
+      // Epic reveal: double shimmer + elastic bounce + rainbow glow
       Animated.parallel([
-        // Shimmer sweep
+        // First shimmer sweep
         Animated.timing(shimmerAnim, {
           toValue: 1,
           duration: 600,
           useNativeDriver: true,
         }),
+        // Second shimmer (delayed)
+        Animated.sequence([
+          Animated.delay(150),
+          Animated.timing(shimmer2Anim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ]),
+        // Rainbow glow pulse
+        Animated.sequence([
+          Animated.timing(rainbowAnim, {
+            toValue: 1,
+            duration: 200,
+            useNativeDriver: true,
+          }),
+          Animated.timing(rainbowAnim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+        ]),
         // Subtle glow pulse
         Animated.sequence([
           Animated.timing(glowAnim, {
@@ -78,11 +102,17 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
         ]),
       ]).start(() => {
         shimmerAnim.setValue(0);
+        shimmer2Anim.setValue(0);
       });
     }
   }, [status]);
 
   const shimmerTranslate = shimmerAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-width * 2, width * 2]
+  });
+
+  const shimmer2Translate = shimmer2Anim.interpolate({
     inputRange: [0, 1],
     outputRange: [-width * 2, width * 2]
   });
@@ -94,11 +124,29 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
 
   const glowOpacity = glowAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 0.3]
+    outputRange: [0, 0.4]
+  });
+
+  const rainbowOpacity = rainbowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.5]
   });
 
   return (
     <View>
+      {/* Rainbow glow layer */}
+      <Animated.View
+        style={{
+          position: 'absolute',
+          width: width + 8,
+          height: height + 8,
+          left: -4,
+          top: -4,
+          borderRadius: 8,
+          backgroundColor: '#FF69B4',
+          opacity: rainbowOpacity,
+        }}
+      />
       {/* Subtle glow background */}
       <Animated.View
         style={{
@@ -124,15 +172,28 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
         onPress={onPress}
         disabled={disabled}
       >
-        {/* Enhanced shimmer with gradient effect */}
+        {/* First shimmer */}
         <Animated.View
           style={{
             position: 'absolute',
             width: width * 0.6,
             height: height * 2,
-            backgroundColor: 'rgba(255, 255, 255, 0.6)',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
             transform: [
               { translateX: shimmerTranslate },
+              { rotate: '25deg' }
+            ],
+          }}
+        />
+        {/* Second shimmer (trailing) */}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            width: width * 0.4,
+            height: height * 2,
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            transform: [
+              { translateX: shimmer2Translate },
               { rotate: '25deg' }
             ],
           }}
@@ -164,9 +225,16 @@ const GameScreen = ({ route, navigation }) => {
   const [hintReminder, setHintReminder] = useState({ isVisible: false, message: '' });
   const [highlightHintButton, setHighlightHintButton] = useState(false);
   const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const hintReminderAnim = useRef(new Animated.Value(0)).current;
   const hintButtonPulseAnim = useRef(new Animated.Value(1)).current;
+  const confettiAnims = useRef([...Array(20)].map(() => ({
+    x: new Animated.Value(0),
+    y: new Animated.Value(0),
+    rotate: new Animated.Value(0),
+    opacity: new Animated.Value(1),
+  }))).current;
 
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
@@ -375,7 +443,50 @@ const GameScreen = ({ route, navigation }) => {
         }
       };
       saveProgress();
-      setTimeout(() => setIsLevelComplete(true), 500);
+
+      // Trigger confetti celebration
+      setShowConfetti(true);
+      confettiAnims.forEach((anim, i) => {
+        const angle = (i / 20) * Math.PI * 2;
+        const distance = 150 + Math.random() * 100;
+        Animated.parallel([
+          Animated.timing(anim.x, {
+            toValue: Math.cos(angle) * distance,
+            duration: 1500 + Math.random() * 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(anim.y, {
+            toValue: Math.sin(angle) * distance - 200,
+            duration: 1500 + Math.random() * 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(anim.rotate, {
+            toValue: Math.random() * 720,
+            duration: 1500 + Math.random() * 500,
+            useNativeDriver: true,
+          }),
+          Animated.sequence([
+            Animated.delay(1000),
+            Animated.timing(anim.opacity, {
+              toValue: 0,
+              duration: 500,
+              useNativeDriver: true,
+            }),
+          ]),
+        ]).start();
+      });
+
+      setTimeout(() => {
+        setIsLevelComplete(true);
+        setShowConfetti(false);
+        // Reset confetti
+        confettiAnims.forEach(anim => {
+          anim.x.setValue(0);
+          anim.y.setValue(0);
+          anim.rotate.setValue(0);
+          anim.opacity.setValue(1);
+        });
+      }, 2000);
     }
   }, [correctlyAnswered, playLevelUpSound]);
 
@@ -713,6 +824,34 @@ const GameScreen = ({ route, navigation }) => {
           isVisible={isSettingsModalVisible}
           onClose={() => setSettingsModalVisible(false)}
         />
+
+        {/* Confetti Celebration */}
+        {showConfetti && (
+          <View style={styles.confettiContainer}>
+            {confettiAnims.map((anim, i) => (
+              <Animated.View
+                key={i}
+                style={[
+                  styles.confetti,
+                  {
+                    backgroundColor: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FF6347'][i % 5],
+                    transform: [
+                      { translateX: anim.x },
+                      { translateY: anim.y },
+                      {
+                        rotate: anim.rotate.interpolate({
+                          inputRange: [0, 720],
+                          outputRange: ['0deg', '720deg']
+                        })
+                      }
+                    ],
+                    opacity: anim.opacity,
+                  }
+                ]}
+              />
+            ))}
+          </View>
+        )}
       </View>
     </ImageBackground>
   );
@@ -982,6 +1121,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Papyrus',
     textAlign: 'center',
+  },
+  confettiContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: 1,
+    height: 1,
+    zIndex: 9999,
+    pointerEvents: 'none',
+  },
+  confetti: {
+    position: 'absolute',
+    width: 12,
+    height: 12,
+    borderRadius: 2,
   },
 });
 
