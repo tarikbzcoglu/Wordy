@@ -22,6 +22,7 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const bounceAnim = useRef(new Animated.Value(0)).current;
+  const glowAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (letter) {
@@ -39,7 +40,7 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
 
   useEffect(() => {
     if (status === 'revealed' || status === 'hint') {
-      // Modern reveal: shimmer + elastic bounce
+      // Modern reveal: shimmer + elastic bounce + glow
       Animated.parallel([
         // Shimmer sweep
         Animated.timing(shimmerAnim, {
@@ -47,6 +48,19 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
           duration: 600,
           useNativeDriver: true,
         }),
+        // Subtle glow pulse
+        Animated.sequence([
+          Animated.timing(glowAnim, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(glowAnim, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+          }),
+        ]),
         // Elastic bounce sequence
         Animated.sequence([
           Animated.spring(bounceAnim, {
@@ -78,40 +92,60 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
     outputRange: [1, 1.2]
   });
 
+  const glowOpacity = glowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.3]
+  });
+
   return (
-    <Pressable
-      style={[
-        styles.letterCell,
-        { width, height, overflow: 'hidden' },
-        isSelected && styles.selectedCell,
-        isCorrect && styles.correctAnswerCell,
-        status === 'incorrect' && styles.incorrectAnswerCell,
-        status === 'hint' && styles.hintLetterCell
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      {/* Shimmer effect overlay */}
+    <View>
+      {/* Subtle glow background */}
       <Animated.View
         style={{
           position: 'absolute',
-          width: width,
-          height: height * 2,
-          backgroundColor: 'rgba(255, 255, 255, 0.4)',
-          transform: [
-            { translateX: shimmerTranslate },
-            { rotate: '25deg' }
-          ],
+          width: width + 6,
+          height: height + 6,
+          left: -3,
+          top: -3,
+          borderRadius: 6,
+          backgroundColor: status === 'hint' ? '#87CEEB' : '#FFD700',
+          opacity: glowOpacity,
         }}
       />
-      <Animated.View style={{
-        transform: [
-          { scale: Animated.multiply(scaleAnim, bounceScale) }
-        ]
-      }}>
-        <Text style={styles.letterText}>{letter}</Text>
-      </Animated.View>
-    </Pressable>
+      <Pressable
+        style={[
+          styles.letterCell,
+          { width, height, overflow: 'hidden' },
+          isSelected && styles.selectedCell,
+          isCorrect && styles.correctAnswerCell,
+          status === 'incorrect' && styles.incorrectAnswerCell,
+          status === 'hint' && styles.hintLetterCell
+        ]}
+        onPress={onPress}
+        disabled={disabled}
+      >
+        {/* Enhanced shimmer with gradient effect */}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            width: width * 0.6,
+            height: height * 2,
+            backgroundColor: 'rgba(255, 255, 255, 0.6)',
+            transform: [
+              { translateX: shimmerTranslate },
+              { rotate: '25deg' }
+            ],
+          }}
+        />
+        <Animated.View style={{
+          transform: [
+            { scale: Animated.multiply(scaleAnim, bounceScale) }
+          ]
+        }}>
+          <Text style={styles.letterText}>{letter}</Text>
+        </Animated.View>
+      </Pressable>
+    </View>
   );
 };
 
