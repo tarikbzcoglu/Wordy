@@ -1,18 +1,20 @@
 import { Audio } from 'expo-av';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useSound = (soundFile) => {
   const [sound, setSound] = useState();
 
-  async function playSound() {
+  const playSound = useCallback(async () => {
     if (sound) {
       try {
         await sound.replayAsync();
       } catch (e) {
         console.log('Error replaying sound', e);
       }
+    } else {
+      console.log('Sound not loaded yet');
     }
-  }
+  }, [sound]);
 
   useEffect(() => {
     let soundObject = null;
@@ -20,13 +22,20 @@ export const useSound = (soundFile) => {
 
     const loadSound = async () => {
       try {
+        // Ensure audio plays even in silent mode on iOS
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,
+          staysActiveInBackground: false,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: false,
+        });
+
         const { sound: newSound } = await Audio.Sound.createAsync(soundFile);
         soundObject = newSound;
-        // Only update state if component is still mounted
+
         if (isMounted) {
           setSound(newSound);
         } else {
-          // If unmounted during loading, clean up immediately
           newSound.unloadAsync();
         }
       } catch (e) {

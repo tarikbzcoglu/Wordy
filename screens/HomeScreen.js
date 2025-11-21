@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
-import { View, Text, StyleSheet, Alert, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
-import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { Audio } from 'expo-av'; // Import Audio from expo-av
-import questionsData from '../questions_db.json';
-import { useSound } from '../hooks/useSound';
-import { MusicContext } from '../context/MusicContext'; // Import MusicContext
+import LottieView from 'lottie-react-native';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Alert, Animated, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import SettingsModal from '../components/SettingsModal';
+import { MusicContext } from '../context/MusicContext'; // Import MusicContext
+import { useSound } from '../hooks/useSound';
+import questionsData from '../questions_db.json';
 
 const PULSING_CIRCLE_ANIMATION = {
   "v": "5.7.4",
@@ -132,28 +131,28 @@ const PULSING_CIRCLE_ANIMATION = {
   ]
 };
 
-  const image = require('../assets/images/background.jpeg');
-  const planetEarthAnimation = require('../assets/images/planetEarth.json');
-  const artAndLiteratureAnimation = require('../assets/images/Art&literature.json');
-  const foodsAndCultureAnimation = require('../assets/images/foods&culture.json');
-  const gamesAndTechnologyAnimation = require('../assets/images/games&technology.json');
-  const generalKnowledgeAnimation = require('../assets/images/generalKnowledge.json');
-  const historyAndCivilizationAnimation = require('../assets/images/history&civilization.json');
-  const moviesAndPopCultureAnimation = require('../assets/images/movies&popculture.json');
-  const scienceAndNatureAnimation = require('../assets/images/science&nature.json');
-  const travelAndGeographyAnimation = require('../assets/images/travel&geography.json');
+const image = require('../assets/images/background.jpeg');
+const planetEarthAnimation = require('../assets/images/planetEarth.json');
+const artAndLiteratureAnimation = require('../assets/images/Art&literature.json');
+const foodsAndCultureAnimation = require('../assets/images/foods&culture.json');
+const gamesAndTechnologyAnimation = require('../assets/images/games&technology.json');
+const generalKnowledgeAnimation = require('../assets/images/generalKnowledge.json');
+const historyAndCivilizationAnimation = require('../assets/images/history&civilization.json');
+const moviesAndPopCultureAnimation = require('../assets/images/movies&popculture.json');
+const scienceAndNatureAnimation = require('../assets/images/science&nature.json');
+const travelAndGeographyAnimation = require('../assets/images/travel&geography.json');
 
-  const categoryAnimationsMap = {
-    'Art & Literature': artAndLiteratureAnimation,
-    'Food & Culture': foodsAndCultureAnimation,
-    'Games & Technology': gamesAndTechnologyAnimation,
-    'General Knowledge': generalKnowledgeAnimation,
-    'History & Civilization': historyAndCivilizationAnimation,
-    'Movies & Pop Culture': moviesAndPopCultureAnimation,
-    'Planet Earth': planetEarthAnimation,
-    'Science & Nature': scienceAndNatureAnimation,
-    'Travel & Geography': travelAndGeographyAnimation,
-  };
+const categoryAnimationsMap = {
+  'Art & Literature': artAndLiteratureAnimation,
+  'Food & Culture': foodsAndCultureAnimation,
+  'Games & Technology': gamesAndTechnologyAnimation,
+  'General Knowledge': generalKnowledgeAnimation,
+  'History & Civilization': historyAndCivilizationAnimation,
+  'Movies & Pop Culture': moviesAndPopCultureAnimation,
+  'Planet Earth': planetEarthAnimation,
+  'Science & Nature': scienceAndNatureAnimation,
+  'Travel & Geography': travelAndGeographyAnimation,
+};
 
 const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
 const allCategories = [...new Set(questionsData.map(q => q.category))];
@@ -197,8 +196,8 @@ export default function HomeScreen({ navigation }) {
   );
 
   useEffect(() => {
-    const staggerAnimation = Animated.stagger(100, 
-      animatedValues.map(value => 
+    const staggerAnimation = Animated.stagger(100,
+      animatedValues.map(value =>
         Animated.timing(value, {
           toValue: 1,
           duration: 500,
@@ -246,7 +245,7 @@ export default function HomeScreen({ navigation }) {
     playTapSound();
     Alert.alert('Exit', 'Are you sure you want to exit?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'OK', onPress: () => {} },
+      { text: 'OK', onPress: () => { } },
     ]);
   };
 
@@ -281,16 +280,16 @@ export default function HomeScreen({ navigation }) {
               style={styles.categoryAnimation}
             />
             <View style={styles.categoryButtonTextContainer}>
-              <Text style={styles.buttonText}>{category}</Text>
+              <Text style={styles.categoryButtonText}>{category}</Text>
               <Text style={styles.levelText}>Level: {categoryLevels[category] || 1}</Text>
             </View>
           </Pressable>
         ))}
       </ScrollView>
       <Pressable style={({ pressed }) => [
-          styles.backButton,
-          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-        ]} onPress={handleBackPress}>
+        styles.backButton,
+        { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+      ]} onPress={handleBackPress}>
         <Text style={styles.backButtonText}>Back</Text>
       </Pressable>
     </View>
@@ -323,21 +322,21 @@ export default function HomeScreen({ navigation }) {
       </View>
       <View style={styles.menu}>
         <Pressable style={({ pressed }) => [
-            styles.button,
-            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-          ]} onPress={handlePlay}>
+          styles.button,
+          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+        ]} onPress={handlePlay}>
           <Text style={styles.buttonText}>Play</Text>
         </Pressable>
         <Pressable style={({ pressed }) => [
-            styles.button,
-            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-          ]} onPress={handleSettings}>
+          styles.button,
+          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+        ]} onPress={handleSettings}>
           <Text style={styles.buttonText}>Settings</Text>
         </Pressable>
         <Pressable style={({ pressed }) => [
-            styles.button,
-            { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-          ]} onPress={handleExit}>
+          styles.button,
+          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+        ]} onPress={handleExit}>
           <Text style={styles.buttonText}>Exit</Text>
         </Pressable>
       </View>
@@ -355,9 +354,9 @@ export default function HomeScreen({ navigation }) {
         onError={(error) => console.error('Lottie Error:', error)}
       />
       {showCategories ? renderCategories() : renderMainMenu()}
-      <SettingsModal 
-        isVisible={isSettingsModalVisible} 
-        onClose={() => setSettingsModalVisible(false)} 
+      <SettingsModal
+        isVisible={isSettingsModalVisible}
+        onClose={() => setSettingsModalVisible(false)}
       />
     </ImageBackground>
   );
@@ -378,7 +377,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     position: 'absolute',
-    top: 80, // Position it below the title
+    top: 50, // Position it below the title
     alignSelf: 'center',
     zIndex: 1, // Place it above the overlay
   },
@@ -430,6 +429,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#E1E2E1',
     fontSize: 24, // Reduced from 18
+    fontFamily: 'Papyrus',
+  },
+  categoryButtonText: {
+    color: '#E1E2E1',
+    fontSize: 18, // Smaller than buttonText to fit long names
     fontFamily: 'Papyrus',
   },
   categoryButtonWithAnimation: {

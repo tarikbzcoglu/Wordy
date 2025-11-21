@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { MusicProvider } from '../context/MusicContext';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import GameScreen from '../screens/GameScreen';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import { MusicProvider } from '../context/MusicContext';
+import GameScreen from '../screens/GameScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createStackNavigator();
 

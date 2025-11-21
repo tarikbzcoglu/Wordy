@@ -1,5 +1,5 @@
 import * as Haptics from 'expo-haptics';
-import { useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const KEY_ROWS = [
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#E1E2E1',
     fontWeight: 'bold',
+    fontFamily: 'Papyrus',
   },
   keyRow: {
     flexDirection: 'row',
@@ -31,12 +32,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// Individual Key Component with animation - Retro 3D style
-const KeyButton = ({ letter, onPress, keyStyle, shadowStyle, isWide = false }) => {
+// Individual Key Component with animation - Retro 3D style - Memoized
+const KeyButton = React.memo(({ letter, onPress, keyStyle, shadowStyle, isWide = false }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const translateYAnim = useRef(new Animated.Value(0)).current;
 
-  const handlePressIn = () => {
+  const handlePressIn = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     Animated.parallel([
       Animated.spring(scaleAnim, {
@@ -46,15 +47,15 @@ const KeyButton = ({ letter, onPress, keyStyle, shadowStyle, isWide = false }) =
         bounciness: 0,
       }),
       Animated.spring(translateYAnim, {
-        toValue: 2, // Push down effect
+        toValue: 2,
         useNativeDriver: true,
         speed: 80,
         bounciness: 0,
       }),
     ]).start();
-  };
+  }, [scaleAnim, translateYAnim]);
 
-  const handlePressOut = () => {
+  const handlePressOut = useCallback(() => {
     Animated.parallel([
       Animated.spring(scaleAnim, {
         toValue: 1,
@@ -69,11 +70,7 @@ const KeyButton = ({ letter, onPress, keyStyle, shadowStyle, isWide = false }) =
         bounciness: 4,
       }),
     ]).start();
-  };
-
-  const handlePress = () => {
-    onPress();
-  };
+  }, [scaleAnim, translateYAnim]);
 
   return (
     <Animated.View
@@ -88,7 +85,7 @@ const KeyButton = ({ letter, onPress, keyStyle, shadowStyle, isWide = false }) =
       ]}
     >
       <Pressable
-        onPress={handlePress}
+        onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         accessibilityRole="button"
@@ -101,16 +98,13 @@ const KeyButton = ({ letter, onPress, keyStyle, shadowStyle, isWide = false }) =
       </Pressable>
     </Animated.View>
   );
-};
+});
 
 export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth }) {
   // Memoize dynamic style calculations
   const dynamicStyles = useMemo(() => {
-    // Calculate key width for the longest row (10 keys in QWERTY top row)
     const availableWidthForKeys = screenWidth - (2 * keyboardPaddingHorizontal) - (10 * 2 * keyMargin);
     const keyWidth = availableWidthForKeys / 10;
-
-    // Calculate wide key width for ENTER and BACKSPACE
     const remainingWidthForWideKeys = screenWidth - (2 * keyboardPaddingHorizontal) - (2 * 2 * keyMargin);
     const wideKeyWidth = (remainingWidthForWideKeys / 2) - 10;
 
@@ -164,35 +158,39 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
     };
   }, [screenWidth]);
 
-  const handleKeyPress = (key) => {
+  // Memoize callbacks to prevent re-renders
+  const handleKeyPress = useCallback((key) => {
     onKeyPress(key);
-  };
+  }, [onKeyPress]);
 
-  const handleBackspace = () => {
+  const handleBackspace = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     onBackspace();
-  };
+  }, [onBackspace]);
 
-  const handleEnter = () => {
+  const handleEnter = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     onEnter();
-  };
+  }, [onEnter]);
+
+  // Memoize key rows to prevent re-creating on every render
+  const keyRows = useMemo(() => KEY_ROWS.map((row, rowIndex) => (
+    <View key={rowIndex} style={styles.keyRow}>
+      {row.map(key => (
+        <KeyButton
+          key={key}
+          letter={key}
+          onPress={() => handleKeyPress(key)}
+          keyStyle={dynamicStyles.key}
+          shadowStyle={dynamicStyles.keyShadow}
+        />
+      ))}
+    </View>
+  )), [dynamicStyles.key, dynamicStyles.keyShadow, handleKeyPress]);
 
   return (
     <View style={styles.keyboardContainer}>
-      {KEY_ROWS.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.keyRow}>
-          {row.map(key => (
-            <KeyButton
-              key={key}
-              letter={key}
-              onPress={() => handleKeyPress(key)}
-              keyStyle={dynamicStyles.key}
-              shadowStyle={dynamicStyles.keyShadow}
-            />
-          ))}
-        </View>
-      ))}
+      {keyRows}
       <View style={styles.keyRow}>
         <KeyButton
           letter="ENTER"

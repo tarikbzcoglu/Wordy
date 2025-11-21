@@ -18,6 +18,103 @@ const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios'
   ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
   : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
 
+const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorrect, onPress, disabled }) => {
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const shimmerAnim = useRef(new Animated.Value(0)).current;
+  const bounceAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (letter) {
+      // Modern elastic pop-in
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 6,
+        tension: 200,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      scaleAnim.setValue(0);
+    }
+  }, [letter]);
+
+  useEffect(() => {
+    if (status === 'revealed' || status === 'hint') {
+      // Modern reveal: shimmer + elastic bounce
+      Animated.parallel([
+        // Shimmer sweep
+        Animated.timing(shimmerAnim, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        // Elastic bounce sequence
+        Animated.sequence([
+          Animated.spring(bounceAnim, {
+            toValue: 1,
+            friction: 3,
+            tension: 150,
+            useNativeDriver: true,
+          }),
+          Animated.spring(bounceAnim, {
+            toValue: 0,
+            friction: 5,
+            tension: 100,
+            useNativeDriver: true,
+          }),
+        ]),
+      ]).start(() => {
+        shimmerAnim.setValue(0);
+      });
+    }
+  }, [status]);
+
+  const shimmerTranslate = shimmerAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-width * 2, width * 2]
+  });
+
+  const bounceScale = bounceAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.2]
+  });
+
+  return (
+    <Pressable
+      style={[
+        styles.letterCell,
+        { width, height, overflow: 'hidden' },
+        isSelected && styles.selectedCell,
+        isCorrect && styles.correctAnswerCell,
+        status === 'incorrect' && styles.incorrectAnswerCell,
+        status === 'hint' && styles.hintLetterCell
+      ]}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      {/* Shimmer effect overlay */}
+      <Animated.View
+        style={{
+          position: 'absolute',
+          width: width,
+          height: height * 2,
+          backgroundColor: 'rgba(255, 255, 255, 0.4)',
+          transform: [
+            { translateX: shimmerTranslate },
+            { rotate: '25deg' }
+          ],
+        }}
+      />
+      <Animated.View style={{
+        transform: [
+          { scale: Animated.multiply(scaleAnim, bounceScale) }
+        ]
+      }}>
+        <Text style={styles.letterText}>{letter}</Text>
+      </Animated.View>
+    </Pressable>
+  );
+};
+
 const GameScreen = ({ route, navigation }) => {
   const { category } = route.params;
   const [level, setLevel] = useState(1);
@@ -39,6 +136,15 @@ const GameScreen = ({ route, navigation }) => {
 
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
+
+  // Refs for level and category to use in effects without triggering them
+  const levelRef = useRef(level);
+  const categoryRef = useRef(category);
+
+  useEffect(() => {
+    levelRef.current = level;
+    categoryRef.current = category;
+  }, [level, category]);
 
   const playCorrectSound = useSound(require('../assets/sounds/correct.mp3'));
   const playWrongSound = useSound(require('../assets/sounds/wrong.mp3'));
@@ -121,6 +227,16 @@ const GameScreen = ({ route, navigation }) => {
       hintButtonPulseAnim.setValue(1);
     }
   }, [highlightHintButton]);
+
+  // Trigger Watch Ad alert when hints reach 0
+  useEffect(() => {
+    if (hintsLeft === 0) {
+      const timer = setTimeout(() => {
+        showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showRewardedAd);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [hintsLeft]);
 
   const showAlert = (message, buttonText = null, onButtonPress = null) => {
     if (alertInfo.isVisible) return;
@@ -209,13 +325,16 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (questions.length > 0 && correctlyAnswered.length > 0 && correctlyAnswered.every(Boolean)) {
+    if (correctlyAnswered.length > 0 && correctlyAnswered.every(Boolean)) {
       playLevelUpSound();
-      const newLevel = level + 1;
+      const currentLevel = levelRef.current;
+      const currentCategory = categoryRef.current;
+      const newLevel = currentLevel + 1;
+
       const saveProgress = async () => {
         try {
-          const storageKey = getLevelStorageKey(category);
-          console.log(`Level ${level} completed! Saving next level ${newLevel} for key: ${storageKey}`);
+          const storageKey = getLevelStorageKey(currentCategory);
+          console.log(`Level ${currentLevel} completed! Saving next level ${newLevel} for key: ${storageKey}`);
           await AsyncStorage.setItem(storageKey, newLevel.toString());
         } catch (e) {
           console.error('Failed to save level.', e);
@@ -224,12 +343,12 @@ const GameScreen = ({ route, navigation }) => {
       saveProgress();
       setTimeout(() => setIsLevelComplete(true), 500);
     }
-  }, [correctlyAnswered, questions, level, category, playLevelUpSound]);
+  }, [correctlyAnswered, playLevelUpSound]);
 
   const handleHint = () => {
     playTapSound();
     if (hintsLeft <= 0) {
-      showAlert('You have no hints left. Watch an ad to get more!', 'Watch Ad', showRewardedAd);
+      showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showRewardedAd);
       return;
     }
     const unansweredQuestionIndices = questions.map((_, index) => index).filter(index => !correctlyAnswered[index]);
@@ -340,13 +459,15 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleAnswerBoxPress = (questionIndex, inputIndex) => {
-    if (correctlyAnswered[questionIndex] || (answers[questionIndex] && answers[questionIndex][inputIndex].status === 'revealed')) return;
+    if (correctlyAnswered[questionIndex] || (answers[questionIndex] && (answers[questionIndex][inputIndex].status === 'revealed' || answers[questionIndex][inputIndex].status === 'hint'))) return;
+    playTapSound();
     setActiveQuestionIndex(questionIndex);
     setActiveInputIndex(inputIndex);
   };
 
   const handleKeyPress = (key) => {
-    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && answers[activeQuestionIndex][activeInputIndex].status === 'revealed')) return;
+    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
+    playTapSound();
     const newAnswers = [...answers];
     newAnswers[activeQuestionIndex][activeInputIndex] = { letter: key, status: 'input' };
     setAnswers(newAnswers);
@@ -357,7 +478,7 @@ const GameScreen = ({ route, navigation }) => {
       setActiveInputIndex(null);
     } else {
       let nextInputIndex = activeInputIndex + 1;
-      while (nextInputIndex < currentQuestion.correct_answer.length && newAnswers[activeQuestionIndex][nextInputIndex].status === 'revealed') {
+      while (nextInputIndex < currentQuestion.correct_answer.length && (newAnswers[activeQuestionIndex][nextInputIndex].status === 'revealed' || newAnswers[activeQuestionIndex][nextInputIndex].status === 'hint')) {
         nextInputIndex++;
       }
       if (nextInputIndex < currentQuestion.correct_answer.length) {
@@ -370,12 +491,13 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleBackspace = () => {
-    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && answers[activeQuestionIndex][activeInputIndex].status === 'revealed')) return;
+    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
+    playTapSound();
     const newAnswers = [...answers];
     newAnswers[activeQuestionIndex][activeInputIndex] = { letter: '', status: 'empty' };
     setAnswers(newAnswers);
     let prevInputIndex = activeInputIndex - 1;
-    while (prevInputIndex >= 0 && newAnswers[activeQuestionIndex][prevInputIndex].status === 'revealed') {
+    while (prevInputIndex >= 0 && (newAnswers[activeQuestionIndex][prevInputIndex].status === 'revealed' || newAnswers[activeQuestionIndex][prevInputIndex].status === 'hint')) {
       prevInputIndex--;
     }
     if (prevInputIndex >= 0) {
@@ -501,21 +623,17 @@ const GameScreen = ({ route, navigation }) => {
                   </View>
                   <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
                     {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
-                      <Pressable
+                      <AnimatedLetterCell
                         key={inputIndex}
-                        style={[
-                          styles.letterCell,
-                          { width: dynamicCellSize, height: 60 },
-                          activeQuestionIndex === questionIndex && activeInputIndex === inputIndex && styles.selectedCell,
-                          correctlyAnswered[questionIndex] && styles.correctAnswerCell,
-                          cell.status === 'incorrect' && styles.incorrectAnswerCell,
-                          cell.status === 'hint' && styles.hintLetterCell
-                        ]}
+                        letter={cell.letter}
+                        status={cell.status}
+                        width={dynamicCellSize}
+                        height={60}
+                        isSelected={activeQuestionIndex === questionIndex && activeInputIndex === inputIndex}
+                        isCorrect={correctlyAnswered[questionIndex]}
                         onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
                         disabled={correctlyAnswered[questionIndex]}
-                      >
-                        <Text style={styles.letterText}>{cell.letter}</Text>
-                      </Pressable>
+                      />
                     ))}
                   </View>
                 </View>
@@ -653,7 +771,7 @@ const styles = StyleSheet.create({
   },
   hintButtonContainer: {
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 25,
   },
   hintButton: {
     width: 60,
@@ -752,9 +870,9 @@ const styles = StyleSheet.create({
   },
   gameBoard: {
     paddingLeft: 0,
-    paddingRight: 4, // Increased for a visible gap
-    paddingVertical: 8,
-    paddingTop: 12,
+    paddingRight: 4,
+    paddingVertical: 4,
+    paddingTop: 8,
   },
   questionAnswerRow: {
     flexDirection: 'row',
@@ -765,15 +883,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#1C3B4F',
     borderRadius: 6,
     justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
     minHeight: 100,
     marginRight: 0,
   },
   questionText: {
     color: '#E1E2E1',
-    fontSize: 14,
-    lineHeight: 18,
+    fontSize: 15,
+    lineHeight: 19,
     fontFamily: 'Papyrus',
   },
   answerBoxesContainer: {
@@ -801,7 +919,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ADD8E6',
   },
   letterText: {
-    fontSize: 20,
+    fontSize: 24,
     color: '#1C3B4F',
     fontFamily: 'Papyrus',
   },
