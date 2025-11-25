@@ -343,16 +343,90 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 
+  // Owl animation state
+  const [owlState, setOwlState] = useState('hi'); // 'hi', 'idle'
+  const [currentIdleAnimation, setCurrentIdleAnimation] = useState(1);
+  const owlAnimationRef = useRef(null);
+  const owlScaleAnim = useRef(new Animated.Value(1)).current;
+
+  const getOwlSource = () => {
+    switch (owlState) {
+      case 'hi': return require('../assets/images/owl_hi.json');
+      case 'idle':
+        // Randomly select one of the 6 animations (4 idle + 2 sleep)
+        if (currentIdleAnimation === 1) return require('../assets/images/owl_idle.json');
+        if (currentIdleAnimation === 2) return require('../assets/images/owl_idle2.json');
+        if (currentIdleAnimation === 3) return require('../assets/images/owl_idle3.json');
+        if (currentIdleAnimation === 4) return require('../assets/images/owl_idle4.json');
+        if (currentIdleAnimation === 5) return require('../assets/images/owl_sleep.json');
+        return require('../assets/images/owl_sleep2.json');
+      default: return require('../assets/images/owl_idle.json');
+    }
+  };
+
+  const handleOwlAnimationFinish = () => {
+    if (owlState === 'hi') {
+      // After hi animation, switch to idle and pick a random idle animation
+      setOwlState('idle');
+      setCurrentIdleAnimation(Math.floor(Math.random() * 6) + 1); // Random 1-6
+    }
+  };
+
+  const handleOwlPress = () => {
+    console.log('Owl pressed!');
+    playTapSound();
+
+    // Scale animation: grow then shrink
+    Animated.sequence([
+      Animated.spring(owlScaleAnim, {
+        toValue: 1.2,
+        friction: 3,
+        tension: 100,
+        useNativeDriver: true,
+      }),
+      Animated.spring(owlScaleAnim, {
+        toValue: 1,
+        friction: 5,
+        tension: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Change to a different random idle animation
+    const newAnim = Math.floor(Math.random() * 6) + 1; // Random 1-6
+    setCurrentIdleAnimation(newAnim);
+  };
+
+  // Change idle animation every 8 seconds
+  useEffect(() => {
+    if (owlState === 'idle') {
+      const interval = setInterval(() => {
+        setCurrentIdleAnimation(Math.floor(Math.random() * 6) + 1); // Random 1-6
+      }, 8000); // 8 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [owlState]);
+
   return (
     <ImageBackground source={image} style={styles.backgroundImage}>
       <View style={styles.overlay} />
-      <LottieView
-        source={require('../assets/images/feather.json')}
-        style={styles.lottieAnimation}
-        autoPlay
-        loop
-        onError={(error) => console.error('Lottie Error:', error)}
-      />
+      {!showCategories && (
+        <Pressable onPress={handleOwlPress} style={styles.owlPressable}>
+          <Animated.View style={{ transform: [{ scale: owlScaleAnim }] }}>
+            <LottieView
+              ref={owlAnimationRef}
+              source={getOwlSource()}
+              style={styles.lottieAnimation}
+              autoPlay
+              loop={owlState !== 'hi'}
+              onAnimationFinish={handleOwlAnimationFinish}
+              onError={(error) => console.error('Lottie Error:', error)}
+            />
+          </Animated.View>
+        </Pressable>
+      )}
+
       {showCategories ? renderCategories() : renderMainMenu()}
       <SettingsModal
         isVisible={isSettingsModalVisible}
@@ -374,12 +448,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(28, 59, 79, 0.6)',
   },
   lottieAnimation: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
+  },
+  owlPressable: {
     position: 'absolute',
-    top: 50, // Position it below the title
+    top: 110,
     alignSelf: 'center',
-    zIndex: 1, // Place it above the overlay
+    zIndex: 100,
+    width: 200,
+    height: 200,
   },
   menuContainer: {
     flex: 1,

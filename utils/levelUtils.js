@@ -1,0 +1,94 @@
+/**
+ * Level System Utilities
+ * Helper functions for dynamic difficulty and level progression
+ */
+
+/**
+ * Get the number of questions for a given level
+ * Gradually increases difficulty as player progresses
+ */
+export const getQuestionCount = (level) => {
+    if (level <= 5) return 5;      // Easy start
+    if (level <= 10) return 6;     // Gradual increase
+    if (level <= 15) return 7;     // Medium
+    if (level <= 20) return 8;     // Challenging
+    if (level <= 30) return 9;     // Hard
+    return 10;                      // Expert (30+)
+};
+
+/**
+ * Determine the type of level
+ * @returns 'boss' | 'challenge' | 'standard'
+ */
+export const getLevelType = (level) => {
+    if (level % 10 === 0) return 'boss';      // Every 10th level
+    if (level % 5 === 0) return 'challenge';  // Every 5th level
+    return 'standard';
+};
+
+/**
+ * Calculate star rating based on performance
+ * @param {Object} stats - Performance statistics
+ * @param {number} stats.hintsUsed - Number of hints used
+ * @param {number} stats.mistakes - Number of wrong answers
+ * @returns {number} Star rating (1-3)
+ */
+export const calculateStarRating = (stats) => {
+    const { hintsUsed = 0, mistakes = 0 } = stats;
+
+    // Perfect: No hints, no mistakes
+    if (hintsUsed === 0 && mistakes === 0) return 3;
+
+    // Good: 1-2 hints or mistakes
+    if (hintsUsed + mistakes <= 2) return 2;
+
+    // Complete: 3+ hints or mistakes
+    return 1;
+};
+
+/**
+ * Get milestone reward information
+ * @param {number} level - Current level
+ * @returns {Object|null} Reward info or null if not a milestone
+ */
+export const getMilestoneReward = (level) => {
+    const milestones = {
+        5: { type: 'evolution', message: '🎉 Companion Evolution!', bonus: 50 },
+        10: { type: 'skin', message: '🎨 New Companion Skin!', bonus: 100 },
+        15: { type: 'evolution', message: '✨ Major Evolution!', bonus: 150 },
+        20: { type: 'achievement', message: '🏆 Master Badge Unlocked!', bonus: 200 },
+        25: { type: 'premium', message: '💎 Premium Skin Unlocked!', bonus: 250 },
+        30: { type: 'master', message: '👑 Expert Status!', bonus: 300 },
+    };
+
+    return milestones[level] || null;
+};
+
+/**
+ * Check if a level is a milestone
+ */
+export const isMilestone = (level) => {
+    return level % 5 === 0;
+};
+
+/**
+ * Get difficulty label for UI
+ */
+export const getDifficultyLabel = (level) => {
+    if (level <= 5) return 'Easy';
+    if (level <= 10) return 'Medium';
+    if (level <= 15) return 'Hard';
+    if (level <= 20) return 'Expert';
+    return 'Master';
+};
+
+/**
+ * Calculate coins earned for a level
+ */
+export const calculateCoins = (level, stars) => {
+    const baseCoins = 10;
+    const levelBonus = level * 2;
+    const starBonus = stars * 10;
+
+    return baseCoins + levelBonus + starBonus;
+};

@@ -8,9 +8,11 @@ import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mo
 import CustomAlert from '../components/CustomAlert';
 import Keyboard from '../components/Keyboard';
 import LevelCompleteModal from '../components/LevelCompleteModal';
+import ProgressBar from '../components/ProgressBar';
 import SettingsModal from '../components/SettingsModal';
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
+import { calculateCoins, calculateStarRating, getQuestionCount, isMilestone } from '../utils/levelUtils';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -226,6 +228,14 @@ const GameScreen = ({ route, navigation }) => {
   const [highlightHintButton, setHighlightHintButton] = useState(false);
   const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [levelStats, setLevelStats] = useState({
+    questionsAnswered: 0,
+    totalQuestions: 0,
+    hintsUsed: 0,
+    mistakes: 0,
+    startTime: null,
+  });
+  const [starRating, setStarRating] = useState(0);
 
   const hintReminderAnim = useRef(new Animated.Value(0)).current;
   const hintButtonPulseAnim = useRef(new Animated.Value(1)).current;
@@ -366,9 +376,10 @@ const GameScreen = ({ route, navigation }) => {
     const sortedGroupKeys = Object.keys(questionGroups).sort((a, b) => a - b);
     sortedGroupKeys.forEach(key => {
       const group = questionGroups[key];
-      if (group.length >= 5) {
-        for (let i = 0; i < Math.floor(group.length / 5); i++) {
-          levelPacks.push(group.slice(i * 5, (i + 1) * 5));
+      const questionCount = getQuestionCount(levelToLoad);
+      if (group.length >= questionCount) {
+        for (let i = 0; i < Math.floor(group.length / questionCount); i++) {
+          levelPacks.push(group.slice(i * questionCount, (i + 1) * questionCount));
         }
       }
     });
@@ -391,6 +402,16 @@ const GameScreen = ({ route, navigation }) => {
     setAnswers(decodedQuestions.map(q => Array(q.correct_answer.length).fill({ letter: '', status: 'empty' })));
     setCorrectlyAnswered(Array(decodedQuestions.length).fill(false));
     setIsLevelComplete(false);
+
+    // Initialize level stats
+    setLevelStats({
+      questionsAnswered: 0,
+      totalQuestions: decodedQuestions.length,
+      hintsUsed: 0,
+      mistakes: 0,
+      startTime: Date.now(),
+    });
+    setStarRating(0);
   }, [category]);
 
   useEffect(() => {
@@ -433,11 +454,29 @@ const GameScreen = ({ route, navigation }) => {
       const currentCategory = categoryRef.current;
       const newLevel = currentLevel + 1;
 
+      // Calculate final stats and star rating
+      const finalStats = {
+        questionsAnswered: correctlyAnswered.filter(Boolean).length,
+        totalQuestions: questions.length,
+        hintsUsed: levelStats.hintsUsed,
+        mistakes: levelStats.mistakes,
+        startTime: levelStats.startTime,
+      };
+      const stars = calculateStarRating(finalStats);
+      const coins = calculateCoins(currentLevel, stars);
+
+      setLevelStats(finalStats);
+      setStarRating(stars);
+
       const saveProgress = async () => {
         try {
           const storageKey = getLevelStorageKey(currentCategory);
           console.log(`Level ${currentLevel} completed! Saving next level ${newLevel} for key: ${storageKey}`);
           await AsyncStorage.setItem(storageKey, newLevel.toString());
+
+          // Save star rating
+          const starKey = `stars_${currentCategory}_${currentLevel}`;
+          await AsyncStorage.setItem(starKey, stars.toString());
         } catch (e) {
           console.error('Failed to save level.', e);
         }
@@ -488,7 +527,7 @@ const GameScreen = ({ route, navigation }) => {
         });
       }, 2000);
     }
-  }, [correctlyAnswered, playLevelUpSound]);
+  }, [correctlyAnswered, playLevelUpSound, questions.length]);
 
   const handleHint = () => {
     playTapSound();
@@ -514,6 +553,12 @@ const GameScreen = ({ route, navigation }) => {
     newAnswers[randomQuestionIndex][randomHintIndex] = { letter: correctAnswer[randomHintIndex], status: 'hint' };
     setAnswers(newAnswers);
     setHintsLeft(prevHints => prevHints - 1);
+
+    // Track hint usage
+    setLevelStats(prev => ({
+      ...prev,
+      hintsUsed: prev.hintsUsed + 1,
+    }));
     if (newAnswers[randomQuestionIndex].every(cell => cell.letter !== '')) {
       checkAnswer(randomQuestionIndex);
     }
@@ -673,6 +718,28 @@ const GameScreen = ({ route, navigation }) => {
   const answerColumnWidth = SCREEN_WIDTH * 0.7 - 4;
   const cellMargin = 1;
 
+  // Owl animation for header
+  const [headerOwlAnim, setHeaderOwlAnim] = useState(1);
+
+  const getHeaderOwlSource = () => {
+    // 6 animations: idle 1-4, sleep 1-2
+    if (headerOwlAnim === 1) return require('../assets/images/owl_idle.json');
+    if (headerOwlAnim === 2) return require('../assets/images/owl_idle2.json');
+    if (headerOwlAnim === 3) return require('../assets/images/owl_idle3.json');
+    if (headerOwlAnim === 4) return require('../assets/images/owl_idle4.json');
+    if (headerOwlAnim === 5) return require('../assets/images/owl_sleep.json');
+    return require('../assets/images/owl_sleep2.json');
+  };
+
+  // Change header owl animation every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeaderOwlAnim(Math.floor(Math.random() * 6) + 1); // Random 1-6
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <ImageBackground source={require('../assets/images/background3.jpeg')} style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -691,8 +758,18 @@ const GameScreen = ({ route, navigation }) => {
             )}
           </Pressable>
           <View style={styles.planetInfo}>
-            <Text style={styles.planetName}>Wordy</Text>
+            <LottieView
+              source={getHeaderOwlSource()}
+              autoPlay
+              loop
+              style={styles.headerOwlAnimation}
+            />
             <Text style={styles.levelText}>{category} - Level {level}</Text>
+            <ProgressBar
+              current={correctlyAnswered.filter(Boolean).length}
+              total={questions.length}
+              style={{ width: 160 }}
+            />
           </View>
           <Animated.View
             style={[
@@ -799,6 +876,10 @@ const GameScreen = ({ route, navigation }) => {
         <LevelCompleteModal
           isVisible={isLevelComplete}
           level={level}
+          stars={starRating}
+          stats={levelStats}
+          rewards={{ coins: calculateCoins(level, starRating) }}
+          isMilestone={isMilestone(level)}
           onNextLevel={handleNextLevel}
           onBackToMenu={handleBackToMenu}
         />
@@ -867,8 +948,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingVertical: 4,
-    paddingTop: 30, // Safe area for iOS
+    paddingVertical: 2,
+    paddingTop: 25,
     backgroundColor: '#1C3B4F',
     borderBottomWidth: 1,
     borderBottomColor: '#4A7E8E',
@@ -1016,13 +1097,21 @@ const styles = StyleSheet.create({
   },
   planetName: {
     color: '#E1E2E1',
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: 'Papyrus',
+    marginRight: 40,
+  },
+  headerOwlAnimation: {
+    width: 40,
+    height: 40,
+    marginBottom: 2,
+    marginRight: 60,
   },
   levelText: {
     color: '#858882',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Papyrus',
+    marginRight: 40,
   },
   menu: {
     position: 'absolute',
@@ -1073,28 +1162,63 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   letterCell: {
-    backgroundColor: '#E1E2E1',
+    backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
+    borderRadius: 8,
     marginHorizontal: 1,
+    borderWidth: 2,
+    borderColor: 'rgba(28, 59, 79, 0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   selectedCell: {
-    backgroundColor: '#FFD700',
+    backgroundColor: '#FFE082',
+    borderColor: '#FFD700',
+    borderWidth: 2,
+    shadowColor: '#FFD700',
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   correctAnswerCell: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#81C784',
+    borderColor: '#4CAF50',
+    borderWidth: 2,
+    shadowColor: '#4CAF50',
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   incorrectAnswerCell: {
-    backgroundColor: '#FF6B6B',
+    backgroundColor: '#FF8A80',
+    borderColor: '#FF6B6B',
+    borderWidth: 2,
+    shadowColor: '#FF6B6B',
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   hintLetterCell: {
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#B3E5FC',
+    borderColor: '#87CEEB',
+    borderWidth: 2,
+    shadowColor: '#87CEEB',
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   letterText: {
     fontSize: 24,
     color: '#1C3B4F',
     fontFamily: 'Papyrus',
+    fontWeight: '600',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
   keyboardContainer: {
     // No specific styles needed here now
