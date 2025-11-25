@@ -155,7 +155,22 @@ const categoryAnimationsMap = {
 };
 
 const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
-const allCategories = [...new Set(questionsData.map(q => q.category))];
+const allCategories = [...new Set(questionsData.map(q => q.category))].sort((a, b) => {
+  const order = {
+    'Planet Earth': 0,
+    'General Knowledge': 1,
+    'Science & Nature': 2,
+    'Food & Culture': 3,
+    'History & Civilization': 4,
+    'Movies & Pop Culture': 5,
+    'Art & Literature': 6,
+    'Travel & Geography': 7,
+    'Games & Technology': 8,
+  };
+  const aOrder = order.hasOwnProperty(a) ? order[a] : 1000;
+  const bOrder = order.hasOwnProperty(b) ? order[b] : 1000;
+  return aOrder - bOrder;
+});
 
 export default function HomeScreen({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
@@ -281,7 +296,7 @@ export default function HomeScreen({ navigation }) {
             />
             <View style={styles.categoryButtonTextContainer}>
               <Text style={styles.categoryButtonText}>{category}</Text>
-              <Text style={styles.levelText}>Level: {categoryLevels[category] || 1}</Text>
+              <Text style={styles.levelText}>Level {categoryLevels[category] || 1}/50</Text>
             </View>
           </Pressable>
         ))}
@@ -497,10 +512,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   button: {
-    paddingVertical: 10, // Reduced from 15
+    paddingVertical: 6, // Reduced height of category boxes
     paddingHorizontal: 30,
     borderRadius: 25,
-    marginBottom: 10, // Also reduced from 15
+    marginBottom: 12, // Slightly larger spacing between boxes
     width: '100%',
     alignItems: 'center',
   },
@@ -511,7 +526,7 @@ const styles = StyleSheet.create({
   },
   categoryButtonText: {
     color: '#E1E2E1',
-    fontSize: 18, // Smaller than buttonText to fit long names
+    fontSize: 19, // Slightly smaller for better balance
     fontFamily: 'Papyrus',
   },
   categoryButtonWithAnimation: {
@@ -526,15 +541,15 @@ const styles = StyleSheet.create({
   },
   categoryButtonTextContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   levelText: {
-    color: '#E1E2E1',
-    fontSize: 14,
+    color: '#FFD700',
+    fontSize: 15,
     fontFamily: 'Papyrus',
-    opacity: 0.7,
+    marginTop: 2,
   },
   scrollView: {
     width: '100%',
