@@ -8,12 +8,7 @@
  * Gradually increases difficulty as player progresses
  */
 export const getQuestionCount = (level) => {
-    if (level <= 5) return 5;      // Easy start
-    if (level <= 10) return 6;     // Gradual increase
-    if (level <= 15) return 7;     // Medium
-    if (level <= 20) return 8;     // Challenging
-    if (level <= 30) return 9;     // Hard
-    return 10;                      // Expert (30+)
+    return 5; // Fixed at 5 questions per level as requested
 };
 
 /**

@@ -205,7 +205,7 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
             { scale: Animated.multiply(scaleAnim, bounceScale) }
           ]
         }}>
-          <Text style={styles.letterText}>{letter}</Text>
+          <Text style={[styles.letterText, { fontSize: width < 30 ? 20 : 24 }]}>{letter}</Text>
         </Animated.View>
       </Pressable>
     </View>
@@ -361,38 +361,89 @@ const GameScreen = ({ route, navigation }) => {
 
   const loadLevel = useCallback((levelToLoad) => {
     if (levelToLoad === 0) return; // Don't load level 0
-    const allCategoryQuestions = questionsData.filter(q => q.category === category);
 
-    const questionGroups = {};
-    allCategoryQuestions.forEach(q => {
-      const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
-      if (!questionGroups[len]) {
-        questionGroups[len] = [];
-      }
-      questionGroups[len].push(q);
-    });
-
-    const levelPacks = [];
-    const sortedGroupKeys = Object.keys(questionGroups).sort((a, b) => a - b);
-    sortedGroupKeys.forEach(key => {
-      const group = questionGroups[key];
-      const questionCount = getQuestionCount(levelToLoad);
-      if (group.length >= questionCount) {
-        for (let i = 0; i < Math.floor(group.length / questionCount); i++) {
-          levelPacks.push(group.slice(i * questionCount, (i + 1) * questionCount));
-        }
-      }
-    });
-
-    const levelIndex = levelToLoad - 1;
-    if (levelIndex >= levelPacks.length) {
-      showAlert('Category Complete! Restarting from Level 1.');
+    // Reset to level 1 if we go past level 50
+    if (levelToLoad > 50) {
+      showAlert('Game Complete! Restarting from Level 1.');
       setLevel(1);
       AsyncStorage.setItem(getLevelStorageKey(category), '1');
       return;
     }
 
-    const selectedQuestions = levelPacks[levelIndex];
+    const allCategoryQuestions = questionsData.filter(q => q.category === category);
+
+    // Group questions by answer length
+    const questionsByLength = {};
+    allCategoryQuestions.forEach(q => {
+      const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
+      if (!questionsByLength[len]) {
+        questionsByLength[len] = [];
+      }
+      questionsByLength[len].push(q);
+    });
+
+    // Get available lengths sorted, but ONLY those that have enough questions
+    // The user wants to skip lengths that don't have enough unique questions to fill a level (min 5)
+    const MIN_QUESTIONS_PER_LEVEL = 5;
+    let availableLengths = Object.keys(questionsByLength)
+      .map(Number)
+      .filter(len => questionsByLength[len].length >= MIN_QUESTIONS_PER_LEVEL)
+      .sort((a, b) => a - b);
+
+    // Fallback: If NO lengths have enough questions, just use whatever we have (sorted by most questions)
+    if (availableLengths.length === 0) {
+      availableLengths = Object.keys(questionsByLength)
+        .map(Number)
+        .sort((a, b) => questionsByLength[b].length - questionsByLength[a].length); // Sort by count desc
+
+      // If still empty (no questions at all), error out
+      if (availableLengths.length === 0) {
+        console.error('No questions found for category:', category);
+        return;
+      }
+      // Keep only the best one to avoid cycling through tiny groups
+      availableLengths = [availableLengths[0]];
+    }
+
+    // Determine target length for this level
+    // Cycle through lengths: Level 1->Len A, Level 2->Len B, ...
+    const lengthIndex = (levelToLoad - 1) % availableLengths.length;
+    const targetLength = availableLengths[lengthIndex];
+    const targetQuestions = questionsByLength[targetLength];
+
+    const questionCount = getQuestionCount(levelToLoad);
+
+    // Determine which "page" of questions to use for this length
+    const usageCycle = Math.floor((levelToLoad - 1) / availableLengths.length);
+    const startIndex = usageCycle * questionCount;
+
+    let selectedQuestions = [];
+
+    // If we have enough unique questions in this group for the current cycle
+    if (startIndex + questionCount <= targetQuestions.length) {
+      selectedQuestions = targetQuestions.slice(startIndex, startIndex + questionCount);
+    } else {
+      // If we ran out of unique questions for this length, pick random ones from this length group
+      // Since we filtered for MIN_QUESTIONS_PER_LEVEL, we know we have at least that many.
+      // If questionCount > total questions (e.g. need 10 but have 5), we MUST repeat or just take all unique.
+      // But the user hates repetition. 
+      // Compromise: If we need more than we have total, we take all unique and then fill with randoms from the same pool.
+      // This is better than repeating a pool of 2 questions 3 times.
+
+      let pool = [...targetQuestions];
+      const shuffled = pool.sort(() => 0.5 - Math.random());
+
+      // If we need more questions than exist in the pool, we have to repeat some
+      if (questionCount > pool.length) {
+        while (selectedQuestions.length < questionCount) {
+          selectedQuestions = [...selectedQuestions, ...shuffled];
+        }
+        selectedQuestions = selectedQuestions.slice(0, questionCount);
+      } else {
+        selectedQuestions = shuffled.slice(0, questionCount);
+      }
+    }
+
     const decodedQuestions = selectedQuestions.map(q => {
       const decodedCorrectAnswer = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
       return { ...q, question: decode(q.question), text: decode(q.question), correct_answer: decodedCorrectAnswer };
@@ -1242,7 +1293,7 @@ const styles = StyleSheet.create({
   },
   hintReminderText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Papyrus',
     textAlign: 'center',
   },

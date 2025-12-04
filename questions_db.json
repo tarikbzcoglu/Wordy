@@ -27,7 +27,7 @@
     "category": "Planet Earth",
     "difficulty": "medium",
     "question": "The deepest ocean trench",
-    "answer": "Mariana Trench"
+    "answer": "MarianaTrench"
   },
   {
     "category": "Planet Earth",
@@ -87,13 +87,13 @@
     "category": "Planet Earth",
     "difficulty": "medium",
     "question": "The gas plants use to make food",
-    "answer": "Carbon Dioxide"
+    "answer": "CarbonDioxide"
   },
   {
     "category": "Planet Earth",
     "difficulty": "medium",
     "question": "Fault line famous in California",
-    "answer": "San Andreas"
+    "answer": "SanAndreas"
   },
   {
     "category": "Planet Earth",
@@ -129,7 +129,7 @@
     "category": "Planet Earth",
     "difficulty": "medium",
     "question": "Major ocean current that warms Western Europe",
-    "answer": "Gulf Stream"
+    "answer": "GulfStream"
   },
   {
     "category": "Planet Earth",
@@ -189,7 +189,7 @@
     "category": "Planet Earth",
     "difficulty": "medium",
     "question": "Ocean between Africa and Australia",
-    "answer": "Indian Ocean"
+    "answer": "IndianOcean"
   },
   {
     "category": "Planet Earth",
@@ -285,19 +285,7 @@
     "category": "Planet Earth",
     "difficulty": "medium",
     "question": "A ring of coral reefs",
-    "answer": "Coral Reef"
-  },
-  {
-    "category": "Planet Earth",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Planet Earth",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Planet Earth",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Planet Earth",
-    "answer": "Answer50"
+    "answer": "CoralReef"
   },
   {
     "category": "Science & Nature",
@@ -387,7 +375,7 @@
     "category": "Science & Nature",
     "difficulty": "medium",
     "question": "Basic building block of proteins",
-    "answer": "Amino Acid"
+    "answer": "AminoAcid"
   },
   {
     "category": "Science & Nature",
@@ -465,7 +453,7 @@
     "category": "Science & Nature",
     "difficulty": "medium",
     "question": "A body system that fights infection",
-    "answer": "Immune System"
+    "answer": "ImmuneSystem"
   },
   {
     "category": "Science & Nature",
@@ -531,7 +519,7 @@
     "category": "Science & Nature",
     "difficulty": "medium",
     "question": "Gas produced by burning fossil fuels",
-    "answer": "Carbon Monoxide"
+    "answer": "CarbonMonoxide"
   },
   {
     "category": "Science & Nature",
@@ -580,24 +568,6 @@
     "difficulty": "medium",
     "question": "Measure of push on an area",
     "answer": "Pressure"
-  },
-  {
-    "category": "Science & Nature",
-    "difficulty": "medium",
-    "question": "Placeholder question 48 in Science & Nature",
-    "answer": "Answer48"
-  },
-  {
-    "category": "Science & Nature",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Science & Nature",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Science & Nature",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Science & Nature",
-    "answer": "Answer50"
   },
   {
     "category": "History & Civilization",
@@ -657,7 +627,7 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "Revolution that began in 1789",
-    "answer": "French Revolution"
+    "answer": "FrenchRevolution"
   },
   {
     "category": "History & Civilization",
@@ -693,13 +663,13 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "The war between the North and South in the USA",
-    "answer": "Civil War"
+    "answer": "CivilWar"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "Great leader who united the Mongol tribes",
-    "answer": "Genghis Khan"
+    "answer": "GenghisKhan"
   },
   {
     "category": "History & Civilization",
@@ -711,13 +681,13 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "The trade route linking Europe and Asia",
-    "answer": "Silk Road"
+    "answer": "SilkRoad"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "Historic wall that divided Berlin",
-    "answer": "Berlin Wall"
+    "answer": "BerlinWall"
   },
   {
     "category": "History & Civilization",
@@ -753,25 +723,25 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "A war that lasted from 1914 to 1918",
-    "answer": "World War I"
+    "answer": "WorldWarI"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "The palace complex in Beijing",
-    "answer": "Forbidden City"
+    "answer": "ForbiddenCity"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "A famous 13th-century traveler from Venice",
-    "answer": "Marco Polo"
+    "answer": "MarcoPolo"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "The document limiting king's power in 1215",
-    "answer": "Magna Carta"
+    "answer": "MagnaCarta"
   },
   {
     "category": "History & Civilization",
@@ -795,7 +765,7 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "The treaty that ended WWI",
-    "answer": "Treaty of Versailles"
+    "answer": "TreatyofVersailles"
   },
   {
     "category": "History & Civilization",
@@ -819,19 +789,19 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "First Chinese emperor who unified the country",
-    "answer": "Qin Shi Huang"
+    "answer": "QinShiHuang"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "A prehistoric period before metal tools",
-    "answer": "Stone Age"
+    "answer": "StoneAge"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "Important 20th-century civil rights leader",
-    "answer": "Martin Luther King"
+    "answer": "MartinLutherKing"
   },
   {
     "category": "History & Civilization",
@@ -849,7 +819,7 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "Document that began the modern United Nations",
-    "answer": "UN Charter"
+    "answer": "UNCharter"
   },
   {
     "category": "History & Civilization",
@@ -873,31 +843,13 @@
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "Famous Renaissance artist who painted the Mona Lisa",
-    "answer": "Da Vinci"
+    "answer": "DaVinci"
   },
   {
     "category": "History & Civilization",
     "difficulty": "medium",
     "question": "The ancient river associated with Chinese civilization",
-    "answer": "Yellow River"
-  },
-  {
-    "category": "History & Civilization",
-    "difficulty": "medium",
-    "question": "Placeholder question 48 in History & Civilization",
-    "answer": "Answer48"
-  },
-  {
-    "category": "History & Civilization",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in History & Civilization",
-    "answer": "Answer49"
-  },
-  {
-    "category": "History & Civilization",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in History & Civilization",
-    "answer": "Answer50"
+    "answer": "YellowRiver"
   },
   {
     "category": "Movies & Pop Culture",
@@ -927,7 +879,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A blockbuster space saga beginning with 'A New Hope'",
-    "answer": "Star Wars"
+    "answer": "StarWars"
   },
   {
     "category": "Movies & Pop Culture",
@@ -945,13 +897,13 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A famous archaeologist played by Harrison Ford",
-    "answer": "Indiana Jones"
+    "answer": "IndianaJones"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "The 'King of Pop'",
-    "answer": "Michael Jackson"
+    "answer": "MichaelJackson"
   },
   {
     "category": "Movies & Pop Culture",
@@ -963,25 +915,25 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Animated fish searching for his son",
-    "answer": "Finding Nemo"
+    "answer": "FindingNemo"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A superhero with a shield from Marvel",
-    "answer": "Captain America"
+    "answer": "CaptainAmerica"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Singer behind 'Like a Rolling Stone'",
-    "answer": "Bob Dylan"
+    "answer": "BobDylan"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A film series about a wizard named Frodo",
-    "answer": "Lord of the Rings"
+    "answer": "LordoftheRings"
   },
   {
     "category": "Movies & Pop Culture",
@@ -999,7 +951,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "1994 film about a man and his box of chocolates",
-    "answer": "Forrest Gump"
+    "answer": "ForrestGump"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1029,7 +981,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Superhero with an armored suit named Tony Stark",
-    "answer": "Iron Man"
+    "answer": "IronMan"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1053,7 +1005,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Animated toys that come to life",
-    "answer": "Toy Story"
+    "answer": "ToyStory"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1071,19 +1023,19 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Sci-fi film where humans are trapped in a matrix",
-    "answer": "The Matrix"
+    "answer": "TheMatrix"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A comedy about time-traveling DeLorean",
-    "answer": "Back to the Future"
+    "answer": "BacktotheFuture"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A fantasy series about dragons and thrones",
-    "answer": "Game of Thrones"
+    "answer": "GameofThrones"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1095,7 +1047,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Popular singing competition show",
-    "answer": "The Voice"
+    "answer": "TheVoice"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1107,13 +1059,13 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A long-running animated family in Springfield",
-    "answer": "The Simpsons"
+    "answer": "TheSimpsons"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Singer who led the band Queen",
-    "answer": "Freddie Mercury"
+    "answer": "FreddieMercury"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1131,7 +1083,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "Iconic dance movie starring John Travolta",
-    "answer": "Saturday Night Fever"
+    "answer": "SaturdayNightFever"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1143,13 +1095,13 @@
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A space opera with the character Luke Skywalker",
-    "answer": "Star Wars"
+    "answer": "StarWars"
   },
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
     "question": "A 1999 sci-fi film that questions reality",
-    "answer": "The Matrix"
+    "answer": "TheMatrix"
   },
   {
     "category": "Movies & Pop Culture",
@@ -1182,24 +1134,6 @@
     "answer": "Charles"
   },
   {
-    "category": "Movies & Pop Culture",
-    "difficulty": "medium",
-    "question": "Placeholder question 48 in Movies & Pop Culture",
-    "answer": "Answer48"
-  },
-  {
-    "category": "Movies & Pop Culture",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Movies & Pop Culture",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Movies & Pop Culture",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Movies & Pop Culture",
-    "answer": "Answer50"
-  },
-  {
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "Artist who painted the Mona Lisa",
@@ -1209,7 +1143,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "Novel about a whale and a captain named Ahab",
-    "answer": "Moby Dick"
+    "answer": "MobyDick"
   },
   {
     "category": "Art & Literature",
@@ -1227,7 +1161,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A famous Dutch painter: Vincent ___",
-    "answer": "Van Gogh"
+    "answer": "VanGogh"
   },
   {
     "category": "Art & Literature",
@@ -1263,13 +1197,13 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A short, funny poem by Dr. Seuss",
-    "answer": "Nursery Rhyme"
+    "answer": "NurseryRhyme"
   },
   {
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A book genre focused on future technology",
-    "answer": "Science Fiction"
+    "answer": "ScienceFiction"
   },
   {
     "category": "Art & Literature",
@@ -1287,19 +1221,19 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A famous children's author of 'Matilda'",
-    "answer": "Roald Dahl"
+    "answer": "RoaldDahl"
   },
   {
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "Novelist who created 'Sherlock Holmes'",
-    "answer": "Conan Doyle"
+    "answer": "ConanDoyle"
   },
   {
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "The study of visual art is called",
-    "answer": "Art History"
+    "answer": "ArtHistory"
   },
   {
     "category": "Art & Literature",
@@ -1323,7 +1257,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A genre focusing on mystery and crime",
-    "answer": "Detective Fiction"
+    "answer": "DetectiveFiction"
   },
   {
     "category": "Art & Literature",
@@ -1341,7 +1275,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A novel by Jane Austen featuring Elizabeth Bennet",
-    "answer": "Pride and Prejudice"
+    "answer": "PrideandPrejudice"
   },
   {
     "category": "Art & Literature",
@@ -1419,7 +1353,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A narrative told by the main character using 'I'",
-    "answer": "First Person"
+    "answer": "FirstPerson"
   },
   {
     "category": "Art & Literature",
@@ -1431,7 +1365,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A brief fictional story",
-    "answer": "Short Story"
+    "answer": "ShortStory"
   },
   {
     "category": "Art & Literature",
@@ -1455,7 +1389,7 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A famous novel by Gabriel García Márquez",
-    "answer": "One Hundred Years of Solitude"
+    "answer": "OneHundredYearsofSolitude"
   },
   {
     "category": "Art & Literature",
@@ -1473,31 +1407,13 @@
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "A famous American novelist of 'To Kill a Mockingbird'",
-    "answer": "Harper Lee"
+    "answer": "HarperLee"
   },
   {
     "category": "Art & Literature",
     "difficulty": "medium",
     "question": "The process of publishing printed works",
     "answer": "Printing"
-  },
-  {
-    "category": "Art & Literature",
-    "difficulty": "medium",
-    "question": "Placeholder question 48 in Art & Literature",
-    "answer": "Answer48"
-  },
-  {
-    "category": "Art & Literature",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Art & Literature",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Art & Literature",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Art & Literature",
-    "answer": "Answer50"
   },
   {
     "category": "Travel & Geography",
@@ -1521,7 +1437,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A famous tower in Pisa that leans",
-    "answer": "Leaning Tower"
+    "answer": "LeaningTower"
   },
   {
     "category": "Travel & Geography",
@@ -1545,19 +1461,19 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A large salt lake in Utah",
-    "answer": "Great Salt Lake"
+    "answer": "GreatSaltLake"
   },
   {
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "The city known as the Big Apple",
-    "answer": "New York"
+    "answer": "NewYork"
   },
   {
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A famous wall in China",
-    "answer": "Great Wall"
+    "answer": "GreatWall"
   },
   {
     "category": "Travel & Geography",
@@ -1593,7 +1509,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A famous canyon carved by the Colorado River",
-    "answer": "Grand Canyon"
+    "answer": "GrandCanyon"
   },
   {
     "category": "Travel & Geography",
@@ -1641,7 +1557,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A famous clock tower in London",
-    "answer": "Big Ben"
+    "answer": "BigBen"
   },
   {
     "category": "Travel & Geography",
@@ -1653,7 +1569,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A tiny European country inside Italy",
-    "answer": "San Marino"
+    "answer": "SanMarino"
   },
   {
     "category": "Travel & Geography",
@@ -1665,7 +1581,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "Island nation known for K-pop: ___",
-    "answer": "South Korea"
+    "answer": "SouthKorea"
   },
   {
     "category": "Travel & Geography",
@@ -1677,7 +1593,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A city that hosts the Carnival in Brazil",
-    "answer": "Rio de Janeiro"
+    "answer": "RiodeJaneiro"
   },
   {
     "category": "Travel & Geography",
@@ -1701,7 +1617,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A measurement of distance at sea",
-    "answer": "Nautical Mile"
+    "answer": "NauticalMile"
   },
   {
     "category": "Travel & Geography",
@@ -1767,7 +1683,7 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A sea bordered by Jordan, Israel and Egypt",
-    "answer": "Red Sea"
+    "answer": "RedSea"
   },
   {
     "category": "Travel & Geography",
@@ -1779,25 +1695,13 @@
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "A gulf bordering Saudi Arabia",
-    "answer": "Persian Gulf"
+    "answer": "PersianGulf"
   },
   {
     "category": "Travel & Geography",
     "difficulty": "medium",
     "question": "Capital city of Canada",
     "answer": "Ottawa"
-  },
-  {
-    "category": "Travel & Geography",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Travel & Geography",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Travel & Geography",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Travel & Geography",
-    "answer": "Answer50"
   },
   {
     "category": "Games & Technology",
@@ -1809,7 +1713,7 @@
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "Popular battle royale game with 'PUBG' initials",
-    "answer": "PlayerUnknowns Battlegrounds"
+    "answer": "PlayerUnknownsBattlegrounds"
   },
   {
     "category": "Games & Technology",
@@ -1881,7 +1785,7 @@
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "A system that runs applications on computers",
-    "answer": "Operating System"
+    "answer": "OperatingSystem"
   },
   {
     "category": "Games & Technology",
@@ -1899,7 +1803,7 @@
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "A form of artificial intelligence that learns",
-    "answer": "Machine Learning"
+    "answer": "MachineLearning"
   },
   {
     "category": "Games & Technology",
@@ -1911,7 +1815,7 @@
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "A handheld gaming device by Nintendo",
-    "answer": "Game Boy"
+    "answer": "GameBoy"
   },
   {
     "category": "Games & Technology",
@@ -1959,7 +1863,7 @@
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "A measure of processor speed",
-    "answer": "Clock Rate"
+    "answer": "ClockRate"
   },
   {
     "category": "Games & Technology",
@@ -2030,7 +1934,7 @@
   {
     "category": "Games & Technology",
     "difficulty": "medium",
-    "question": "A development environment abbreviation: IDE",
+    "question": "A development environment abbreviation: ___",
     "answer": "IDE"
   },
   {
@@ -2067,37 +1971,13 @@
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "A technology for immersive virtual worlds",
-    "answer": "Virtual Reality"
+    "answer": "VirtualReality"
   },
   {
     "category": "Games & Technology",
     "difficulty": "medium",
     "question": "An online digital storefront for PC games",
     "answer": "Steam"
-  },
-  {
-    "category": "Games & Technology",
-    "difficulty": "medium",
-    "question": "Placeholder question 47 in Games & Technology",
-    "answer": "Answer47"
-  },
-  {
-    "category": "Games & Technology",
-    "difficulty": "medium",
-    "question": "Placeholder question 48 in Games & Technology",
-    "answer": "Answer48"
-  },
-  {
-    "category": "Games & Technology",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Games & Technology",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Games & Technology",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Games & Technology",
-    "answer": "Answer50"
   },
   {
     "category": "Food & Culture",
@@ -2199,7 +2079,7 @@
     "category": "Food & Culture",
     "difficulty": "medium",
     "question": "A dessert of frozen flavored milk",
-    "answer": "Ice Cream"
+    "answer": "IceCream"
   },
   {
     "category": "Food & Culture",
@@ -2277,7 +2157,7 @@
     "category": "Food & Culture",
     "difficulty": "medium",
     "question": "A spicy Korean stew commonly with tofu",
-    "answer": "Kimchi Jjigae"
+    "answer": "KimchiJjigae"
   },
   {
     "category": "Food & Culture",
@@ -2361,7 +2241,7 @@
     "category": "Food & Culture",
     "difficulty": "medium",
     "question": "A Southeast Asian noodle salad",
-    "answer": "Pad Thai"
+    "answer": "PadThai"
   },
   {
     "category": "Food & Culture",
@@ -2380,24 +2260,6 @@
     "difficulty": "medium",
     "question": "A Spanish cold tomato and pepper dip",
     "answer": "Salmorejo"
-  },
-  {
-    "category": "Food & Culture",
-    "difficulty": "medium",
-    "question": "Placeholder question 48 in Food & Culture",
-    "answer": "Answer48"
-  },
-  {
-    "category": "Food & Culture",
-    "difficulty": "medium",
-    "question": "Placeholder question 49 in Food & Culture",
-    "answer": "Answer49"
-  },
-  {
-    "category": "Food & Culture",
-    "difficulty": "medium",
-    "question": "Placeholder question 50 in Food & Culture",
-    "answer": "Answer50"
   },
   {
     "category": "General Knowledge",
@@ -2421,7 +2283,7 @@
     "category": "General Knowledge",
     "difficulty": "medium",
     "question": "The largest mammal",
-    "answer": "Blue Whale"
+    "answer": "BlueWhale"
   },
   {
     "category": "General Knowledge",
@@ -2541,7 +2403,7 @@
     "category": "General Knowledge",
     "difficulty": "medium",
     "question": "A famous structure in India, a white marble mausoleum",
-    "answer": "Taj Mahal"
+    "answer": "TajMahal"
   },
   {
     "category": "General Knowledge",
@@ -2553,7 +2415,7 @@
     "category": "General Knowledge",
     "difficulty": "medium",
     "question": "The gas we breathe out that plants use",
-    "answer": "Carbon Dioxide"
+    "answer": "CarbonDioxide"
   },
   {
     "category": "General Knowledge",
@@ -2595,7 +2457,7 @@
     "category": "General Knowledge",
     "difficulty": "medium",
     "question": "A famous tower in Paris",
-    "answer": "Eiffel Tower"
+    "answer": "EiffelTower"
   },
   {
     "category": "General Knowledge",
@@ -2688,15 +2550,4797 @@
     "answer": "Degree"
   },
   {
-    "category": "General Knowledge",
+    "category": "Games & Technology",
     "difficulty": "medium",
-    "question": "Placeholder question 49 in General Knowledge",
-    "answer": "Answer49"
+    "question": "Popular battle royale game with building?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo mascot with red hat?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to type commands?",
+    "answer": "Keyboard"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Operating system by Microsoft?",
+    "answer": "Windows"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Sony handheld console?",
+    "answer": "PSP"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous first-person shooter series?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to move cursor on screen?",
+    "answer": "Mouse"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Online multiplayer sandbox game?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Console with controller called DualShock?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Platform to download apps on iPhone?",
+    "answer": "AppStore"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous Nintendo handheld console?",
+    "answer": "GameBoy"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular puzzle game with colored blocks?",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character who fights in Mushroom Kingdom?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Virtual reality headset brand?",
+    "answer": "Oculus"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Iconic Sega blue hedgehog?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to store digital data?",
+    "answer": "HardDrive"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Legendary RPG series by Nintendo?",
+    "answer": "Zelda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Massive online game, characters and quests?",
+    "answer": "WorldOfWar"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular mobile strategy game by Supercell?",
+    "answer": "ClashRoyale"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous simulation game with life control?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game character with green hat and sword?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind Xbox?",
+    "answer": "Microsoft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Nintendo?",
+    "answer": "Switch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online battle arena game?",
+    "answer": "LoL"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to print documents?",
+    "answer": "Printer"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Handheld gaming device by Sony?",
+    "answer": "PSP"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game character in Mushroom Kingdom?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous strategy game with tiles and cities?",
+    "answer": "Civ"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Computer hardware used to display images?",
+    "answer": "Monitor"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Technology to store digital photos?",
+    "answer": "SDCard"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous racing game franchise by Nintendo?",
+    "answer": "MarioKart"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind PlayStation?",
+    "answer": "Sony"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular game about city building?",
+    "answer": "SimCity"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portals and puzzle solving?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character with green tunic and sword?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company known for Windows OS?",
+    "answer": "Microsoft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "First console released by Nintendo?",
+    "answer": "NES"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous multiplayer shooter series?",
+    "answer": "CallOfDuty"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to store software?",
+    "answer": "FlashDrive"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous platform game by Nintendo?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional world in Legend of Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular building game with blocks?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo’s portable console?",
+    "answer": "GameBoy"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular hero in Super Mario?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular fighting game by Nintendo?",
+    "answer": "Smash"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to take photos?",
+    "answer": "Camera"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with trainers and monsters?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company making iPhone and Mac?",
+    "answer": "Apple"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular battle royale game, free?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with motion controls?",
+    "answer": "Wii"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous sniper game series?",
+    "answer": "SniperElite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character in Sonic the Hedgehog?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous first-person shooter franchise?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to browse internet?",
+    "answer": "Browser"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMORPG by Blizzard?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind Android OS?",
+    "answer": "Google"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular creature collecting game?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Microsoft?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Iconic gaming character in red?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about a blocky world?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular game about survival?",
+    "answer": "Rust"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous puzzle game, colored blocks?",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with zombies?",
+    "answer": "Resident"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo’s pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo character with green hat?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about kart racing?",
+    "answer": "MarioKart"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you catch creatures?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular console by Sony?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portal gun?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMO game?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online strategy game?",
+    "answer": "ClashRoyale"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous console with blue light?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Handheld Nintendo console?",
+    "answer": "DS"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular open world game by Rockstar?",
+    "answer": "GTA"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character in Super Smash Bros?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous battle royale game?",
+    "answer": "PUBG"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device for playing VR games?",
+    "answer": "Oculus"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game company making Mario?",
+    "answer": "Nintendo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular game franchise with shooters?",
+    "answer": "CallOfDuty"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you farm and build?",
+    "answer": "Stardew"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous stealth game series?",
+    "answer": "MetalGear"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with crafting and exploration?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional hero saving princess?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional island in Mario?",
+    "answer": "Delfino"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional kingdom in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional planet in StarCraft?",
+    "answer": "Char"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Batman games?",
+    "answer": "Gotham"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous Nintendo plumber?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous blue hedgehog?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo princess often rescued?",
+    "answer": "Peach"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with Link?",
+    "answer": "Zelda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Handheld console by Nintendo?",
+    "answer": "GameBoy"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind PlayStation?",
+    "answer": "Sony"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about building blocks?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with colored falling blocks?",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Online battle royale by Epic?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMORPG by Blizzard?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Microsoft gaming console?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Nintendo?",
+    "answer": "Switch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "VR headset by Oculus?",
+    "answer": "Oculus"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with survival and crafting?",
+    "answer": "Rust"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character in Mushroom Kingdom?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about city building?",
+    "answer": "SimCity"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to move cursor?",
+    "answer": "Mouse"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous Nintendo racing game?",
+    "answer": "MarioKart"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Console by Sony with DualShock?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online strategy game?",
+    "answer": "LoL"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with monsters to catch?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portal gun?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous sniper series?",
+    "answer": "SniperElite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to type?",
+    "answer": "Keyboard"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company making iPhone?",
+    "answer": "Apple"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMO game?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with motion controls?",
+    "answer": "Wii"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with city exploration?",
+    "answer": "GTA"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular battle royale game?",
+    "answer": "PUBG"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game character with green hat?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Online multiplayer game?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company making Mario?",
+    "answer": "Nintendo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with zombie survival?",
+    "answer": "Resident"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to print documents?",
+    "answer": "Printer"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous fighting game by Nintendo?",
+    "answer": "Smash"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo console released 1985?",
+    "answer": "NES"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with building and survival?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Iconic gaming console color?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you train creatures?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional world in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with battle pass system?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular simulation game about life?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular FPS by Microsoft?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Console with dual analog sticks?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular strategy mobile game?",
+    "answer": "ClashRoyale"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with stealth missions?",
+    "answer": "MetalGear"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game character fighting in Smash?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about kingdom building?",
+    "answer": "Civ"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Virtual reality headset?",
+    "answer": "Oculus"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional island in Mario?",
+    "answer": "Delfino"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game company behind LoL?",
+    "answer": "Riot"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to store data?",
+    "answer": "FlashDrive"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to capture images?",
+    "answer": "Camera"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series of fighting and shooters?",
+    "answer": "CallOfDuty"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game franchise with open world?",
+    "answer": "GTA"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with exclusive games?",
+    "answer": "Switch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional city in Batman games?",
+    "answer": "Gotham"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional kingdom in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional underwater city?",
+    "answer": "Rapture"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character in Nintendo kart racing?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular survival building game?",
+    "answer": "Rust"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional hero saving princess?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional planet in StarCraft?",
+    "answer": "Char"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Microsoft?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with exploration and crafting?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with blue hedgehog?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portals and puzzles?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular simulation game?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about collecting creatures?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular FPS by Blizzard?",
+    "answer": "Overwatch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you farm and build?",
+    "answer": "Stardew"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional island in Moana?",
+    "answer": "Motunui"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Character in Super Smash Bros?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Marvel universe?",
+    "answer": "Wakanda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional continent in Avatar?",
+    "answer": "Pandora"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional underwater city in Bioshock?",
+    "answer": "Rapture"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional kingdom in Zelda series?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous first-person shooter series?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular sandbox game with blocks?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Iconic Nintendo plumber?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Blue hedgehog by Sega?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMORPG by Blizzard?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Microsoft?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Console by Sony with exclusive games?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo portable console?",
+    "answer": "GameBoy"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous puzzle game with blocks?",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Online battle royale by Epic?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular life simulation game?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous stealth series?",
+    "answer": "MetalGear"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you train monsters?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional world in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous shooter game series?",
+    "answer": "CallOfDuty"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous kart racing game?",
+    "answer": "MarioKart"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with motion controls?",
+    "answer": "Wii"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional hero saving princess?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to type commands?",
+    "answer": "Keyboard"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device used to move cursor?",
+    "answer": "Mouse"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to capture images?",
+    "answer": "Camera"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Device to print documents?",
+    "answer": "Printer"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular open world game?",
+    "answer": "GTA"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular survival crafting game?",
+    "answer": "Rust"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portal gun?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online strategy mobile game?",
+    "answer": "ClashRoyale"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "VR headset by Oculus?",
+    "answer": "Oculus"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with dual analog sticks?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about city building?",
+    "answer": "SimCity"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo console released 1985?",
+    "answer": "NES"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with zombies?",
+    "answer": "Resident"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Online multiplayer game?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind Mario?",
+    "answer": "Nintendo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company making iPhone and Mac?",
+    "answer": "Apple"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind PlayStation?",
+    "answer": "Sony"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind Xbox?",
+    "answer": "Microsoft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous MMO by Blizzard?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo princess often rescued?",
+    "answer": "Peach"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional underwater city?",
+    "answer": "Rapture"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional city in Batman games?",
+    "answer": "Gotham"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional continent in Avatar?",
+    "answer": "Pandora"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional island in Mario?",
+    "answer": "Delfino"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular FPS by Microsoft?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo green hat hero?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with battle pass?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you farm and build?",
+    "answer": "Stardew"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional kingdom in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular life simulation game?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with stealth missions?",
+    "answer": "MetalGear"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with city exploration?",
+    "answer": "GTA"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with crafting and exploration?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series of fighting and shooters?",
+    "answer": "CallOfDuty"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMO game?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game character with green hat?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you train creatures?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online strategy game?",
+    "answer": "LoL"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular multiplayer FPS?",
+    "answer": "Overwatch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular racing game by Nintendo?",
+    "answer": "MarioKart"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo plumber hero?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Iconic Sega hedgehog?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portal gun?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional hero saving princess?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with motion controls?",
+    "answer": "Wii"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with dual analog sticks?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with city building?",
+    "answer": "SimCity"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console released by Nintendo 1985?",
+    "answer": "NES"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional island in Moana?",
+    "answer": "Motunui"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Marvel universe?",
+    "answer": "Wakanda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional continent in Avatar?",
+    "answer": "Pandora"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional underwater city in Bioshock?",
+    "answer": "Rapture"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about survival on an island?",
+    "answer": "Rust"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous battle royale game?",
+    "answer": "PUBG"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous multiplayer online arena?",
+    "answer": "LoL"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous first-person shooter?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Virtual reality headset?",
+    "answer": "Oculus"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous puzzle game with blocks?",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about building and exploration?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo plumber hero?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Blue hedgehog by Sega?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo princess often rescued?",
+    "answer": "Peach"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with Link?",
+    "answer": "Zelda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional world in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with portal gun?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional hero saving princess?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with motion controls?",
+    "answer": "Wii"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console with dual analog sticks?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about city building?",
+    "answer": "SimCity"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console released by Nintendo 1985?",
+    "answer": "NES"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular MMO game?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you train monsters?",
+    "answer": "Pokemon"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular life simulation game?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with stealth missions?",
+    "answer": "MetalGear"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with city exploration?",
+    "answer": "GTA"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series of fighting and shooters?",
+    "answer": "CallOfDuty"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online strategy mobile game?",
+    "answer": "ClashRoyale"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Microsoft?",
+    "answer": "Xbox"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game with battle pass?",
+    "answer": "Fortnite"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional city in Batman games?",
+    "answer": "Gotham"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional continent in Avatar?",
+    "answer": "Pandora"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Fictional island in Mario?",
+    "answer": "Delfino"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular FPS by Microsoft?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Nintendo green hat hero?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company making iPhone and Mac?",
+    "answer": "Apple"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind PlayStation?",
+    "answer": "Sony"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Company behind Xbox?",
+    "answer": "Microsoft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Famous MMO by Blizzard?",
+    "answer": "WoW"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game console by Nintendo?",
+    "answer": "Switch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular sandbox game?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game about survival on island?",
+    "answer": "Rust"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular multiplayer FPS?",
+    "answer": "Overwatch"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game series with zombies?",
+    "answer": "Resident"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Popular online strategy game?",
+    "answer": "LoL"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "medium",
+    "question": "Game where you farm and build?",
+    "answer": "Stardew"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional island in Moana?",
+    "answer": "Motunui"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Marvel universe?",
+    "answer": "Wakanda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional continent in Avatar?",
+    "answer": "Pandora"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional underwater city in Bioshock?",
+    "answer": "Rapture"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional kingdom in Zelda series?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Nintendo princess often rescued?",
+    "answer": "Peach"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Blue hedgehog by Sega?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Nintendo plumber hero?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Game character with green hat?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional hero saving princess?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Popular kart racing game?",
+    "answer": "MarioKart"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Game series with Link?",
+    "answer": "Zelda"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Game console with dual analog sticks?",
+    "answer": "PlayStation"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Famous puzzle game with blocks?",
+    "answer": "Tetris"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Popular simulation game about life?",
+    "answer": "Sims"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Game with portal gun?",
+    "answer": "Portal"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional world in Zelda?",
+    "answer": "Hyrule"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Famous battle royale game?",
+    "answer": "PUBG"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Popular sandbox game with blocks?",
+    "answer": "Minecraft"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Popular FPS by Microsoft?",
+    "answer": "Halo"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Nintendo pink puffball?",
+    "answer": "Kirby"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Nintendo plumber hero?",
+    "answer": "Mario"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Blue hedgehog by Sega?",
+    "answer": "Sonic"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Nintendo green hat hero?",
+    "answer": "Link"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional underwater city?",
+    "answer": "Rapture"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional island in Mario?",
+    "answer": "Delfino"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Batman games?",
+    "answer": "Gotham"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional continent in Avatar?",
+    "answer": "Pandora"
+  },
+  {
+    "category": "Games & Technology",
+    "difficulty": "fun",
+    "question": "Fictional city in Overwatch?",
+    "answer": "KingSlade"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dish with cheese and tomato?",
+    "answer": "Pizza"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French pastry, often crescent-shaped?",
+    "answer": "Croissant"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese dish with raw fish?",
+    "answer": "Sushi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Traditional Indian bread?",
+    "answer": "Naan"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican tortilla filled with meat?",
+    "answer": "Taco"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian pasta with meat sauce?",
+    "answer": "Lasagna"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French dish of snails?",
+    "answer": "Escargot"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Spanish rice dish with seafood?",
+    "answer": "Paella"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dessert with coffee and mascarpone?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese noodle soup?",
+    "answer": "Ramen"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Greek cheese salad?",
+    "answer": "Feta"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "German sausage?",
+    "answer": "Bratwurst"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American sandwich with peanut butter and jelly?",
+    "answer": "PBJ"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Traditional Russian soup with beetroot?",
+    "answer": "Borscht"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian flatbread pizza variant?",
+    "answer": "Focaccia"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Famous Belgian chocolate treat?",
+    "answer": "Praline"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern chickpea dip?",
+    "answer": "Hummus"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Traditional Japanese rice ball?",
+    "answer": "Onigiri"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French custard dessert?",
+    "answer": "CremeBrulee"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Korean fermented cabbage?",
+    "answer": "Kimchi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian rice dish with spices and meat?",
+    "answer": "Biryani"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Chinese stir-fried noodles?",
+    "answer": "Chowmein"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern meat skewers?",
+    "answer": "Kebab"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian thin pizza style?",
+    "answer": "Neapolitan"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French onion soup topped with cheese?",
+    "answer": "Soupe"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican dessert with caramelized milk?",
+    "answer": "Dulce"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American breakfast with fried batter?",
+    "answer": "Pancake"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian spiced yogurt drink?",
+    "answer": "Lassi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese rice vinegar sushi roll?",
+    "answer": "Maki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Spanish omelette with potatoes?",
+    "answer": "Tortilla"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian meat and cheese sandwich?",
+    "answer": "Panini"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern sweet pastry with nuts?",
+    "answer": "Baklava"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian rice dish cooked with broth?",
+    "answer": "Risotto"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French beef stew?",
+    "answer": "BoeufBourguignon"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American grilled sandwich with cheese?",
+    "answer": "GrilledCheese"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "German potato dumplings?",
+    "answer": "Knodel"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese skewered chicken?",
+    "answer": "Yakitori"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican stuffed tortilla?",
+    "answer": "Burrito"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian stuffed pasta?",
+    "answer": "Ravioli"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French thin pancake?",
+    "answer": "Crepe"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Turkish yogurt and cucumber dip?",
+    "answer": "Tzatziki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian cured meat?",
+    "answer": "Prosciutto"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American baked dessert with apples?",
+    "answer": "ApplePie"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese savory pancake?",
+    "answer": "Okonomiyaki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French layered dessert with puff pastry?",
+    "answer": "MilleFeuille"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian lentil soup?",
+    "answer": "Dal"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Korean BBQ beef dish?",
+    "answer": "Bulgogi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Chinese dumplings?",
+    "answer": "Jiaozi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Spanish cold tomato soup?",
+    "answer": "Gazpacho"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian creamy dessert with coffee?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern flatbread?",
+    "answer": "Pita"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American sweet corn snack?",
+    "answer": "Popcorn"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French buttery pastry?",
+    "answer": "Croissant"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese noodle soup with pork?",
+    "answer": "Ramen"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican sauce made with chocolate?",
+    "answer": "Mole"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Greek yogurt with honey?",
+    "answer": "Yogurt"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian bread cooked in tandoor?",
+    "answer": "Naan"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Turkish dessert made with syrup?",
+    "answer": "Baklava"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian pizza topped with basil?",
+    "answer": "Margherita"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American doughnut with glaze?",
+    "answer": "Donut"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese pickled vegetables?",
+    "answer": "Tsukemono"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French dessert with caramelized top?",
+    "answer": "CremeBrulee"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Chinese stir-fried rice?",
+    "answer": "FriedRice"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern dessert with syrup?",
+    "answer": "Baklava"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian pasta with pesto?",
+    "answer": "PestoPasta"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese grilled skewers?",
+    "answer": "Yakitori"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican rice with beans?",
+    "answer": "Burrito"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French cheese?",
+    "answer": "Brie"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American fried chicken?",
+    "answer": "FriedChick"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Greek stuffed grape leaves?",
+    "answer": "Dolma"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dessert with sponge and cream?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian snack made with chickpea flour?",
+    "answer": "Pakora"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese rice wrapped in seaweed?",
+    "answer": "Onigiri"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern stew with meat and spices?",
+    "answer": "Tagine"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American sandwich with turkey?",
+    "answer": "TurkeySand"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French dessert of layered pastry?",
+    "answer": "MilleFeuille"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Chinese noodle soup?",
+    "answer": "Ramen"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian cured sausage?",
+    "answer": "Salami"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Korean fermented cabbage?",
+    "answer": "Kimchi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Turkish yogurt drink?",
+    "answer": "Ayran"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican stuffed corn dough?",
+    "answer": "Tamale"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dessert with cream and chocolate?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Cartoon spinach eater?",
+    "answer": "Popeye"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Fictional chocolate factory?",
+    "answer": "Wonka"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Famous green fruit?",
+    "answer": "Avocado"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Fruit often mistaken for vegetable?",
+    "answer": "Tomato"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Fictional candy from movies?",
+    "answer": "Wonka"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian thin crust pizza?",
+    "answer": "Margherita"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French sweet custard tart?",
+    "answer": "TarteTatin"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese soy-marinated dish?",
+    "answer": "Teriyaki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican stuffed tortilla?",
+    "answer": "Burrito"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian spiced rice?",
+    "answer": "Biryani"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern nut pastry?",
+    "answer": "Baklava"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American sandwich with grilled cheese?",
+    "answer": "GrilledChese"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French layered dessert?",
+    "answer": "MilleFeuille"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "German sausage often grilled?",
+    "answer": "Bratwurst"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Chinese stir-fried noodles?",
+    "answer": "Chowmein"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian rice dish with broth?",
+    "answer": "Risotto"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese fermented soybeans?",
+    "answer": "Nattoo"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French onion soup with cheese?",
+    "answer": "Soupe"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American dessert with apples?",
+    "answer": "ApplePie"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian spiced yogurt drink?",
+    "answer": "Lassi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese rice wrapped in seaweed?",
+    "answer": "Onigiri"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian stuffed pasta?",
+    "answer": "Ravioli"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Turkish yogurt cucumber dip?",
+    "answer": "Tzatziki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French pastry often crescent-shaped?",
+    "answer": "Croissant"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese noodle soup?",
+    "answer": "Ramen"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dessert with coffee and cream?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Spanish rice dish with seafood?",
+    "answer": "Paella"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian cured meat?",
+    "answer": "Prosciutto"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American sweet corn snack?",
+    "answer": "Popcorn"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern chickpea dip?",
+    "answer": "Hummus"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French custard dessert?",
+    "answer": "CremeBrulee"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "German potato dumplings?",
+    "answer": "Knodel"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese grilled chicken skewers?",
+    "answer": "Yakitori"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian flatbread pizza variant?",
+    "answer": "Focaccia"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American fried chicken?",
+    "answer": "FriedChick"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican sauce with chocolate?",
+    "answer": "Mole"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian pasta with meat sauce?",
+    "answer": "Lasagna"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese savory pancake?",
+    "answer": "Okonomiyaki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern meat skewers?",
+    "answer": "Kebab"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Greek cheese salad?",
+    "answer": "Feta"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French beef stew?",
+    "answer": "BoeufBourguignon"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian pizza topped with basil?",
+    "answer": "Margherita"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Turkish dessert made with syrup?",
+    "answer": "Baklava"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian lentil soup?",
+    "answer": "Dal"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Korean BBQ beef dish?",
+    "answer": "Bulgogi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Chinese dumplings?",
+    "answer": "Jiaozi"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Spanish cold tomato soup?",
+    "answer": "Gazpacho"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian creamy dessert with coffee?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern flatbread?",
+    "answer": "Pita"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American breakfast with fried batter?",
+    "answer": "Pancake"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian meat and cheese sandwich?",
+    "answer": "Panini"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Famous Belgian chocolate treat?",
+    "answer": "Praline"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Traditional Russian beet soup?",
+    "answer": "Borscht"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American doughnut with glaze?",
+    "answer": "Donut"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Greek yogurt with honey?",
+    "answer": "Yogurt"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Indian bread cooked in tandoor?",
+    "answer": "Naan"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American sandwich with peanut butter and jelly?",
+    "answer": "PBJ"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese rice vinegar sushi roll?",
+    "answer": "Maki"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican tortilla filled with meat?",
+    "answer": "Taco"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian dessert with sponge and cream?",
+    "answer": "Tiramisu"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Middle Eastern dessert with syrup?",
+    "answer": "Baklava"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American grilled sandwich with cheese?",
+    "answer": "GrilledCheese"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese pickled vegetables?",
+    "answer": "Tsukemono"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian rice dish cooked with broth?",
+    "answer": "Risotto"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French thin pancake?",
+    "answer": "Crepe"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian pasta with pesto?",
+    "answer": "PestoPasta"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese skewered chicken?",
+    "answer": "Yakitori"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "American baked dessert with apples?",
+    "answer": "ApplePie"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian stuffed pasta?",
+    "answer": "Ravioli"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "French buttery pastry?",
+    "answer": "Croissant"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Italian cured sausage?",
+    "answer": "Salami"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Japanese fermented soybeans?",
+    "answer": "Nattoo"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Turkish yogurt drink?",
+    "answer": "Ayran"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "medium",
+    "question": "Mexican stuffed corn dough?",
+    "answer": "Tamale"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Cartoon spinach eater?",
+    "answer": "Popeye"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Fictional chocolate factory?",
+    "answer": "Wonka"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Famous green fruit?",
+    "answer": "Avocado"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Fruit often mistaken for vegetable?",
+    "answer": "Tomato"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Fictional candy from movies?",
+    "answer": "Wonka"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Cartoon cat loving lasagna?",
+    "answer": "Garfield"
+  },
+  {
+    "category": "Food & Culture",
+    "difficulty": "fun",
+    "question": "Tiny green fruit, used in pies?",
+    "answer": "Lime"
   },
   {
     "category": "General Knowledge",
     "difficulty": "medium",
-    "question": "Placeholder question 50 in General Knowledge",
-    "answer": "Answer50"
+    "question": "Largest planet in the solar system?",
+    "answer": "Jupiter"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Author of 'Romeo and Juliet'?",
+    "answer": "Shakespeare"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest land animal?",
+    "answer": "Cheetah"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital city of France?",
+    "answer": "Paris"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Element with symbol O?",
+    "answer": "Oxygen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Longest river in the world?",
+    "answer": "Nile"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First president of USA?",
+    "answer": "Washington"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Hardest natural substance?",
+    "answer": "Diamond"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest ocean on Earth?",
+    "answer": "Pacific"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Lightest noble gas?",
+    "answer": "Helium"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Pythagoras is known for which field?",
+    "answer": "Math"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Hottest planet in our solar system?",
+    "answer": "Venus"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of Japan?",
+    "answer": "Yen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest prime number?",
+    "answer": "Two"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Instrument used to measure temperature?",
+    "answer": "Thermometer"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest bird in level flight?",
+    "answer": "Falcon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest mammal?",
+    "answer": "BlueWhale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Italy?",
+    "answer": "Rome"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Light travels at speed of?",
+    "answer": "LightSpeed"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Gas essential for breathing?",
+    "answer": "Oxygen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary language in Brazil?",
+    "answer": "Portuguese"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of continents?",
+    "answer": "Seven"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest desert in the world?",
+    "answer": "Sahara"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Human body organ for pumping blood?",
+    "answer": "Heart"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest bone in the human body?",
+    "answer": "Stapes"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "H2O is chemical formula for?",
+    "answer": "Water"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First element on the periodic table?",
+    "answer": "Hydrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Heaviest naturally occurring element?",
+    "answer": "Uranium"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of USA?",
+    "answer": "Dollar"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous physicist with theory of relativity?",
+    "answer": "Einstein"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest continent?",
+    "answer": "Asia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Planet known as Red Planet?",
+    "answer": "Mars"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Country famous for tulips?",
+    "answer": "Netherlands"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Germany?",
+    "answer": "Berlin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano?",
+    "answer": "MaunaLoa"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest country in the world?",
+    "answer": "Vatican"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest aquatic animal?",
+    "answer": "Sailfish"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Gas that makes up most of air?",
+    "answer": "Nitrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First human in space?",
+    "answer": "Gagarin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest island?",
+    "answer": "Greenland"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Deepest ocean trench?",
+    "answer": "Mariana"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Oldest known civilization?",
+    "answer": "Sumer"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of telephone?",
+    "answer": "Bell"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Planet with rings?",
+    "answer": "Saturn"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary gas in sun?",
+    "answer": "Hydrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Tallest mountain?",
+    "answer": "Everest"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest predator on land?",
+    "answer": "PolarBear"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous explorer of America 1492?",
+    "answer": "Columbus"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest organ in human body?",
+    "answer": "Skin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of light?",
+    "answer": "RGB"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Canada?",
+    "answer": "Ottawa"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous scientist of evolution?",
+    "answer": "Darwin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest bird?",
+    "answer": "Ostrich"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary metal in bronze?",
+    "answer": "Copper"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Instrument for measuring pressure?",
+    "answer": "Barometer"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of electrical current?",
+    "answer": "Ampere"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First man on the moon?",
+    "answer": "Armstrong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Speed unit for light?",
+    "answer": "C"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Country famous for pyramids?",
+    "answer": "Egypt"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous physicist, gravity?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Planet closest to Sun?",
+    "answer": "Mercury"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest fish?",
+    "answer": "WhaleShark"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Most spoken language?",
+    "answer": "Mandarin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of light bulb?",
+    "answer": "Edison"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Country known for sushi?",
+    "answer": "Japan"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous Greek philosopher?",
+    "answer": "Plato"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First artificial satellite?",
+    "answer": "Sputnik"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest mammal in ocean?",
+    "answer": "BlueWhale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of force?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Hottest star type?",
+    "answer": "OStar"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest terrestrial animal?",
+    "answer": "Cheetah"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of printing press?",
+    "answer": "Gutenberg"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest moon of Jupiter?",
+    "answer": "Ganymede"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for gold?",
+    "answer": "Au"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First emperor of China?",
+    "answer": "QinShiHuang"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of temperature?",
+    "answer": "Celsius"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Longest river in Asia?",
+    "answer": "Yangtze"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano in solar system?",
+    "answer": "OlympusMons"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous clock tower in London?",
+    "answer": "BigBen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of pigment?",
+    "answer": "CMY"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest continent?",
+    "answer": "Australia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Australia?",
+    "answer": "Canberra"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous wizard school?",
+    "answer": "Hogwarts"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fictional detective from London?",
+    "answer": "Sherlock"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Famous cartoon mouse?",
+    "answer": "Mickey"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional superhero with web?",
+    "answer": "Spiderman"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional giant ape?",
+    "answer": "KingKong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional boy wizard?",
+    "answer": "HarryPotter"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Cartoon yellow sponge?",
+    "answer": "SpongeBob"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Russia?",
+    "answer": "Moscow"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest marine animal?",
+    "answer": "Sailfish"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest planet in solar system?",
+    "answer": "Mercury"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Longest reigning British monarch?",
+    "answer": "Elizabeth"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of states in USA?",
+    "answer": "Fifty"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of UK?",
+    "answer": "Pound"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous French military leader?",
+    "answer": "Napoleon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Canada?",
+    "answer": "Ottawa"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First element in periodic table?",
+    "answer": "Hydrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of telephone?",
+    "answer": "Bell"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary gas in air?",
+    "answer": "Nitrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous Italian explorer?",
+    "answer": "Columbus"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest reptile?",
+    "answer": "Crocodile"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of electric current?",
+    "answer": "Ampere"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Country of the Eiffel Tower?",
+    "answer": "France"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary language of Brazil?",
+    "answer": "Portuguese"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest desert in the world?",
+    "answer": "Sahara"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous ancient wonder in Egypt?",
+    "answer": "Pyramid"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Longest river in Europe?",
+    "answer": "Volga"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of Japan?",
+    "answer": "Yen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Country of the Taj Mahal?",
+    "answer": "India"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First man on the moon?",
+    "answer": "Armstrong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest mammal on Earth?",
+    "answer": "BlueWhale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for iron?",
+    "answer": "Fe"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Germany?",
+    "answer": "Berlin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest bird?",
+    "answer": "Falcon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of light?",
+    "answer": "RGB"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Italy?",
+    "answer": "Rome"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First artificial satellite?",
+    "answer": "Sputnik"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest continent?",
+    "answer": "Asia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest bone in body?",
+    "answer": "Stapes"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous scientist for evolution?",
+    "answer": "Darwin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Planet with rings?",
+    "answer": "Saturn"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for gold?",
+    "answer": "Au"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Tallest mountain?",
+    "answer": "Everest"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest predator on land?",
+    "answer": "PolarBear"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Oldest known civilization?",
+    "answer": "Sumer"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest island?",
+    "answer": "Greenland"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of China?",
+    "answer": "Beijing"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First emperor of China?",
+    "answer": "QinShiHuang"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of force?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fictional detective from London?",
+    "answer": "Sherlock"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous clock tower in London?",
+    "answer": "BigBen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of temperature?",
+    "answer": "Celsius"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano in solar system?",
+    "answer": "OlympusMons"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest land animal?",
+    "answer": "Cheetah"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of light bulb?",
+    "answer": "Edison"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest moon of Jupiter?",
+    "answer": "Ganymede"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Gas essential for breathing?",
+    "answer": "Oxygen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Deepest ocean trench?",
+    "answer": "Mariana"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest continent?",
+    "answer": "Australia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Australia?",
+    "answer": "Canberra"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Hottest star type?",
+    "answer": "OStar"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest fish?",
+    "answer": "WhaleShark"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Most spoken language?",
+    "answer": "Mandarin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fictional wizard school?",
+    "answer": "Hogwarts"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Light travels at speed of?",
+    "answer": "LightSpeed"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest ocean on Earth?",
+    "answer": "Pacific"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary metal in bronze?",
+    "answer": "Copper"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest bird in level flight?",
+    "answer": "Falcon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of electrical current?",
+    "answer": "Ampere"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of pigment?",
+    "answer": "CMY"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest organ in human body?",
+    "answer": "Skin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of continents?",
+    "answer": "Seven"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Heaviest naturally occurring element?",
+    "answer": "Uranium"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First human in space?",
+    "answer": "Gagarin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest mammal?",
+    "answer": "BlueWhale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Japan?",
+    "answer": "Tokyo"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First president of USA?",
+    "answer": "Washington"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous physicist with theory of relativity?",
+    "answer": "Einstein"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of printing press?",
+    "answer": "Gutenberg"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Planet known as Red Planet?",
+    "answer": "Mars"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for oxygen?",
+    "answer": "Oxygen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Egypt?",
+    "answer": "Cairo"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest predator in ocean?",
+    "answer": "Orca"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of bones in human body?",
+    "answer": "TwoHundredSix"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Famous cartoon mouse?",
+    "answer": "Mickey"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional superhero with web?",
+    "answer": "Spiderman"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional giant ape?",
+    "answer": "KingKong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional boy wizard?",
+    "answer": "HarryPotter"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Cartoon yellow sponge?",
+    "answer": "SpongeBob"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Spain?",
+    "answer": "Madrid"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest lake in Africa?",
+    "answer": "Victoria"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous Dutch painter, 'Starry Night'?",
+    "answer": "VanGogh"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for sodium?",
+    "answer": "Na"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest planet with rings?",
+    "answer": "Saturn"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of India?",
+    "answer": "NewDelhi"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest animal in water?",
+    "answer": "Sailfish"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary ingredient in guacamole?",
+    "answer": "Avocado"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of planets in solar system?",
+    "answer": "Eight"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Longest river in South America?",
+    "answer": "Amazon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of Germany?",
+    "answer": "Euro"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest desert outside Antarctica?",
+    "answer": "Sahara"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous scientist for laws of motion?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for carbon?",
+    "answer": "C"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Turkey?",
+    "answer": "Ankara"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest marine mammal?",
+    "answer": "Dolphin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Tallest building in the world?",
+    "answer": "BurjKhalifa"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Most spoken language in Europe?",
+    "answer": "English"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest country by area?",
+    "answer": "Russia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary gas in stars?",
+    "answer": "Hydrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of South Korea?",
+    "answer": "Seoul"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Instrument for measuring humidity?",
+    "answer": "Hygrometer"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous physicist, quantum theory?",
+    "answer": "Planck"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest city in USA?",
+    "answer": "NewYork"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous painting 'Mona Lisa'?",
+    "answer": "DaVinci"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Planet with highest temperature?",
+    "answer": "Venus"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Brazil?",
+    "answer": "Brasilia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Deepest lake in the world?",
+    "answer": "Baikal"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous scientist, evolution theory?",
+    "answer": "Darwin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for silver?",
+    "answer": "Ag"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano on Earth?",
+    "answer": "MaunaLoa"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Egypt?",
+    "answer": "Cairo"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest moon of Saturn?",
+    "answer": "Titan"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of airplane?",
+    "answer": "Wright"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest land animal?",
+    "answer": "Cheetah"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Italy?",
+    "answer": "Rome"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest mammal in ocean?",
+    "answer": "BlueWhale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for potassium?",
+    "answer": "K"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest river in Asia?",
+    "answer": "Yangtze"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary component of air?",
+    "answer": "Nitrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Norway?",
+    "answer": "Oslo"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Most populated country?",
+    "answer": "China"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest city in Africa?",
+    "answer": "Lagos"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous scientist, relativity?",
+    "answer": "Einstein"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First man on moon?",
+    "answer": "Armstrong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Tallest mountain?",
+    "answer": "Everest"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of Russia?",
+    "answer": "Ruble"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest bird in level flight?",
+    "answer": "Falcon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of France?",
+    "answer": "Paris"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest desert?",
+    "answer": "Sahara"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest organ in human body?",
+    "answer": "Skin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of light?",
+    "answer": "RGB"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for iron?",
+    "answer": "Fe"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Deepest ocean trench?",
+    "answer": "Mariana"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of electric current?",
+    "answer": "Ampere"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest fish?",
+    "answer": "Sailfish"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest predator on land?",
+    "answer": "PolarBear"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Japan?",
+    "answer": "Tokyo"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First president of USA?",
+    "answer": "Washington"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest island?",
+    "answer": "Greenland"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of force?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for gold?",
+    "answer": "Au"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest continent?",
+    "answer": "Australia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous clock tower in London?",
+    "answer": "BigBen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary metal in bronze?",
+    "answer": "Copper"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of pigment?",
+    "answer": "CMY"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First artificial satellite?",
+    "answer": "Sputnik"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of bones in human body?",
+    "answer": "TwoHundredSix"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest ocean?",
+    "answer": "Pacific"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of China?",
+    "answer": "Beijing"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano in solar system?",
+    "answer": "OlympusMons"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Famous cartoon mouse?",
+    "answer": "Mickey"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional superhero with web?",
+    "answer": "Spiderman"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional giant ape?",
+    "answer": "KingKong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional boy wizard?",
+    "answer": "HarryPotter"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Cartoon yellow sponge?",
+    "answer": "SpongeBob"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Argentina?",
+    "answer": "BuenosAires"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest island in Indonesia?",
+    "answer": "Sumatra"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous physicist, quantum mechanics?",
+    "answer": "Planck"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Saudi Arabia?",
+    "answer": "Riyadh"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest terrestrial animal?",
+    "answer": "Cheetah"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Currency of India?",
+    "answer": "Rupee"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest lake in North America?",
+    "answer": "Superior"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of telephone?",
+    "answer": "Bell"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest desert in Asia?",
+    "answer": "Gobi"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Thailand?",
+    "answer": "Bangkok"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest bird?",
+    "answer": "Falcon"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for silver?",
+    "answer": "Ag"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano on Earth?",
+    "answer": "MaunaLoa"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Kenya?",
+    "answer": "Nairobi"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary gas in sun?",
+    "answer": "Hydrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Mexico?",
+    "answer": "MexicoCity"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest river in North America?",
+    "answer": "Mississippi"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for hydrogen?",
+    "answer": "H"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest reptile?",
+    "answer": "Crocodile"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Norway?",
+    "answer": "Oslo"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of planets in solar system?",
+    "answer": "Eight"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous Greek philosopher?",
+    "answer": "Plato"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest predator in ocean?",
+    "answer": "Orca"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest aquatic mammal?",
+    "answer": "Dolphin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of light?",
+    "answer": "RGB"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for potassium?",
+    "answer": "K"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of Germany?",
+    "answer": "Berlin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest continent?",
+    "answer": "Asia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First man on moon?",
+    "answer": "Armstrong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest mammal on Earth?",
+    "answer": "BlueWhale"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Tallest mountain?",
+    "answer": "Everest"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest land animal?",
+    "answer": "Cheetah"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary component of air?",
+    "answer": "Nitrogen"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Deepest ocean trench?",
+    "answer": "Mariana"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest island?",
+    "answer": "Greenland"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of China?",
+    "answer": "Beijing"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest moon of Saturn?",
+    "answer": "Titan"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Inventor of airplane?",
+    "answer": "Wright"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous scientist for laws of motion?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for gold?",
+    "answer": "Au"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Smallest continent?",
+    "answer": "Australia"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest desert?",
+    "answer": "Sahara"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest organ in human body?",
+    "answer": "Skin"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of electric current?",
+    "answer": "Ampere"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Unit of force?",
+    "answer": "Newton"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary metal in bronze?",
+    "answer": "Copper"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Primary colors of pigment?",
+    "answer": "CMY"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest ocean?",
+    "answer": "Pacific"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First artificial satellite?",
+    "answer": "Sputnik"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Number of bones in human body?",
+    "answer": "TwoHundredSix"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Capital of France?",
+    "answer": "Paris"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Fastest fish?",
+    "answer": "Sailfish"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Chemical symbol for iron?",
+    "answer": "Fe"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "First emperor of China?",
+    "answer": "QinShiHuang"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest volcano in solar system?",
+    "answer": "OlympusMons"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Largest moon of Jupiter?",
+    "answer": "Ganymede"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "question": "Famous physicist, relativity?",
+    "answer": "Einstein"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional boy wizard?",
+    "answer": "HarryPotter"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional giant ape?",
+    "answer": "KingKong"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Fictional superhero with web?",
+    "answer": "Spiderman"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Famous cartoon mouse?",
+    "answer": "Mickey"
+  },
+  {
+    "category": "General Knowledge",
+    "difficulty": "fun",
+    "question": "Cartoon yellow sponge?",
+    "answer": "SpongeBob"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Earth’s largest ocean by surface area is which one?",
+    "answer": "PacificOcean"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Which layer of Earth lies directly below the crust?",
+    "answer": "Mantle"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "What is the name of the supercontinent that existed about 300 million years ago?",
+    "answer": "Pangaea"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Which desert is considered the driest place on Earth?",
+    "answer": "AtacamaDesert"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Which gas makes up most of Earth’s atmosphere?",
+    "answer": "Nitrogen"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The deepest known point in the world’s oceans is located in which trench?",
+    "answer": "MarianaTrench"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "What do we call the process where water vapor turns into liquid water?",
+    "answer": "Condensation"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "Which continent contains the world’s largest rainforest?",
+    "answer": "SouthAmerica"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "What is the term for a volcano that is not currently active but may erupt again?",
+    "answer": "Dormant"
+  },
+  {
+    "category": "Planet Earth",
+    "difficulty": "medium",
+    "question": "The Earth’s outer core is primarily made of which metal?",
+    "answer": "Iron"
   }
 ]

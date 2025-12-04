@@ -84,9 +84,19 @@ const LevelCompleteModal = ({
           loop={true}
           style={styles.lottieAnimation}
         />
-        <Animated.Text style={[styles.titleText, { transform: [{ scale: textAnim }] }]}>
-          {isMilestone ? `🎉 Level ${level} Milestone!` : `Level ${level} Completed!`}
-        </Animated.Text>
+        <View style={styles.titleContainer}>
+          {isMilestone && (
+            <LottieView
+              source={require('../assets/images/milestone.json')}
+              autoPlay
+              loop={true}
+              style={styles.milestoneIcon}
+            />
+          )}
+          <Animated.Text style={[styles.titleText, { transform: [{ scale: textAnim }] }]}>
+            {isMilestone ? `Level ${level} Milestone!` : `Level ${level} Completed!`}
+          </Animated.Text>
+        </View>
 
         {/* Star Rating */}
         {stars > 0 && (
@@ -254,6 +264,17 @@ const styles = StyleSheet.create({
     color: '#E1E2E1',
     fontSize: 20,
     fontFamily: 'Papyrus',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  milestoneIcon: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
 });
 
