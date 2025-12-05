@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Alert, Animated, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import AchievementsModal from '../components/AchievementsModal';
+import DailyChallengeModal from '../components/DailyChallengeModal';
 import SettingsModal from '../components/SettingsModal';
+import TutorialModal from '../components/TutorialModal';
 import { MusicContext } from '../context/MusicContext'; // Import MusicContext
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
@@ -176,6 +180,10 @@ export default function HomeScreen({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
   const [categoryLevels, setCategoryLevels] = useState({});
   const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
+  const [isTutorialVisible, setTutorialVisible] = useState(false);
+  const [isAchievementsModalVisible, setAchievementsModalVisible] = useState(false);
+  const [isDailyModalVisible, setDailyModalVisible] = useState(false);
+  const [isStatsModalVisible, setStatsModalVisible] = useState(false);
   const { isMusicEnabled, setIsMusicEnabled } = useContext(MusicContext); // Use MusicContext
 
   const word = 'Wordy'.split('');
@@ -183,6 +191,17 @@ export default function HomeScreen({ navigation }) {
   const floatAnim = useRef(new Animated.Value(0)).current;
 
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
+  const playHoot1 = useSound(require('../assets/sounds/hoot1.mp3'));
+  const playHoot2 = useSound(require('../assets/sounds/hoot2.mp3'));
+  const playHoot3 = useSound(require('../assets/sounds/hoot3.mp3'));
+  const playHoot4 = useSound(require('../assets/sounds/hoot4.mp3'));
+
+  // Button animation refs
+  const playButtonScale = useRef(new Animated.Value(1)).current;
+  const settingsButtonScale = useRef(new Animated.Value(1)).current;
+  const exitButtonScale = useRef(new Animated.Value(1)).current;
+  const achievementsButtonScale = useRef(new Animated.Value(1)).current;
+  const dailyButtonScale = useRef(new Animated.Value(1)).current;
 
   // Music playback logic is now in MusicContext, so remove related states and effects
   // const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -202,6 +221,12 @@ export default function HomeScreen({ navigation }) {
             levels[category] = savedLevel ? parseInt(savedLevel, 10) : 1;
           }
           setCategoryLevels(levels);
+
+          // Check if this is the first time opening the app
+          const tutorialShown = await AsyncStorage.getItem('tutorial_shown');
+          if (!tutorialShown) {
+            setTutorialVisible(true);
+          }
         } catch (e) {
           console.error('Failed to load category levels.', e);
         }
@@ -274,32 +299,55 @@ export default function HomeScreen({ navigation }) {
     setShowCategories(false);
   };
 
+  const handleTutorialComplete = async () => {
+    try {
+      await AsyncStorage.setItem('tutorial_shown', 'true');
+      setTutorialVisible(false);
+    } catch (e) {
+      console.error('Failed to save tutorial status.', e);
+    }
+  };
+
   const renderCategories = () => (
     <View style={styles.categoryMenuContainer}>
       <Text style={styles.subtitle}>Select a Category</Text>
-      <ScrollView style={styles.scrollView}>
-        {allCategories.map(category => (
-          <Pressable
-            key={category}
-            style={({ pressed }) => [
-              styles.button,
-              styles.categoryButtonWithAnimation,
-              { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-            ]}
-            onPress={() => handleCategoryPress(category)}
-          >
-            <LottieView
-              source={categoryAnimationsMap[category] || PULSING_CIRCLE_ANIMATION}
-              autoPlay
-              loop
-              style={styles.categoryAnimation}
-            />
-            <View style={styles.categoryButtonTextContainer}>
-              <Text style={styles.categoryButtonText}>{category}</Text>
-              <Text style={styles.levelText}>Level {categoryLevels[category] || 1}/50</Text>
-            </View>
-          </Pressable>
-        ))}
+      <ScrollView style={styles.scrollView} scrollEnabled={false}>
+        {allCategories.map(category => {
+          const currentLevel = categoryLevels[category] || 1;
+          const progress = (currentLevel / 50) * 100;
+
+          return (
+            <Pressable
+              key={category}
+              style={({ pressed }) => [
+                styles.categoryCard,
+                { transform: [{ scale: pressed ? 0.97 : 1 }] }
+              ]}
+              onPress={() => handleCategoryPress(category)}
+            >
+              <LinearGradient
+                colors={['#4A7E8E', '#2C5F6F']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.categoryGradient}
+              >
+                <LottieView
+                  source={categoryAnimationsMap[category] || PULSING_CIRCLE_ANIMATION}
+                  autoPlay
+                  loop
+                  style={styles.categoryAnimation}
+                />
+                <View style={styles.categoryButtonTextContainer}>
+                  <Text style={styles.categoryButtonText}>{category}</Text>
+                  <Text style={styles.levelText}>Level {currentLevel}/50</Text>
+                  <View style={styles.progressBarContainer}>
+                    <View style={[styles.progressBar, { width: `${progress}%` }]} />
+                  </View>
+                </View>
+              </LinearGradient>
+            </Pressable>
+          );
+        })}
       </ScrollView>
       <Pressable style={({ pressed }) => [
         styles.backButton,
@@ -313,47 +361,191 @@ export default function HomeScreen({ navigation }) {
   const renderMainMenu = () => (
     <View style={styles.menuContainer}>
       <View style={styles.titleContainer}>
-        {word.map((letter, index) => (
-          <Animated.Text
-            key={index}
-            style={[
-              styles.title,
-              {
-                opacity: animatedValues[index],
-                transform: [
-                  {
-                    translateY: floatAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -10],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            {letter}
-          </Animated.Text>
-        ))}
+        <Text style={styles.title}>Wordy</Text>
       </View>
       <View style={styles.menu}>
-        <Pressable style={({ pressed }) => [
-          styles.button,
-          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-        ]} onPress={handlePlay}>
-          <Text style={styles.buttonText}>Play</Text>
-        </Pressable>
-        <Pressable style={({ pressed }) => [
-          styles.button,
-          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-        ]} onPress={handleSettings}>
-          <Text style={styles.buttonText}>Settings</Text>
-        </Pressable>
-        <Pressable style={({ pressed }) => [
-          styles.button,
-          { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
-        ]} onPress={handleExit}>
-          <Text style={styles.buttonText}>Exit</Text>
-        </Pressable>
+        <Animated.View style={{ transform: [{ scale: playButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={handlePlay}
+            onPressIn={() => {
+              Animated.spring(playButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(playButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#4A7E8E', '#2C5F6F', '#4A7E8E']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <LottieView
+                source={require('../assets/images/play.json')}
+                autoPlay
+                loop
+                style={styles.buttonIcon}
+              />
+              <Text style={styles.buttonText}>Play</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View style={{ transform: [{ scale: achievementsButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              playTapSound();
+              setAchievementsModalVisible(true);
+            }}
+            onPressIn={() => {
+              Animated.spring(achievementsButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(achievementsButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <LottieView
+                source={require('../assets/images/Achievements.json')}
+                autoPlay
+                loop
+                style={styles.buttonIcon}
+              />
+              <Text style={styles.buttonText}>Achievements</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View style={{ transform: [{ scale: dailyButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              playTapSound();
+              setDailyModalVisible(true);
+            }}
+            onPressIn={() => {
+              Animated.spring(dailyButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(dailyButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#8E44AD', '#5E3370', '#8E44AD']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <Text style={styles.buttonIcon}>📅</Text>
+              <Text style={styles.buttonText}>Daily Missions</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View style={{ transform: [{ scale: settingsButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={handleSettings}
+            onPressIn={() => {
+              Animated.spring(settingsButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(settingsButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#3D6B7D', '#2C5F6F', '#3D6B7D']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <LottieView
+                source={require('../assets/images/settings.json')}
+                autoPlay
+                loop
+                style={styles.buttonIcon}
+              />
+              <Text style={styles.buttonText}>Settings</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View style={{ transform: [{ scale: exitButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={handleExit}
+            onPressIn={() => {
+              Animated.spring(exitButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(exitButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#676D69', '#4A5A57', '#676D69']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.gradientButton, { paddingVertical: 10, paddingHorizontal: 25 }]}
+            >
+              <LottieView
+                source={require('../assets/images/exit.json')}
+                autoPlay
+                loop
+                style={[styles.buttonIcon, { width: 45, height: 45, marginLeft: -6, marginRight: -6 }]}
+              />
+              <Text style={styles.buttonText}>Exit</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+
       </View>
     </View>
   );
@@ -389,20 +581,24 @@ export default function HomeScreen({ navigation }) {
 
   const handleOwlPress = () => {
     console.log('Owl pressed!');
-    playTapSound();
 
-    // Scale animation: grow then shrink
+    // Play random hoot sound
+    const hootSounds = [playHoot1, playHoot2, playHoot3, playHoot4];
+    const randomHoot = hootSounds[Math.floor(Math.random() * hootSounds.length)];
+    randomHoot();
+
+    // More dramatic scale animation: grow then shrink with bounce
     Animated.sequence([
       Animated.spring(owlScaleAnim, {
-        toValue: 1.2,
+        toValue: 1.3,
         friction: 3,
-        tension: 100,
+        tension: 150,
         useNativeDriver: true,
       }),
       Animated.spring(owlScaleAnim, {
         toValue: 1,
-        friction: 5,
-        tension: 100,
+        friction: 4,
+        tension: 80,
         useNativeDriver: true,
       }),
     ]).start();
@@ -426,6 +622,25 @@ export default function HomeScreen({ navigation }) {
   return (
     <ImageBackground source={image} style={styles.backgroundImage}>
       <View style={styles.overlay} />
+
+      {/* Profile Button */}
+      {!showCategories && (
+        <Pressable
+          style={styles.profileButton}
+          onPress={() => {
+            playTapSound();
+            setStatsModalVisible(true);
+          }}
+        >
+          <LinearGradient
+            colors={['#2C3E50', '#34495E']}
+            style={styles.profileButtonGradient}
+          >
+            <Text style={styles.profileButtonIcon}>📊</Text>
+          </LinearGradient>
+        </Pressable>
+      )}
+
       {!showCategories && (
         <Pressable onPress={handleOwlPress} style={styles.owlPressable}>
           <Animated.View style={{ transform: [{ scale: owlScaleAnim }] }}>
@@ -433,6 +648,7 @@ export default function HomeScreen({ navigation }) {
               ref={owlAnimationRef}
               source={getOwlSource()}
               style={styles.lottieAnimation}
+              resizeMode="contain"
               autoPlay
               loop={owlState !== 'hi'}
               onAnimationFinish={handleOwlAnimationFinish}
@@ -446,6 +662,22 @@ export default function HomeScreen({ navigation }) {
       <SettingsModal
         isVisible={isSettingsModalVisible}
         onClose={() => setSettingsModalVisible(false)}
+      />
+      <TutorialModal
+        isVisible={isTutorialVisible}
+        onComplete={handleTutorialComplete}
+      />
+      <AchievementsModal
+        isVisible={isAchievementsModalVisible}
+        onClose={() => setAchievementsModalVisible(false)}
+      />
+      <DailyChallengeModal
+        isVisible={isDailyModalVisible}
+        onClose={() => setDailyModalVisible(false)}
+      />
+      <StatsModal
+        isVisible={isStatsModalVisible}
+        onClose={() => setStatsModalVisible(false)}
       />
     </ImageBackground>
   );
@@ -462,13 +694,37 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(28, 59, 79, 0.6)',
   },
+  profileButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 110,
+    borderRadius: 25,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  profileButtonGradient: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  profileButtonIcon: {
+    fontSize: 24,
+  },
   lottieAnimation: {
     width: 200,
     height: 200,
   },
   owlPressable: {
     position: 'absolute',
-    top: 110,
+    top: -20, // Moved up significantly
     alignSelf: 'center',
     zIndex: 100,
     width: 200,
@@ -491,15 +747,12 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
-    marginTop: 100, // Push the title down to make space for Lottie
+    marginTop: 100, // Adjusted margin
   },
   title: {
     fontSize: 72,
-    color: '#E1E2E1',
-    marginBottom: 50,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+    color: '#E1E2E1', // White color
+    marginBottom: 35,
     fontFamily: 'Papyrus',
   },
   subtitle: {
@@ -509,35 +762,67 @@ const styles = StyleSheet.create({
   },
   menu: {
     width: '100%',
-    marginTop: 30,
+    marginTop: 20,
+    gap: 15,
   },
   button: {
-    paddingVertical: 6, // Reduced height of category boxes
+    borderRadius: 25,
+    width: '100%',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
+  },
+  gradientButton: {
+    paddingVertical: 16,
     paddingHorizontal: 30,
     borderRadius: 25,
-    marginBottom: 12, // Slightly larger spacing between boxes
-    width: '100%',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  buttonIcon: {
+    width: 32,
+    height: 32,
   },
   buttonText: {
     color: '#E1E2E1',
-    fontSize: 24, // Reduced from 18
+    fontSize: 24,
     fontFamily: 'Papyrus',
+    marginLeft: -5,
   },
   categoryButtonText: {
     color: '#E1E2E1',
-    fontSize: 19, // Slightly smaller for better balance
+    fontSize: 19,
     fontFamily: 'Papyrus',
+  },
+  categoryCard: {
+    borderRadius: 15,
+    marginBottom: 4,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  categoryGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
   },
   categoryButtonWithAnimation: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   categoryAnimation: {
-    width: 40, // Small size for the animation
-    height: 40, // Small size for the animation
-    marginRight: 10, // Space between animation and text
-    marginLeft: 10, // Add margin to the left to push it inward
+    width: 40,
+    height: 40,
+    marginRight: 10,
   },
   categoryButtonTextContainer: {
     flex: 1,
@@ -547,9 +832,22 @@ const styles = StyleSheet.create({
   },
   levelText: {
     color: '#FFD700',
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: 'Papyrus',
-    marginTop: 2,
+    marginTop: 3,
+  },
+  progressBarContainer: {
+    width: '100%',
+    height: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 2,
+    marginTop: 6,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#FFD700',
+    borderRadius: 2,
   },
   scrollView: {
     width: '100%',
@@ -562,7 +860,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#E1E2E1',
+    color: '#FFA500',
     fontSize: 18,
     fontFamily: 'Papyrus',
   },

@@ -5,6 +5,7 @@ import LottieView from 'lottie-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, ImageBackground, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+import AchievementToast from '../components/AchievementToast';
 import CustomAlert from '../components/CustomAlert';
 import Keyboard from '../components/Keyboard';
 import LevelCompleteModal from '../components/LevelCompleteModal';
@@ -12,6 +13,7 @@ import ProgressBar from '../components/ProgressBar';
 import SettingsModal from '../components/SettingsModal';
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
+import { checkAchievements, initializePlayerStats, updatePlayerStats } from '../utils/achievementUtils';
 import { calculateCoins, calculateStarRating, getQuestionCount, isMilestone } from '../utils/levelUtils';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -236,6 +238,10 @@ const GameScreen = ({ route, navigation }) => {
     startTime: null,
   });
   const [starRating, setStarRating] = useState(0);
+  const [achievementToast, setAchievementToast] = useState({
+    isVisible: false,
+    achievement: null,
+  });
 
   const hintReminderAnim = useRef(new Animated.Value(0)).current;
   const hintButtonPulseAnim = useRef(new Animated.Value(1)).current;
@@ -261,10 +267,17 @@ const GameScreen = ({ route, navigation }) => {
   const playCorrectSound = useSound(require('../assets/sounds/correct.mp3'));
   const playWrongSound = useSound(require('../assets/sounds/wrong.mp3'));
   const playLevelUpSound = useSound(require('../assets/sounds/levelup.mp3'));
+  const playTimeUpSound = useSound(require('../assets/sounds/timeup.mp3'));
+  const playAchievementSound = useSound(require('../assets/sounds/achievement.mp3'));
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
   const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
   const getFirstTimeHintKey = (cat) => `first_time_hint_${cat.replace(/ & /g, '_')}`;
+
+  // Initialize player stats on mount
+  useEffect(() => {
+    initializePlayerStats();
+  }, []);
 
   useEffect(() => {
     const loadSavedLevel = async () => {
@@ -566,7 +579,41 @@ const GameScreen = ({ route, navigation }) => {
         ]).start();
       });
 
-      setTimeout(() => {
+      setTimeout(async () => {
+        // Update player stats and check achievements
+        const completionTime = levelStats.startTime ? (Date.now() - levelStats.startTime) / 1000 : 0;
+        const stars = calculateStarRating(levelStats.hintsUsed, levelStats.mistakes);
+
+        await updatePlayerStats({
+          levels_completed: 1,
+          stars: stars,
+          perfect: stars === 3,
+          no_hints: levelStats.hintsUsed === 0,
+          no_mistakes: levelStats.mistakes === 0,
+          fast: completionTime < 30,
+          category: category,
+        });
+
+        // Update Daily Tasks
+        await updateDailyProgress(TASK_TYPES.LEVELS, 1);
+        if (stars > 0) await updateDailyProgress(TASK_TYPES.STARS, stars);
+        if (levelStats.mistakes === 0) await updateDailyProgress(TASK_TYPES.NO_MISTAKE, 1);
+        if (levelStats.hintsUsed === 0) await updateDailyProgress(TASK_TYPES.NO_HINT, 1);
+        if (completionTime < 30) await updateDailyProgress(TASK_TYPES.FAST, 1);
+
+        // Check for new achievements
+        const newAchievements = await checkAchievements();
+        if (newAchievements.length > 0) {
+          playAchievementSound();
+          // Show first achievement (can queue others later)
+          setTimeout(() => {
+            setAchievementToast({
+              isVisible: true,
+              achievement: newAchievements[0],
+            });
+          }, 2500); // Show after level complete modal
+        }
+
         setIsLevelComplete(true);
         setShowConfetti(false);
         // Reset confetti
@@ -792,200 +839,207 @@ const GameScreen = ({ route, navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/images/background3.jpeg')} style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Pressable
-            style={styles.backButtonModern}
-            onPress={() => { playTapSound(); navigation.goBack(); }}
-          >
-            {({ pressed }) => (
-              <View style={[
-                styles.backButtonInner,
-                { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
-              ]}>
-                <Text style={styles.backButtonTextModern}>←</Text>
-              </View>
-            )}
-          </Pressable>
-          <View style={styles.planetInfo}>
-            <LottieView
-              source={getHeaderOwlSource()}
-              autoPlay
-              loop
-              style={styles.headerOwlAnimation}
-            />
-            <Text style={styles.levelText}>{category} - Level {level}</Text>
-            <ProgressBar
-              current={correctlyAnswered.filter(Boolean).length}
-              total={questions.length}
-              style={{ width: 160 }}
-            />
-          </View>
-          <Animated.View
-            style={[
-              styles.hintButtonContainer,
-              highlightHintButton && {
-                transform: [{ scale: hintButtonPulseAnim }]
-              }
-            ]}
-          >
+    <>
+      <ImageBackground source={require('../assets/images/background3.jpeg')} style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.header}>
             <Pressable
-              onPress={handleHint}
-              style={styles.hintButtonNoBg}
+              style={styles.backButtonModern}
+              onPress={() => { playTapSound(); navigation.goBack(); }}
             >
-              {highlightHintButton ? (
-                <LinearGradient
-                  colors={['#DAA520', '#FF8C00', '#DAA520']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.hintButtonGradientNoBg}
-                >
+              {({ pressed }) => (
+                <View style={[
+                  styles.backButtonInner,
+                  { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
+                ]}>
+                  <Text style={styles.backButtonTextModern}>←</Text>
+                </View>
+              )}
+            </Pressable>
+            <View style={styles.planetInfo}>
+              <LottieView
+                source={getHeaderOwlSource()}
+                autoPlay
+                loop
+                style={styles.headerOwlAnimation}
+              />
+              <Text style={styles.levelText}>{category} - Level {level}</Text>
+              <ProgressBar
+                current={correctlyAnswered.filter(Boolean).length}
+                total={questions.length}
+                style={{ width: 160 }}
+              />
+            </View>
+            <Animated.View
+              style={[
+                styles.hintButtonContainer,
+                highlightHintButton && {
+                  transform: [{ scale: hintButtonPulseAnim }]
+                }
+              ]}
+            >
+              <Pressable
+                onPress={handleHint}
+                style={styles.hintButtonNoBg}
+              >
+                {highlightHintButton ? (
+                  <LinearGradient
+                    colors={['#DAA520', '#FF8C00', '#DAA520']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.hintButtonGradientNoBg}
+                  >
+                    <LottieView
+                      source={require('../assets/images/hint.json')}
+                      autoPlay
+                      loop
+                      style={styles.hintAnimationLarge}
+                    />
+                  </LinearGradient>
+                ) : (
                   <LottieView
                     source={require('../assets/images/hint.json')}
                     autoPlay
                     loop
                     style={styles.hintAnimationLarge}
                   />
-                </LinearGradient>
-              ) : (
-                <LottieView
-                  source={require('../assets/images/hint.json')}
-                  autoPlay
-                  loop
-                  style={styles.hintAnimationLarge}
-                />
+                )}
+              </Pressable>
+              <Text style={styles.hintButtonTextBelow}>Hint: {hintsLeft}</Text>
+            </Animated.View>
+            <Pressable
+              style={styles.settingsButtonModern}
+              onPress={() => { playTapSound(); setSettingsModalVisible(true); }}
+            >
+              {({ pressed }) => (
+                <View style={[
+                  styles.settingsButtonInner,
+                  { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
+                ]}>
+                  <View style={styles.hamburgerLine} />
+                  <View style={styles.hamburgerLine} />
+                  <View style={styles.hamburgerLine} />
+                </View>
               )}
             </Pressable>
-            <Text style={styles.hintButtonTextBelow}>Hint: {hintsLeft}</Text>
-          </Animated.View>
-          <Pressable
-            style={styles.settingsButtonModern}
-            onPress={() => { playTapSound(); setSettingsModalVisible(true); }}
-          >
-            {({ pressed }) => (
-              <View style={[
-                styles.settingsButtonInner,
-                { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
-              ]}>
-                <View style={styles.hamburgerLine} />
-                <View style={styles.hamburgerLine} />
-                <View style={styles.hamburgerLine} />
-              </View>
-            )}
-          </Pressable>
-        </View>
-
-
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-        >
-          <ScrollView
-            contentContainerStyle={styles.gameBoard}
-            scrollEnabled={false}
-          >
-            {questions.map((question, questionIndex) => {
-              const currentAnswerLength = question.correct_answer.length;
-              const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
-              return (
-                <View key={questionIndex} style={styles.questionAnswerRow}>
-                  <View style={[styles.questionRow, { width: questionColumnWidth }]}>
-                    <Text style={styles.questionText}>{question.text}</Text>
-                  </View>
-                  <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
-                    {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
-                      <AnimatedLetterCell
-                        key={inputIndex}
-                        letter={cell.letter}
-                        status={cell.status}
-                        width={dynamicCellSize}
-                        height={60}
-                        isSelected={activeQuestionIndex === questionIndex && activeInputIndex === inputIndex}
-                        isCorrect={correctlyAnswered[questionIndex]}
-                        onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
-                        disabled={correctlyAnswered[questionIndex]}
-                      />
-                    ))}
-                  </View>
-                </View>
-              );
-            })}
-          </ScrollView>
-        </KeyboardAvoidingView>
-
-        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
-
-        <CustomAlert
-          message={alertInfo.message}
-          isVisible={alertInfo.isVisible}
-          buttonText={alertInfo.buttonText}
-          onButtonPress={alertInfo.onButtonPress}
-          onBackdropPress={hideAlert}
-        />
-        <LevelCompleteModal
-          isVisible={isLevelComplete}
-          level={level}
-          stars={starRating}
-          stats={levelStats}
-          rewards={{ coins: calculateCoins(level, starRating) }}
-          isMilestone={isMilestone(level)}
-          onNextLevel={handleNextLevel}
-          onBackToMenu={handleBackToMenu}
-        />
-        {hintReminder.isVisible && (
-          <Animated.View
-            style={[
-              styles.hintReminderContainer,
-              {
-                opacity: hintReminderAnim,
-                transform: [{
-                  translateY: hintReminderAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-20, 0]
-                  })
-                }]
-              }
-            ]}
-          >
-            <Text style={styles.hintReminderText}>💡 {hintReminder.message}</Text>
-          </Animated.View>
-        )}
-        <SettingsModal
-          isVisible={isSettingsModalVisible}
-          onClose={() => setSettingsModalVisible(false)}
-        />
-
-        {/* Confetti Celebration */}
-        {showConfetti && (
-          <View style={styles.confettiContainer}>
-            {confettiAnims.map((anim, i) => (
-              <Animated.View
-                key={i}
-                style={[
-                  styles.confetti,
-                  {
-                    backgroundColor: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FF6347'][i % 5],
-                    transform: [
-                      { translateX: anim.x },
-                      { translateY: anim.y },
-                      {
-                        rotate: anim.rotate.interpolate({
-                          inputRange: [0, 720],
-                          outputRange: ['0deg', '720deg']
-                        })
-                      }
-                    ],
-                    opacity: anim.opacity,
-                  }
-                ]}
-              />
-            ))}
           </View>
-        )}
-      </View>
-    </ImageBackground>
+
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+          >
+            <ScrollView
+              contentContainerStyle={styles.gameBoard}
+              scrollEnabled={false}
+            >
+              {questions.map((question, questionIndex) => {
+                const currentAnswerLength = question.correct_answer.length;
+                const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
+                return (
+                  <View key={questionIndex} style={styles.questionAnswerRow}>
+                    <View style={[styles.questionRow, { width: questionColumnWidth }]}>
+                      <Text style={styles.questionText}>{question.text}</Text>
+                    </View>
+                    <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
+                      {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
+                        <AnimatedLetterCell
+                          key={inputIndex}
+                          letter={cell.letter}
+                          status={cell.status}
+                          width={dynamicCellSize}
+                          height={60}
+                          isSelected={activeQuestionIndex === questionIndex && activeInputIndex === inputIndex}
+                          isCorrect={correctlyAnswered[questionIndex]}
+                          onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
+                          disabled={correctlyAnswered[questionIndex]}
+                        />
+                      ))}
+                    </View>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </KeyboardAvoidingView>
+
+          <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
+
+          <CustomAlert
+            message={alertInfo.message}
+            isVisible={alertInfo.isVisible}
+            buttonText={alertInfo.buttonText}
+            onButtonPress={alertInfo.onButtonPress}
+            onBackdropPress={hideAlert}
+          />
+          <LevelCompleteModal
+            isVisible={isLevelComplete}
+            level={level}
+            stars={starRating}
+            stats={levelStats}
+            rewards={{ coins: calculateCoins(level, starRating) }}
+            isMilestone={isMilestone(level)}
+            onNextLevel={handleNextLevel}
+            onBackToMenu={handleBackToMenu}
+          />
+          {hintReminder.isVisible && (
+            <Animated.View
+              style={[
+                styles.hintReminderContainer,
+                {
+                  opacity: hintReminderAnim,
+                  transform: [{
+                    translateY: hintReminderAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [-20, 0]
+                    })
+                  }]
+                }
+              ]}
+            >
+              <Text style={styles.hintReminderText}>💡 {hintReminder.message}</Text>
+            </Animated.View>
+          )}
+          <SettingsModal
+            isVisible={isSettingsModalVisible}
+            onClose={() => setSettingsModalVisible(false)}
+          />
+
+          {/* Confetti Celebration */}
+          {showConfetti && (
+            <View style={styles.confettiContainer}>
+              {confettiAnims.map((anim, i) => (
+                <Animated.View
+                  key={i}
+                  style={[
+                    styles.confetti,
+                    {
+                      backgroundColor: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FF6347'][i % 5],
+                      transform: [
+                        { translateX: anim.x },
+                        { translateY: anim.y },
+                        {
+                          rotate: anim.rotate.interpolate({
+                            inputRange: [0, 720],
+                            outputRange: ['0deg', '720deg']
+                          })
+                        }
+                      ],
+                      opacity: anim.opacity,
+                    }
+                  ]}
+                />
+              ))}
+            </View>
+          )}
+        </View>
+      </ImageBackground>
+      <AchievementToast
+        achievement={achievementToast.achievement}
+        isVisible={achievementToast.isVisible}
+        onHide={() => setAchievementToast({ isVisible: false, achievement: null })}
+      />
+    </>
   );
 };
 
