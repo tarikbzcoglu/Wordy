@@ -15,6 +15,7 @@ SplashScreen.preventAutoHideAsync();
 export default function AppNavigator() {
   const [fontsLoaded] = Font.useFonts({
     'Papyrus': require('../assets/fonts/Papyrus.ttf'),
+    'EagleLake-Regular': require('../assets/fonts/EagleLake-Regular.ttf'),
   });
 
   useEffect(() => {

@@ -79,9 +79,7 @@ const AchievementToast = ({ achievement, isVisible, onHide }) => {
                     <Text style={styles.label}>🏆 Başarım Kazanıldı!</Text>
                     <Text style={styles.title}>{achievement.title}</Text>
                     <Text style={styles.description}>{achievement.description}</Text>
-                    {achievement.reward && achievement.reward.coins && (
-                        <Text style={styles.reward}>+{achievement.reward.coins} 💰</Text>
-                    )}
+
                 </View>
 
                 {/* Celebration Animation (optional) */}
@@ -141,24 +139,24 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 12,
         color: '#FFD700',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         marginBottom: 4,
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         color: '#E1E2E1',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         marginBottom: 2,
     },
     description: {
         fontSize: 13,
         color: '#B0BEC5',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
     reward: {
         fontSize: 14,
         color: '#FFD700',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         marginTop: 4,
     },
     celebrationContainer: {

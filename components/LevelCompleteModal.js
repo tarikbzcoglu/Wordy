@@ -1,16 +1,16 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import React from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const LevelCompleteModal = ({
   isVisible,
   level,
   stars = 0,
   stats = {},
-  rewards = {},
-  isMilestone = false,
   onNextLevel,
-  onBackToMenu
+  onBackToMenu,
+  isMilestone
 }) => {
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const textAnim = React.useRef(new Animated.Value(0)).current;
@@ -19,6 +19,13 @@ const LevelCompleteModal = ({
     new Animated.Value(0),
     new Animated.Value(0),
   ]).current;
+
+  // Button scale animations
+  const nextButtonScale = React.useRef(new Animated.Value(1)).current;
+  const menuButtonScale = React.useRef(new Animated.Value(1)).current;
+
+  // Milestone pulse animation
+  const milestonePulse = React.useRef(new Animated.Value(1)).current;
 
   const [randomLevelUpAnim, setRandomLevelUpAnim] = React.useState(require('../assets/images/owl_levelup.json'));
 
@@ -65,15 +72,39 @@ const LevelCompleteModal = ({
       }).start();
       textAnim.setValue(0);
       starAnims.forEach(anim => anim.setValue(0));
+      nextButtonScale.setValue(1);
+      menuButtonScale.setValue(1);
+      milestonePulse.setValue(1);
     }
   }, [isVisible, stars, fadeAnim, textAnim]);
+
+  // Milestone pulse effect
+  React.useEffect(() => {
+    if (isVisible && isMilestone) {
+      const pulse = Animated.loop(
+        Animated.sequence([
+          Animated.timing(milestonePulse, {
+            toValue: 1.1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(milestonePulse, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      pulse.start();
+      return () => pulse.stop();
+    }
+  }, [isVisible, isMilestone]);
 
   if (!isVisible) {
     return null;
   }
 
   const { questionsAnswered = 0, totalQuestions = 0, hintsUsed = 0, mistakes = 0 } = stats;
-  const { coins = 0 } = rewards;
 
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
@@ -86,12 +117,14 @@ const LevelCompleteModal = ({
         />
         <View style={styles.titleContainer}>
           {isMilestone && (
-            <LottieView
-              source={require('../assets/images/milestone.json')}
-              autoPlay
-              loop={true}
-              style={styles.milestoneIcon}
-            />
+            <Animated.View style={{ transform: [{ scale: milestonePulse }] }}>
+              <LottieView
+                source={require('../assets/images/milestone.json')}
+                autoPlay
+                loop={true}
+                style={styles.milestoneIcon}
+              />
+            </Animated.View>
           )}
           <Animated.Text style={[styles.titleText, { transform: [{ scale: textAnim }] }]}>
             {isMilestone ? `Level ${level} Milestone!` : `Level ${level} Completed!`}
@@ -141,18 +174,67 @@ const LevelCompleteModal = ({
         )}
 
         {/* Rewards */}
-        {coins > 0 && (
-          <View style={styles.rewardsContainer}>
-            <Text style={styles.coinsText}>💰 +{coins} Coins</Text>
-          </View>
-        )}
 
-        <TouchableOpacity style={styles.button} onPress={onNextLevel}>
-          <Text style={styles.buttonText}>Next Level</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.menuButton]} onPress={onBackToMenu}>
-          <Text style={styles.buttonText}>Back to Menu</Text>
-        </TouchableOpacity>
+        {/* Gradient Buttons */}
+        <Animated.View style={{ width: '100%', transform: [{ scale: nextButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={onNextLevel}
+            onPressIn={() => {
+              Animated.spring(nextButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(nextButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#DAA520', '#FF8C00']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <Text style={styles.buttonText}>Next Level</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View style={{ width: '100%', transform: [{ scale: menuButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={onBackToMenu}
+            onPressIn={() => {
+              Animated.spring(menuButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(menuButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#808080', '#A9A9A9']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <Text style={styles.buttonText}>Back to Menu</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
       </View>
     </Animated.View>
   );
@@ -197,8 +279,8 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: '#FFD700',
-    fontSize: 32,
-    fontFamily: 'Papyrus',
+    fontSize: 34,
+    fontFamily: 'EagleLake-Regular',
     marginBottom: 10,
     textAlign: 'center',
     textShadowColor: 'rgba(255, 215, 0, 0.5)',
@@ -228,12 +310,12 @@ const styles = StyleSheet.create({
   statLabel: {
     fontSize: 18,
     color: '#B0BEC5',
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
   },
   statValue: {
     fontSize: 18,
     color: '#E1E2E1',
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
   },
   rewardsContainer: {
     width: '100%',
@@ -244,26 +326,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   coinsText: {
-    fontSize: 24,
+    fontSize: 26,
     color: '#FFD700',
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
   },
   button: {
-    backgroundColor: '#4A7E8E',
+    borderRadius: 25,
+    width: '100%',
+    overflow: 'hidden',
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
+  },
+  gradientButton: {
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 25,
-    width: '100%',
     alignItems: 'center',
-    marginBottom: 12,
+    justifyContent: 'center',
   },
   menuButton: {
     backgroundColor: '#676D69',
   },
   buttonText: {
     color: '#E1E2E1',
-    fontSize: 20,
-    fontFamily: 'Papyrus',
+    fontSize: 22,
+    fontFamily: 'EagleLake-Regular',
   },
   titleContainer: {
     flexDirection: 'row',
@@ -272,8 +363,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   milestoneIcon: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     marginRight: 10,
   },
 });

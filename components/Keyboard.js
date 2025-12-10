@@ -19,10 +19,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(28, 59, 79, 0.3)',
   },
   keyText: {
-    fontSize: 18,
+    fontSize: 20,
     color: '#E1E2E1',
-    fontWeight: 'bold',
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
   },
   keyRow: {
     flexDirection: 'row',

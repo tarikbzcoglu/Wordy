@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { decode } from 'html-entities';
 import LottieView from 'lottie-react-native';
@@ -14,7 +15,7 @@ import SettingsModal from '../components/SettingsModal';
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
 import { checkAchievements, initializePlayerStats, updatePlayerStats } from '../utils/achievementUtils';
-import { calculateCoins, calculateStarRating, getQuestionCount, isMilestone } from '../utils/levelUtils';
+import { calculateStarRating, getQuestionCount, isMilestone } from '../utils/levelUtils';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -252,6 +253,17 @@ const GameScreen = ({ route, navigation }) => {
     opacity: new Animated.Value(1),
   }))).current;
 
+  // Shake animation for incorrect answers - use state to update with questions
+  const [shakeAnims, setShakeAnims] = useState([]);
+
+  // Fade overlay for modal
+  const modalOverlayAnim = useRef(new Animated.Value(0)).current;
+
+  // Initialize shake animations when questions change
+  useEffect(() => {
+    setShakeAnims(questions.map(() => new Animated.Value(0)));
+  }, [questions.length]);
+
   const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
 
@@ -482,6 +494,23 @@ const GameScreen = ({ route, navigation }) => {
     loadLevel(level);
   }, [level, loadLevel]);
 
+  // Animate overlay when modal appears
+  useEffect(() => {
+    if (isLevelComplete) {
+      Animated.timing(modalOverlayAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(modalOverlayAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isLevelComplete]);
+
   useEffect(() => {
     const rewardedAd = RewardedAd.createForAdRequest(adUnitId, { requestNonPersonalizedAdsOnly: true });
     const unsubscribeLoaded = rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => setAdLoaded(true));
@@ -527,7 +556,7 @@ const GameScreen = ({ route, navigation }) => {
         startTime: levelStats.startTime,
       };
       const stars = calculateStarRating(finalStats);
-      const coins = calculateCoins(currentLevel, stars);
+
 
       setLevelStats(finalStats);
       setStarRating(stars);
@@ -594,12 +623,7 @@ const GameScreen = ({ route, navigation }) => {
           category: category,
         });
 
-        // Update Daily Tasks
-        await updateDailyProgress(TASK_TYPES.LEVELS, 1);
-        if (stars > 0) await updateDailyProgress(TASK_TYPES.STARS, stars);
-        if (levelStats.mistakes === 0) await updateDailyProgress(TASK_TYPES.NO_MISTAKE, 1);
-        if (levelStats.hintsUsed === 0) await updateDailyProgress(TASK_TYPES.NO_HINT, 1);
-        if (completionTime < 30) await updateDailyProgress(TASK_TYPES.FAST, 1);
+
 
         // Check for new achievements
         const newAchievements = await checkAchievements();
@@ -629,6 +653,7 @@ const GameScreen = ({ route, navigation }) => {
 
   const handleHint = () => {
     playTapSound();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (hintsLeft <= 0) {
       showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showRewardedAd);
       return;
@@ -669,6 +694,7 @@ const GameScreen = ({ route, navigation }) => {
 
     if (userAnswer === correctAnswer) {
       playCorrectSound();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       let newCorrectlyAnswered = [...correctlyAnswered];
       let newAnswers = JSON.parse(JSON.stringify(answers));
       let queue = [questionIndex];
@@ -706,6 +732,43 @@ const GameScreen = ({ route, navigation }) => {
       setAnswers(newAnswers);
     } else if (userAnswer.length === correctAnswer.length) {
       playWrongSound();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+
+      // Track mistake
+      setLevelStats(prev => ({
+        ...prev,
+        mistakes: prev.mistakes + 1,
+      }));
+
+      // Trigger shake animation - subtle and controlled
+      if (shakeAnims[questionIndex]) {
+        // Reset to 0 first
+        shakeAnims[questionIndex].setValue(0);
+
+        Animated.sequence([
+          Animated.timing(shakeAnims[questionIndex], {
+            toValue: 5,
+            duration: 50,
+            useNativeDriver: true,
+          }),
+          Animated.timing(shakeAnims[questionIndex], {
+            toValue: -5,
+            duration: 50,
+            useNativeDriver: true,
+          }),
+          Animated.timing(shakeAnims[questionIndex], {
+            toValue: 2,
+            duration: 40,
+            useNativeDriver: true,
+          }),
+          Animated.timing(shakeAnims[questionIndex], {
+            toValue: 0,
+            duration: 40,
+            useNativeDriver: true,
+          }),
+        ]).start();
+      }
+
       setAnswers(currentAnswers => {
         const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
         newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => {
@@ -749,6 +812,7 @@ const GameScreen = ({ route, navigation }) => {
   const handleAnswerBoxPress = (questionIndex, inputIndex) => {
     if (correctlyAnswered[questionIndex] || (answers[questionIndex] && (answers[questionIndex][inputIndex].status === 'revealed' || answers[questionIndex][inputIndex].status === 'hint'))) return;
     playTapSound();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setActiveQuestionIndex(questionIndex);
     setActiveInputIndex(inputIndex);
   };
@@ -756,6 +820,8 @@ const GameScreen = ({ route, navigation }) => {
   const handleKeyPress = (key) => {
     if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
     playTapSound();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
     const newAnswers = [...answers];
     newAnswers[activeQuestionIndex][activeInputIndex] = { letter: key, status: 'input' };
     setAnswers(newAnswers);
@@ -781,6 +847,7 @@ const GameScreen = ({ route, navigation }) => {
   const handleBackspace = () => {
     if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
     playTapSound();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const newAnswers = [...answers];
     newAnswers[activeQuestionIndex][activeInputIndex] = { letter: '', status: 'empty' };
     setAnswers(newAnswers);
@@ -803,12 +870,19 @@ const GameScreen = ({ route, navigation }) => {
 
   const handleNextLevel = () => {
     playTapSound();
+    // Enhanced haptic feedback - heavier for milestones
+    if (isMilestone(level)) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    } else {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
     setIsLevelComplete(false);
     setLevel(prevLevel => prevLevel + 1);
   };
 
   const handleBackToMenu = () => {
     playTapSound();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     navigation.popToTop();
   };
 
@@ -905,7 +979,7 @@ const GameScreen = ({ route, navigation }) => {
                   />
                 )}
               </Pressable>
-              <Text style={styles.hintButtonTextBelow}>Hint: {hintsLeft}</Text>
+              <Text style={styles.hintButtonTextBelow}>Hints: {hintsLeft}</Text>
             </Animated.View>
             <Pressable
               style={styles.settingsButtonModern}
@@ -938,7 +1012,17 @@ const GameScreen = ({ route, navigation }) => {
                 const currentAnswerLength = question.correct_answer.length;
                 const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
                 return (
-                  <View key={questionIndex} style={styles.questionAnswerRow}>
+                  <Animated.View
+                    key={questionIndex}
+                    style={[
+                      styles.questionAnswerRow,
+                      shakeAnims[questionIndex] && {
+                        transform: [{
+                          translateX: shakeAnims[questionIndex]
+                        }]
+                      }
+                    ]}
+                  >
                     <View style={[styles.questionRow, { width: questionColumnWidth }]}>
                       <Text style={styles.questionText}>{question.text}</Text>
                     </View>
@@ -957,11 +1041,26 @@ const GameScreen = ({ route, navigation }) => {
                         />
                       ))}
                     </View>
-                  </View>
+                  </Animated.View>
                 );
               })}
             </ScrollView>
           </KeyboardAvoidingView>
+
+          {/* Modal fade overlay */}
+          {isLevelComplete && (
+            <Animated.View
+              style={[
+                styles.modalOverlay,
+                {
+                  opacity: modalOverlayAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 0.3]
+                  })
+                }
+              ]}
+            />
+          )}
 
           <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
 
@@ -977,7 +1076,6 @@ const GameScreen = ({ route, navigation }) => {
             level={level}
             stars={starRating}
             stats={levelStats}
-            rewards={{ coins: calculateCoins(level, starRating) }}
             isMilestone={isMilestone(level)}
             onNextLevel={handleNextLevel}
             onBackToMenu={handleBackToMenu}
@@ -1096,8 +1194,8 @@ const styles = StyleSheet.create({
   },
   backButtonTextModern: {
     color: '#E1E2E1',
-    fontSize: 34,
-    fontWeight: 'bold',
+    fontSize: 36,
+    fontFamily: 'EagleLake-Regular',
     marginTop: -14,
   },
   settingsButtonModern: {
@@ -1178,14 +1276,14 @@ const styles = StyleSheet.create({
   hintButtonText: {
     color: '#E1E2E1',
     fontSize: 12,
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
     marginTop: -5,
   },
   hintButtonTextBelow: {
     color: '#E1E2E1',
-    fontSize: 14,
-    fontFamily: 'Papyrus',
-    marginTop: 2,
+    fontSize: 16,
+    fontFamily: 'EagleLake-Regular',
+    marginTop: 0,
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 3,
@@ -1193,7 +1291,7 @@ const styles = StyleSheet.create({
   headerButtonText: {
     color: '#E1E2E1',
     fontSize: 20,
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
   },
   planetInfo: {
     flex: 1,
@@ -1203,20 +1301,22 @@ const styles = StyleSheet.create({
   planetName: {
     color: '#E1E2E1',
     fontSize: 20,
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
     marginRight: 40,
   },
   headerOwlAnimation: {
-    width: 40,
-    height: 40,
-    marginBottom: 2,
-    marginRight: 60,
+    width: 50,
+    height: 50,
+    marginBottom: 0,
+    marginRight: 40,
   },
   levelText: {
-    color: '#858882',
-    fontSize: 12,
-    fontFamily: 'Papyrus',
-    marginRight: 40,
+    color: '#e0cb0bff',
+    fontSize: 11,
+    fontFamily: 'EagleLake-Regular',
+    marginRight: 4,
+    marginLeft: 2,
+
   },
   menu: {
     position: 'absolute',
@@ -1233,7 +1333,7 @@ const styles = StyleSheet.create({
   menuItemText: {
     color: '#E1E2E1',
     fontSize: 16,
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
   },
   gameBoard: {
     paddingLeft: 0,
@@ -1244,22 +1344,22 @@ const styles = StyleSheet.create({
   questionAnswerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: 1,
   },
   questionRow: {
     backgroundColor: '#1C3B4F',
     borderRadius: 6,
     justifyContent: 'center',
-    paddingHorizontal: 6,
-    paddingVertical: 3,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
     minHeight: 100,
     marginRight: 0,
   },
   questionText: {
     color: '#E1E2E1',
     fontSize: 15,
-    lineHeight: 19,
-    fontFamily: 'Papyrus',
+    lineHeight: 21,
+    fontFamily: 'EagleLake-Regular',
   },
   answerBoxesContainer: {
     flexDirection: 'row',
@@ -1317,10 +1417,9 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   letterText: {
-    fontSize: 24,
+    fontSize: 32,
     color: '#1C3B4F',
-    fontFamily: 'Papyrus',
-    fontWeight: '600',
+    fontFamily: 'EagleLake-Regular',
     textShadowColor: 'rgba(255, 255, 255, 0.5)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1,
@@ -1348,7 +1447,7 @@ const styles = StyleSheet.create({
   hintReminderText: {
     color: '#FFFFFF',
     fontSize: 18,
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
     textAlign: 'center',
   },
   confettiContainer: {
@@ -1365,6 +1464,15 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 2,
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#000',
+    zIndex: 1000,
   },
 });
 

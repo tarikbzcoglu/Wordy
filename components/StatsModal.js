@@ -9,13 +9,12 @@ import {
     Text,
     View,
 } from 'react-native';
-import { getCoins, getPlayerStats } from '../utils/achievementUtils';
+import { getPlayerStats } from '../utils/achievementUtils';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const StatsModal = ({ isVisible, onClose }) => {
     const [stats, setStats] = useState(null);
-    const [coins, setCoins] = useState(0);
 
     useEffect(() => {
         if (isVisible) {
@@ -25,9 +24,7 @@ const StatsModal = ({ isVisible, onClose }) => {
 
     const loadStats = async () => {
         const playerStats = await getPlayerStats();
-        const playerCoins = await getCoins();
         setStats(playerStats);
-        setCoins(playerCoins);
     };
 
     if (!stats) return null;
@@ -76,9 +73,7 @@ const StatsModal = ({ isVisible, onClose }) => {
 
                         {/* Summary Section */}
                         <View style={styles.summaryContainer}>
-                            <View style={styles.coinBadge}>
-                                <Text style={styles.coinText}>{coins} 💰</Text>
-                            </View>
+
 
                             <View style={styles.statsGrid}>
                                 <StatCard
@@ -139,15 +134,17 @@ const StatsModal = ({ isVisible, onClose }) => {
                         <View style={[styles.sectionContainer, { marginBottom: 30 }]}>
                             <Text style={styles.sectionTitle}>Category Progress</Text>
                             <View style={styles.detailsCard}>
-                                {stats.category_levels && Object.entries(stats.category_levels).map(([cat, lvl], index, arr) => (
-                                    <View key={cat}>
-                                        <DetailRow
-                                            label={cat}
-                                            value={`Lvl ${lvl}`}
-                                        />
-                                        {index < arr.length - 1 && <View style={styles.divider} />}
-                                    </View>
-                                ))}
+                                {stats.category_levels && Object.entries(stats.category_levels)
+                                    .sort(([, lvlA], [, lvlB]) => lvlB - lvlA)
+                                    .map(([cat, lvl], index, arr) => (
+                                        <View key={cat}>
+                                            <DetailRow
+                                                label={cat}
+                                                value={`Lvl ${lvl}`}
+                                            />
+                                            {index < arr.length - 1 && <View style={styles.divider} />}
+                                        </View>
+                                    ))}
                                 {(!stats.category_levels || Object.keys(stats.category_levels).length === 0) && (
                                     <Text style={styles.emptyText}>Play levels to see progress!</Text>
                                 )}
@@ -187,9 +184,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#152C3C',
     },
     headerTitle: {
-        fontSize: 24,
+        fontSize: 26,
         color: '#FFD700',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
     closeButton: {
         padding: 5,
@@ -217,9 +214,8 @@ const styles = StyleSheet.create({
     },
     coinText: {
         color: '#FFD700',
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontFamily: 'Papyrus',
+        fontSize: 20,
+        fontFamily: 'EagleLake-Regular',
     },
     statsGrid: {
         flexDirection: 'row',
@@ -241,15 +237,17 @@ const styles = StyleSheet.create({
     statIcon: {
         fontSize: 24,
         marginBottom: 5,
+        fontFamily: 'EagleLake-Regular',
     },
     statValue: {
         fontSize: 24,
-        fontWeight: 'bold',
         color: '#FFF',
+        fontFamily: 'EagleLake-Regular',
     },
     statTitle: {
         fontSize: 12,
         color: 'rgba(255,255,255,0.8)',
+        fontFamily: 'EagleLake-Regular',
         marginTop: 2,
         textTransform: 'uppercase',
     },
@@ -271,15 +269,17 @@ const styles = StyleSheet.create({
     streakIcon: {
         fontSize: 32,
         marginRight: 15,
+        fontFamily: 'EagleLake-Regular',
     },
     streakValue: {
         fontSize: 20,
-        fontWeight: 'bold',
         color: '#FFF',
+        fontFamily: 'EagleLake-Regular',
     },
     streakSub: {
         fontSize: 12,
         color: 'rgba(255,255,255,0.8)',
+        fontFamily: 'EagleLake-Regular',
     },
     sectionContainer: {
         marginBottom: 25,
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         color: '#FFD700',
         fontSize: 18,
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         marginBottom: 10,
         marginLeft: 5,
     },
@@ -307,15 +307,17 @@ const styles = StyleSheet.create({
     detailLabel: {
         color: '#E0E0E0',
         fontSize: 16,
+        fontFamily: 'EagleLake-Regular',
     },
     detailValue: {
         color: '#FFF',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'EagleLake-Regular',
     },
     detailSubtext: {
         color: '#95A5A6',
         fontSize: 12,
+        fontFamily: 'EagleLake-Regular',
     },
     divider: {
         height: 1,
@@ -325,6 +327,7 @@ const styles = StyleSheet.create({
     emptyText: {
         color: '#95A5A6',
         textAlign: 'center',
+        fontFamily: 'EagleLake-Regular',
         fontStyle: 'italic',
         padding: 10,
     }

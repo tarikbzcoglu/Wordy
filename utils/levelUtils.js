@@ -48,12 +48,12 @@ export const calculateStarRating = (stats) => {
  */
 export const getMilestoneReward = (level) => {
     const milestones = {
-        5: { type: 'evolution', message: '🎉 Companion Evolution!', bonus: 50 },
-        10: { type: 'skin', message: '🎨 New Companion Skin!', bonus: 100 },
-        15: { type: 'evolution', message: '✨ Major Evolution!', bonus: 150 },
-        20: { type: 'achievement', message: '🏆 Master Badge Unlocked!', bonus: 200 },
-        25: { type: 'premium', message: '💎 Premium Skin Unlocked!', bonus: 250 },
-        30: { type: 'master', message: '👑 Expert Status!', bonus: 300 },
+        5: { type: 'evolution', message: '🎉 Companion Evolution!' },
+        10: { type: 'skin', message: '🎨 New Companion Skin!' },
+        15: { type: 'evolution', message: '✨ Major Evolution!' },
+        20: { type: 'achievement', message: '🏆 Master Badge Unlocked!' },
+        25: { type: 'premium', message: '💎 Premium Skin Unlocked!' },
+        30: { type: 'master', message: '👑 Expert Status!' },
     };
 
     return milestones[level] || null;
@@ -77,13 +77,4 @@ export const getDifficultyLabel = (level) => {
     return 'Master';
 };
 
-/**
- * Calculate coins earned for a level
- */
-export const calculateCoins = (level, stars) => {
-    const baseCoins = 10;
-    const levelBonus = level * 2;
-    const starBonus = stars * 10;
 
-    return baseCoins + levelBonus + starBonus;
-};

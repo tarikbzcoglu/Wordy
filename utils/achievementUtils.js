@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ACHIEVEMENTS, getAllAchievements } from './achievementData';
+import { getAllAchievements } from './achievementData';
 
+// AsyncStorage keys
 // AsyncStorage keys
 const ACHIEVEMENTS_KEY = 'unlocked_achievements';
 const STATS_KEY = 'player_stats';
-const COINS_KEY = 'player_coins';
 
 // Initialize player stats
 export const initializePlayerStats = async () => {
@@ -25,7 +25,6 @@ export const initializePlayerStats = async () => {
                 last_played_date: null,
             };
             await AsyncStorage.setItem(STATS_KEY, JSON.stringify(initialStats));
-            await AsyncStorage.setItem(COINS_KEY, '0');
         }
     } catch (error) {
         console.error('Failed to initialize player stats:', error);
@@ -145,12 +144,6 @@ export const unlockAchievement = async (achievementId) => {
         if (!unlocked.includes(achievementId)) {
             unlocked.push(achievementId);
             await AsyncStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(unlocked));
-
-            // Award coins
-            const achievement = ACHIEVEMENTS[Object.keys(ACHIEVEMENTS).find(key => ACHIEVEMENTS[key].id === achievementId)];
-            if (achievement && achievement.reward && achievement.reward.coins) {
-                await addCoins(achievement.reward.coins);
-            }
 
             return true;
         }
@@ -274,40 +267,4 @@ export const getAchievementProgress = async (achievement) => {
     }
 };
 
-// Coins management
-export const getCoins = async () => {
-    try {
-        const coins = await AsyncStorage.getItem(COINS_KEY);
-        return coins ? parseInt(coins, 10) : 0;
-    } catch (error) {
-        console.error('Failed to get coins:', error);
-        return 0;
-    }
-};
 
-export const addCoins = async (amount) => {
-    try {
-        const currentCoins = await getCoins();
-        const newCoins = currentCoins + amount;
-        await AsyncStorage.setItem(COINS_KEY, newCoins.toString());
-        return newCoins;
-    } catch (error) {
-        console.error('Failed to add coins:', error);
-        return 0;
-    }
-};
-
-export const spendCoins = async (amount) => {
-    try {
-        const currentCoins = await getCoins();
-        if (currentCoins >= amount) {
-            const newCoins = currentCoins - amount;
-            await AsyncStorage.setItem(COINS_KEY, newCoins.toString());
-            return true;
-        }
-        return false;
-    } catch (error) {
-        console.error('Failed to spend coins:', error);
-        return false;
-    }
-};

@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Switch, TouchableOpacity, Animated, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MusicContext } from '../context/MusicContext';
 import Slider from '@react-native-community/slider';
+import React, { useContext } from 'react';
+import { Animated, BackHandler, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { MusicContext } from '../context/MusicContext';
 
 const SettingsModal = ({ isVisible, onClose }) => {
   const { isMusicEnabled, setIsMusicEnabled, volume, setVolume } = useContext(MusicContext);
@@ -60,7 +60,7 @@ const SettingsModal = ({ isVisible, onClose }) => {
         <View style={styles.settingItem}>
           <Text style={styles.settingText}>Volume</Text>
           <Slider
-            style={{width: 200, height: 40}}
+            style={{ width: 200, height: 40 }}
             minimumValue={0}
             maximumValue={1}
             minimumTrackTintColor="#FFFFFF"
@@ -83,80 +83,80 @@ const SettingsModal = ({ isVisible, onClose }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        zIndex: 2000,
-      },
-      modalView: {
-        margin: 20,
-        backgroundColor: '#1C3B4F',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-      },
-      buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginTop: 20,
-      },
-      backButton: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        backgroundColor: '#4A7E8E',
-      },
-      backButtonText: {
-        color: '#E1E2E1', // light_gray
-        fontSize: 18,
-        fontFamily: 'Papyrus',
-      },
-      quitButton: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        backgroundColor: '#FF6B6B',
-      },
-      quitButtonText: {
-        color: 'white',
-        fontSize: 18,
-        fontFamily: 'Papyrus',
-      },
-      headerTitle: {
-        color: '#E1E2E1', // light_gray
-        fontSize: 24,
-        fontFamily: 'Papyrus',
-        marginBottom: 20,
-      },
-      settingItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 15,
-        width: '100%',
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(225, 226, 225, 0.1)', // light_gray with opacity
-      },
-      settingText: {
-        color: '#E1E2E1', // light_gray
-        fontSize: 18,
-        fontFamily: 'Papyrus',
-      },
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    zIndex: 2000,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: '#1C3B4F',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 20,
+  },
+  backButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#4A7E8E',
+  },
+  backButtonText: {
+    color: '#E1E2E1', // light_gray
+    fontSize: 18,
+    fontFamily: 'EagleLake-Regular',
+  },
+  quitButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#FF6B6B',
+  },
+  quitButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'EagleLake-Regular',
+  },
+  headerTitle: {
+    color: '#E1E2E1', // light_gray
+    fontSize: 26,
+    fontFamily: 'EagleLake-Regular',
+    marginBottom: 20,
+  },
+  settingItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(225, 226, 225, 0.1)', // light_gray with opacity
+  },
+  settingText: {
+    color: '#E1E2E1', // light_gray
+    fontSize: 18,
+    fontFamily: 'EagleLake-Regular',
+  },
 });
 
 export default SettingsModal;

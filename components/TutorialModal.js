@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     skipButtonText: {
         color: '#B0BEC5',
         fontSize: 14,
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
     animationContainer: {
         marginBottom: 20,
@@ -272,8 +272,8 @@ const styles = StyleSheet.create({
     },
     titleText: {
         color: '#FFD700',
-        fontSize: 26,
-        fontFamily: 'Papyrus',
+        fontSize: 28,
+        fontFamily: 'EagleLake-Regular',
         marginBottom: 15,
         textAlign: 'center',
         textShadowColor: 'rgba(255, 215, 0, 0.3)',
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     descriptionText: {
         color: '#E1E2E1',
         fontSize: 16,
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         textAlign: 'center',
         lineHeight: 24,
         paddingHorizontal: 10,
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#E1E2E1',
         fontSize: 18,
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
 });
 

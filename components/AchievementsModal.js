@@ -85,11 +85,7 @@ const AchievementsModal = ({ isVisible, onClose }) => {
                         )}
 
                         {/* Reward */}
-                        {isUnlocked && achievement.reward && achievement.reward.coins && (
-                            <Text style={styles.reward}>
-                                +{achievement.reward.coins} 💰
-                            </Text>
-                        )}
+
                     </View>
                 </LinearGradient>
             </View>
@@ -98,10 +94,20 @@ const AchievementsModal = ({ isVisible, onClose }) => {
 
     const getFilteredAchievements = () => {
         const all = getAllAchievements();
-        if (selectedCategory === 'all') {
-            return all;
+        let filtered = all;
+        if (selectedCategory !== 'all') {
+            filtered = all.filter(a => a.category === selectedCategory);
         }
-        return all.filter(a => a.category === selectedCategory);
+
+        // Sort: Unlocked first
+        return filtered.sort((a, b) => {
+            const isAUnlocked = unlockedAchievements.includes(a.id);
+            const isBUnlocked = unlockedAchievements.includes(b.id);
+
+            if (isAUnlocked && !isBUnlocked) return -1;
+            if (!isAUnlocked && isBUnlocked) return 1;
+            return 0;
+        });
     };
 
     const getCategoryStats = (category) => {
@@ -198,9 +204,9 @@ const styles = StyleSheet.create({
         borderBottomColor: '#68919E',
     },
     headerTitle: {
-        fontSize: 28,
+        fontSize: 30,
         color: '#FFD700',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
     closeButton: {
         width: 36,
@@ -231,7 +237,7 @@ const styles = StyleSheet.create({
     categoryTabText: {
         fontSize: 14,
         color: '#B0BEC5',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
     categoryTabTextActive: {
         color: '#FFD700',
@@ -274,15 +280,15 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     achievementTitle: {
-        fontSize: 16,
+        fontSize: 18,
         color: '#E1E2E1',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         marginBottom: 4,
     },
     achievementDescription: {
         fontSize: 13,
         color: '#B0BEC5',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
     },
     lockedText: {
         opacity: 0.6,
@@ -308,13 +314,13 @@ const styles = StyleSheet.create({
     progressText: {
         fontSize: 12,
         color: '#FFD700',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         minWidth: 40,
     },
     reward: {
         fontSize: 13,
         color: '#FFD700',
-        fontFamily: 'Papyrus',
+        fontFamily: 'EagleLake-Regular',
         marginTop: 4,
     },
 });

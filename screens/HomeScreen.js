@@ -3,10 +3,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, BackHandler, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import AchievementsModal from '../components/AchievementsModal';
-import DailyChallengeModal from '../components/DailyChallengeModal';
+import CustomAlert from '../components/CustomAlert';
+
 import SettingsModal from '../components/SettingsModal';
+import StatsModal from '../components/StatsModal';
 import TutorialModal from '../components/TutorialModal';
 import { MusicContext } from '../context/MusicContext'; // Import MusicContext
 import { useSound } from '../hooks/useSound';
@@ -182,7 +184,8 @@ export default function HomeScreen({ navigation }) {
   const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
   const [isTutorialVisible, setTutorialVisible] = useState(false);
   const [isAchievementsModalVisible, setAchievementsModalVisible] = useState(false);
-  const [isDailyModalVisible, setDailyModalVisible] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({ isVisible: false, message: '', buttonText: null, onButtonPress: null, cancelButtonText: null, onCancelButtonPress: null });
+
   const [isStatsModalVisible, setStatsModalVisible] = useState(false);
   const { isMusicEnabled, setIsMusicEnabled } = useContext(MusicContext); // Use MusicContext
 
@@ -201,7 +204,7 @@ export default function HomeScreen({ navigation }) {
   const settingsButtonScale = useRef(new Animated.Value(1)).current;
   const exitButtonScale = useRef(new Animated.Value(1)).current;
   const achievementsButtonScale = useRef(new Animated.Value(1)).current;
-  const dailyButtonScale = useRef(new Animated.Value(1)).current;
+
 
   // Music playback logic is now in MusicContext, so remove related states and effects
   // const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -283,10 +286,17 @@ export default function HomeScreen({ navigation }) {
 
   const handleExit = () => {
     playTapSound();
-    Alert.alert('Exit', 'Are you sure you want to exit?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'OK', onPress: () => { } },
-    ]);
+    setAlertInfo({
+      isVisible: true,
+      message: 'Are you sure you want to exit Wordy?',
+      buttonText: 'Yes',
+      onButtonPress: () => {
+        setAlertInfo({ ...alertInfo, isVisible: false });
+        BackHandler.exitApp();
+      },
+      cancelButtonText: 'No',
+      onCancelButtonPress: () => setAlertInfo({ ...alertInfo, isVisible: false }),
+    });
   };
 
   const handleCategoryPress = (category) => {
@@ -384,7 +394,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#4A7E8E', '#2C5F6F', '#4A7E8E']}
+              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -395,7 +405,7 @@ export default function HomeScreen({ navigation }) {
                 loop
                 style={styles.buttonIcon}
               />
-              <Text style={styles.buttonText}>Play</Text>
+              <Text style={[styles.buttonText, { fontFamily: 'EagleLake-Regular' }]}>Play</Text>
             </LinearGradient>
           </Pressable>
         </Animated.View>
@@ -439,39 +449,7 @@ export default function HomeScreen({ navigation }) {
           </Pressable>
         </Animated.View>
 
-        <Animated.View style={{ transform: [{ scale: dailyButtonScale }] }}>
-          <Pressable
-            style={styles.button}
-            onPress={() => {
-              playTapSound();
-              setDailyModalVisible(true);
-            }}
-            onPressIn={() => {
-              Animated.spring(dailyButtonScale, {
-                toValue: 0.95,
-                useNativeDriver: true,
-              }).start();
-            }}
-            onPressOut={() => {
-              Animated.spring(dailyButtonScale, {
-                toValue: 1,
-                friction: 3,
-                tension: 100,
-                useNativeDriver: true,
-              }).start();
-            }}
-          >
-            <LinearGradient
-              colors={['#8E44AD', '#5E3370', '#8E44AD']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientButton}
-            >
-              <Text style={styles.buttonIcon}>📅</Text>
-              <Text style={styles.buttonText}>Daily Missions</Text>
-            </LinearGradient>
-          </Pressable>
-        </Animated.View>
+
 
         <Animated.View style={{ transform: [{ scale: settingsButtonScale }] }}>
           <Pressable
@@ -493,7 +471,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#3D6B7D', '#2C5F6F', '#3D6B7D']}
+              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -529,7 +507,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#676D69', '#4A5A57', '#676D69']}
+              colors={['#2C5564', '#1F3F4D', '#2C5564']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={[styles.gradientButton, { paddingVertical: 10, paddingHorizontal: 25 }]}
@@ -671,13 +649,19 @@ export default function HomeScreen({ navigation }) {
         isVisible={isAchievementsModalVisible}
         onClose={() => setAchievementsModalVisible(false)}
       />
-      <DailyChallengeModal
-        isVisible={isDailyModalVisible}
-        onClose={() => setDailyModalVisible(false)}
-      />
+
       <StatsModal
         isVisible={isStatsModalVisible}
         onClose={() => setStatsModalVisible(false)}
+      />
+      <CustomAlert
+        message={alertInfo.message}
+        isVisible={alertInfo.isVisible}
+        buttonText={alertInfo.buttonText}
+        onButtonPress={alertInfo.onButtonPress}
+        cancelButtonText={alertInfo.cancelButtonText}
+        onCancelButtonPress={alertInfo.onCancelButtonPress}
+        onBackdropPress={() => setAlertInfo({ ...alertInfo, isVisible: false })}
       />
     </ImageBackground>
   );
@@ -719,13 +703,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   lottieAnimation: {
-    width: 200,
-    height: 200,
+    width: 133,
+    height: 133,
   },
   owlPressable: {
     position: 'absolute',
-    top: -20, // Moved up significantly
+    top: 105,
     alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 100,
     width: 200,
     height: 200,
@@ -757,8 +743,9 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 32,
-    color: '#E1E2E1',
-    fontFamily: 'Papyrus',
+    color: '#e6ca12ff',
+    fontFamily: 'EagleLake-Regular',
+    paddingBottom: 1,
   },
   menu: {
     width: '100%',
@@ -790,14 +777,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#E1E2E1',
-    fontSize: 24,
-    fontFamily: 'Papyrus',
+    fontSize: 26,
+    fontFamily: 'EagleLake-Regular',
     marginLeft: -5,
   },
   categoryButtonText: {
     color: '#E1E2E1',
-    fontSize: 19,
-    fontFamily: 'Papyrus',
+    fontSize: 20,
+    fontFamily: 'EagleLake-Regular',
   },
   categoryCard: {
     borderRadius: 15,
@@ -833,7 +820,7 @@ const styles = StyleSheet.create({
   levelText: {
     color: '#FFD700',
     fontSize: 13,
-    fontFamily: 'Papyrus',
+    fontFamily: 'Goldman-Regular',
     marginTop: 3,
   },
   progressBarContainer: {
@@ -860,8 +847,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#FFA500',
-    fontSize: 18,
-    fontFamily: 'Papyrus',
+    color: '#dcc40cff',
+    fontSize: 20,
+    fontFamily: 'EagleLake-Regular',
   },
 });

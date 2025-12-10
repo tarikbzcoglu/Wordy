@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity, Pressable } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect, useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const CustomAlert = ({ message, isVisible, buttonText, onButtonPress, onBackdropPress }) => {
+const CustomAlert = ({ message, isVisible, buttonText, onButtonPress, cancelButtonText, onCancelButtonPress, onBackdropPress }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -20,11 +21,32 @@ const CustomAlert = ({ message, isVisible, buttonText, onButtonPress, onBackdrop
       <Pressable style={StyleSheet.absoluteFill} onPress={onBackdropPress} />
       <View style={styles.alertBox}>
         <Text style={styles.messageText}>{message}</Text>
-        {buttonText && onButtonPress && (
-          <TouchableOpacity style={styles.button} onPress={onButtonPress}>
-            <Text style={styles.buttonText}>{buttonText}</Text>
-          </TouchableOpacity>
-        )}
+        <View style={styles.buttonRow}>
+          {cancelButtonText && onCancelButtonPress && (
+            <TouchableOpacity style={[styles.buttonContainer, { marginRight: 10 }]} onPress={onCancelButtonPress}>
+              <LinearGradient
+                colors={['#7f8c8d', '#95a5a6']}
+                style={styles.button}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+              >
+                <Text style={styles.buttonText}>{cancelButtonText}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+          {buttonText && onButtonPress && (
+            <TouchableOpacity style={styles.buttonContainer} onPress={onButtonPress}>
+              <LinearGradient
+                colors={['#4CAF50', '#45a049']}
+                style={styles.button}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+              >
+                <Text style={styles.buttonText}>{buttonText}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </Animated.View>
   );
@@ -63,21 +85,34 @@ const styles = StyleSheet.create({
   messageText: {
     color: '#d9d0c1', // Light text matching the theme
     fontSize: 18,
-    fontFamily: 'Papyrus',
+    fontFamily: 'EagleLake-Regular',
     textAlign: 'center',
     lineHeight: 24,
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  buttonContainer: {
+    flex: 1,
+    marginTop: 20,
+    borderRadius: 25,
+    overflow: 'hidden',
+  },
   button: {
-    backgroundColor: '#4CAF50', // A green color for the button
     paddingVertical: 12,
     paddingHorizontal: 25,
-    borderRadius: 25,
-    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontFamily: 'Papyrus',
+    fontSize: 18,
+    fontFamily: 'EagleLake-Regular',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
 });
 
