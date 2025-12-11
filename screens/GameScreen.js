@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -5,16 +6,18 @@ import { decode } from 'html-entities';
 import LottieView from 'lottie-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, ImageBackground, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAdSize, GAMBannerAd, RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import AchievementToast from '../components/AchievementToast';
 import CustomAlert from '../components/CustomAlert';
+import GameOverModal from '../components/GameOverModal';
 import Keyboard from '../components/Keyboard';
 import LevelCompleteModal from '../components/LevelCompleteModal';
 import ProgressBar from '../components/ProgressBar';
 import SettingsModal from '../components/SettingsModal';
+import TutorialModal from '../components/TutorialModal';
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
-import { checkAchievements, initializePlayerStats, updatePlayerStats } from '../utils/achievementUtils';
+import { checkAchievements, updatePlayerStats } from '../utils/achievementUtils';
 import { calculateStarRating, getQuestionCount, isMilestone } from '../utils/levelUtils';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -22,6 +25,28 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios'
   ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
   : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
+
+const bannerAdUnitId = __DEV__ ? TestIds.BANNER : (Platform.OS === 'ios'
+  ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
+  : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
+
+const ENDLESS_TUTORIAL_STEPS = [
+  {
+    title: 'Endless Mode ♾️',
+    description: 'Survive as long as you can! Questions get harder as you go.',
+    animation: require('../assets/images/rocket.json'),
+  },
+  {
+    title: 'Watch Your Hearts ❤️',
+    description: 'You have 5 hearts. Mistakes cost hearts!',
+    animation: require('../assets/images/gameover.json'),
+  },
+  {
+    title: 'High Scores 🏆',
+    description: 'Beat your best score and climb the leaderboard. Good luck!',
+    animation: require('../assets/images/milestone.json'),
+  },
+];
 
 const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorrect, onPress, disabled }) => {
   const scaleAnim = useRef(new Animated.Value(0)).current;
@@ -47,61 +72,66 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
 
   useEffect(() => {
     if (status === 'revealed' || status === 'hint') {
-      // Epic reveal: double shimmer + elastic bounce + rainbow glow
+      // Enhanced reveal: smoother shimmer + prominent glow + bounce
       Animated.parallel([
-        // First shimmer sweep
+        // Main shimmer sweep (faster and more prominent)
         Animated.timing(shimmerAnim, {
           toValue: 1,
-          duration: 600,
+          duration: 500,
           useNativeDriver: true,
         }),
-        // Second shimmer (delayed)
+        // Second shimmer (closer timing for better effect)
         Animated.sequence([
-          Animated.delay(150),
+          Animated.delay(100),
           Animated.timing(shimmer2Anim, {
             toValue: 1,
-            duration: 500,
+            duration: 450,
             useNativeDriver: true,
           }),
         ]),
-        // Rainbow glow pulse
+        // Rainbow glow pulse (longer and more visible)
         Animated.sequence([
           Animated.timing(rainbowAnim, {
             toValue: 1,
+            duration: 250,
+            useNativeDriver: true,
+          }),
+          Animated.timing(rainbowAnim, {
+            toValue: 0,
+            duration: 350,
+            useNativeDriver: true,
+          }),
+        ]),
+        // Stronger glow pulse
+        Animated.sequence([
+          Animated.timing(glowAnim, {
+            toValue: 1,
+            duration: 250,
+            useNativeDriver: true,
+          }),
+          Animated.timing(glowAnim, {
+            toValue: 0.3,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(glowAnim, {
+            toValue: 0,
             duration: 200,
             useNativeDriver: true,
           }),
-          Animated.timing(rainbowAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-          }),
         ]),
-        // Subtle glow pulse
-        Animated.sequence([
-          Animated.timing(glowAnim, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(glowAnim, {
-            toValue: 0,
-            duration: 400,
-            useNativeDriver: true,
-          }),
-        ]),
-        // Elastic bounce sequence
+        // Smooth bounce
         Animated.sequence([
           Animated.spring(bounceAnim, {
             toValue: 1,
-            friction: 3,
-            tension: 150,
+            friction: 4,
+            tension: 180,
             useNativeDriver: true,
           }),
           Animated.spring(bounceAnim, {
             toValue: 0,
-            friction: 5,
-            tension: 100,
+            friction: 6,
+            tension: 120,
             useNativeDriver: true,
           }),
         ]),
@@ -128,8 +158,8 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
   });
 
   const glowOpacity = glowAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 0.4]
+    inputRange: [0, 0.3, 1],
+    outputRange: [0, 0.5, 0.6]
   });
 
   const rainbowOpacity = rainbowAnim.interpolate({
@@ -183,7 +213,7 @@ const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorre
             position: 'absolute',
             width: width * 0.6,
             height: height * 2,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             transform: [
               { translateX: shimmerTranslate },
               { rotate: '25deg' }
@@ -239,6 +269,12 @@ const GameScreen = ({ route, navigation }) => {
     startTime: null,
   });
   const [starRating, setStarRating] = useState(0);
+
+  const isEndlessMode = category === 'Mixed Categories';
+  const [mistakesRemaining, setMistakesRemaining] = useState(5);
+  const [endlessScore, setEndlessScore] = useState(0);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
   const [achievementToast, setAchievementToast] = useState({
     isVisible: false,
     achievement: null,
@@ -246,6 +282,7 @@ const GameScreen = ({ route, navigation }) => {
 
   const hintReminderAnim = useRef(new Animated.Value(0)).current;
   const hintButtonPulseAnim = useRef(new Animated.Value(1)).current;
+  const scoreScaleAnim = useRef(new Animated.Value(1)).current;
   const confettiAnims = useRef([...Array(20)].map(() => ({
     x: new Animated.Value(0),
     y: new Animated.Value(0),
@@ -264,7 +301,12 @@ const GameScreen = ({ route, navigation }) => {
     setShakeAnims(questions.map(() => new Animated.Value(0)));
   }, [questions.length]);
 
+  const activeQuestionRef = useRef(null);
+  const isProcessingAttempt = useRef(false);
+  const [isEndlessTutorialVisible, setIsEndlessTutorialVisible] = useState(false);
+
   const adRef = useRef(null);
+  const adRewardType = useRef('hint'); // 'hint' or 'heart'
   const [adLoaded, setAdLoaded] = useState(false);
 
   // Refs for level and category to use in effects without triggering them
@@ -276,6 +318,24 @@ const GameScreen = ({ route, navigation }) => {
     categoryRef.current = category;
   }, [level, category]);
 
+  useEffect(() => {
+    if (endlessScore > 0) {
+      Animated.sequence([
+        Animated.timing(scoreScaleAnim, {
+          toValue: 1.3,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+        Animated.spring(scoreScaleAnim, {
+          toValue: 1,
+          friction: 4,
+          tension: 40,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [endlessScore]);
+
   const playCorrectSound = useSound(require('../assets/sounds/correct.mp3'));
   const playWrongSound = useSound(require('../assets/sounds/wrong.mp3'));
   const playLevelUpSound = useSound(require('../assets/sounds/levelup.mp3'));
@@ -286,10 +346,82 @@ const GameScreen = ({ route, navigation }) => {
   const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
   const getFirstTimeHintKey = (cat) => `first_time_hint_${cat.replace(/ & /g, '_')}`;
 
-  // Initialize player stats on mount
-  useEffect(() => {
-    initializePlayerStats();
-  }, []);
+  // Load endless mode questions (mixed from all categories)
+  const loadEndlessQuestions = useCallback(() => {
+    // Get all questions except from Karışık category itself and limit length <= 11
+    const allQuestions = questionsData.filter(q =>
+      q.category !== 'Mixed Categories' &&
+      decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').length <= 11
+    );
+
+    // Group questions by answer length to ensure UI consistency
+    const questionsByLength = {};
+    allQuestions.forEach(q => {
+      const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
+      if (!questionsByLength[len]) {
+        questionsByLength[len] = [];
+      }
+      questionsByLength[len].push(q);
+    });
+
+    const MIN_QUESTIONS = 5;
+    const availableLengths = Object.keys(questionsByLength)
+      .map(Number)
+      .filter(len => questionsByLength[len].length >= MIN_QUESTIONS);
+
+    let targetQuestions = [];
+    let targetLength = 0;
+
+    // Strategy 1: Pick a random length with enough questions
+    if (availableLengths.length > 0) {
+      targetLength = availableLengths[Math.floor(Math.random() * availableLengths.length)];
+      targetQuestions = questionsByLength[targetLength];
+    }
+    // Strategy 2: Fallback to ANY length that has questions (even directly < 5)
+    else {
+      const allLengths = Object.keys(questionsByLength).map(Number);
+      if (allLengths.length > 0) {
+        // Pick the length with the most questions
+        targetLength = allLengths.sort((a, b) => questionsByLength[b].length - questionsByLength[a].length)[0];
+        targetQuestions = questionsByLength[targetLength];
+      }
+    }
+
+    // Strategy 3: Ultimate Fallback - Just take any 5 unique questions mixed
+    if (!targetQuestions || targetQuestions.length === 0) {
+      targetQuestions = [...allQuestions];
+      // Note: This might result in mixed lengths, but it's better than empty screen.
+    }
+
+    // Shuffle and select random questions
+    const shuffled = [...targetQuestions].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, getQuestionCount(level));
+
+    const decodedQuestions = selected.map(q => ({
+      ...q,
+      question: decode(q.question),
+      text: decode(q.question), // Required for rendering
+      correct_answer: decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase(),
+    }));
+
+    setQuestions(decodedQuestions);
+    setAnswers(decodedQuestions.map(q =>
+      Array(q.correct_answer.length).fill({ letter: '', status: '' })
+    ));
+    setCorrectlyAnswered(Array(decodedQuestions.length).fill(false));
+    setActiveQuestionIndex(null);
+    setActiveInputIndex(null);
+
+    // Initialize level stats
+    setLevelStats({
+      questionsAnswered: 0,
+      totalQuestions: decodedQuestions.length,
+      hintsUsed: 0,
+      mistakes: 0,
+      startTime: Date.now(),
+    });
+  }, [level]);
+
 
   useEffect(() => {
     const loadSavedLevel = async () => {
@@ -369,7 +501,7 @@ const GameScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (hintsLeft === 0) {
       const timer = setTimeout(() => {
-        showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showRewardedAd);
+        showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showHintRewardAd);
       }, 1500);
       return () => clearTimeout(timer);
     }
@@ -395,7 +527,10 @@ const GameScreen = ({ route, navigation }) => {
       return;
     }
 
-    const allCategoryQuestions = questionsData.filter(q => q.category === category);
+    const allCategoryQuestions = questionsData.filter(q =>
+      q.category === category &&
+      decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').length <= 11
+    );
 
     // Group questions by answer length
     const questionsByLength = {};
@@ -491,8 +626,12 @@ const GameScreen = ({ route, navigation }) => {
   }, [category]);
 
   useEffect(() => {
-    loadLevel(level);
-  }, [level, loadLevel]);
+    if (isEndlessMode) {
+      loadEndlessQuestions();
+    } else {
+      loadLevel(level);
+    }
+  }, [level, loadLevel, isEndlessMode, loadEndlessQuestions]);
 
   // Animate overlay when modal appears
   useEffect(() => {
@@ -515,8 +654,13 @@ const GameScreen = ({ route, navigation }) => {
     const rewardedAd = RewardedAd.createForAdRequest(adUnitId, { requestNonPersonalizedAdsOnly: true });
     const unsubscribeLoaded = rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => setAdLoaded(true));
     const unsubscribeEarned = rewardedAd.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
-      showAlert(`You earned ${reward.amount} hint!`);
-      setHintsLeft(prev => prev + reward.amount);
+      if (adRewardType.current === 'heart') {
+        setMistakesRemaining(prev => Math.min(prev + 1, 5));
+        showAlert('You recovered 1 Heart! ❤️');
+      } else {
+        showAlert(`You earned ${reward.amount} hint!`);
+        setHintsLeft(prev => prev + reward.amount);
+      }
     });
     const unsubscribeClosed = rewardedAd.addAdEventListener('closed', () => {
       setAdLoaded(false);
@@ -540,9 +684,46 @@ const GameScreen = ({ route, navigation }) => {
     }
   };
 
+  const showHintRewardAd = () => {
+    adRewardType.current = 'hint';
+    showRewardedAd();
+  };
+
+  const showHeartRewardAd = () => {
+    adRewardType.current = 'heart';
+    showRewardedAd();
+  };
+
+  const handleEndlessTutorialComplete = async () => {
+    setIsEndlessTutorialVisible(false);
+    await AsyncStorage.setItem('endless_tutorial_shown', 'true');
+  };
+
+  useEffect(() => {
+    const checkEndlessTutorial = async () => {
+      if (isEndlessMode) {
+        const shown = await AsyncStorage.getItem('endless_tutorial_shown');
+        if (!shown) {
+          setIsEndlessTutorialVisible(true);
+        }
+      }
+    };
+    checkEndlessTutorial();
+  }, [isEndlessMode]);
+
   useEffect(() => {
     if (correctlyAnswered.length > 0 && correctlyAnswered.every(Boolean)) {
       playLevelUpSound();
+
+      if (isEndlessMode) {
+        // Endless Mode: Auto-load next batch after short delay
+        setShowConfetti(true);
+        setTimeout(() => {
+          loadEndlessQuestions();
+          setShowConfetti(false);
+        }, 1200);
+        return;
+      }
       const currentLevel = levelRef.current;
       const currentCategory = categoryRef.current;
       const newLevel = currentLevel + 1;
@@ -695,6 +876,7 @@ const GameScreen = ({ route, navigation }) => {
     if (userAnswer === correctAnswer) {
       playCorrectSound();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      if (isEndlessMode) setEndlessScore(s => s + 10);
       let newCorrectlyAnswered = [...correctlyAnswered];
       let newAnswers = JSON.parse(JSON.stringify(answers));
       let queue = [questionIndex];
@@ -730,9 +912,37 @@ const GameScreen = ({ route, navigation }) => {
       }
       setCorrectlyAnswered(newCorrectlyAnswered);
       setAnswers(newAnswers);
+      isProcessingAttempt.current = false;
     } else if (userAnswer.length === correctAnswer.length) {
       playWrongSound();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+
+      if (isEndlessMode) {
+        setMistakesRemaining(prev => {
+          const newVal = prev - 1;
+          if (newVal <= 0) {
+            // Game Over
+            const saveHighScore = async () => {
+              try {
+                const storedHigh = await AsyncStorage.getItem('high_score_endless');
+                const high = storedHigh ? parseInt(storedHigh, 10) : 0;
+                if (endlessScore > high) {
+                  await AsyncStorage.setItem('high_score_endless', endlessScore.toString());
+                  setIsNewHighScore(true);
+                } else {
+                  setIsNewHighScore(false);
+                }
+              } catch (e) {
+                console.error('Failed to save high score', e);
+              }
+              setIsGameOver(true);
+            };
+            saveHighScore();
+            return 0;
+          }
+          return newVal;
+        });
+      }
 
       // Track mistake
       setLevelStats(prev => ({
@@ -805,12 +1015,13 @@ const GameScreen = ({ route, navigation }) => {
           setHintReminder({ isVisible: false, message: '' });
           setHighlightHintButton(false);
         }, 3000);
+        isProcessingAttempt.current = false;
       }, 1000);
     }
   };
 
   const handleAnswerBoxPress = (questionIndex, inputIndex) => {
-    if (correctlyAnswered[questionIndex] || (answers[questionIndex] && (answers[questionIndex][inputIndex].status === 'revealed' || answers[questionIndex][inputIndex].status === 'hint'))) return;
+    if (isProcessingAttempt.current || correctlyAnswered[questionIndex] || (answers[questionIndex] && (answers[questionIndex][inputIndex].status === 'revealed' || answers[questionIndex][inputIndex].status === 'hint'))) return;
     playTapSound();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setActiveQuestionIndex(questionIndex);
@@ -818,7 +1029,7 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleKeyPress = (key) => {
-    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
+    if (isProcessingAttempt.current || activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
     playTapSound();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
@@ -827,6 +1038,7 @@ const GameScreen = ({ route, navigation }) => {
     setAnswers(newAnswers);
     const currentQuestion = questions[activeQuestionIndex];
     if (newAnswers[activeQuestionIndex].every(cell => cell.letter !== '')) {
+      isProcessingAttempt.current = true;
       checkAnswer(activeQuestionIndex);
       setActiveQuestionIndex(null);
       setActiveInputIndex(null);
@@ -845,7 +1057,7 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleBackspace = () => {
-    if (activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
+    if (isProcessingAttempt.current || activeQuestionIndex === null || activeInputIndex === null || correctlyAnswered[activeQuestionIndex] || (answers[activeQuestionIndex][activeInputIndex] && (answers[activeQuestionIndex][activeInputIndex].status === 'revealed' || answers[activeQuestionIndex][activeInputIndex].status === 'hint'))) return;
     playTapSound();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const newAnswers = [...answers];
@@ -881,9 +1093,30 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handleBackToMenu = () => {
-    playTapSound();
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    navigation.popToTop();
+    setIsLevelComplete(false);
+    setIsGameOver(false);
+    navigation.goBack();
+  };
+
+  const handlePlayAgain = () => {
+    setEndlessScore(0);
+    setMistakesRemaining(5);
+    setIsGameOver(false);
+    setQuestions([]); // Clear current questions
+
+    // Reset stats
+    setLevelStats({
+      questionsAnswered: 0,
+      totalQuestions: 0,
+      hintsUsed: 0,
+      mistakes: 0,
+      startTime: Date.now(),
+    });
+
+    // Slight delay to allow modal to close before loading new questions
+    setTimeout(() => {
+      loadEndlessQuestions();
+    }, 300);
   };
 
   const questionColumnWidth = SCREEN_WIDTH * 0.3;
@@ -916,6 +1149,17 @@ const GameScreen = ({ route, navigation }) => {
     <>
       <ImageBackground source={require('../assets/images/background3.jpeg')} style={{ flex: 1 }}>
         <View style={styles.container}>
+          {/* Banner Ad - Very Top */}
+          <View style={styles.bannerAdContainer}>
+            <GAMBannerAd
+              unitId={bannerAdUnitId}
+              sizes={[BannerAdSize.ANCHORED_ADAPTIVE_BANNER]}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: true,
+              }}
+            />
+          </View>
+
           <View style={styles.header}>
             <Pressable
               style={styles.backButtonModern}
@@ -930,6 +1174,9 @@ const GameScreen = ({ route, navigation }) => {
                 </View>
               )}
             </Pressable>
+
+
+            {/* Header Info - Conditional for Endless vs Classic */}
             <View style={styles.planetInfo}>
               <LottieView
                 source={getHeaderOwlSource()}
@@ -937,13 +1184,42 @@ const GameScreen = ({ route, navigation }) => {
                 loop
                 style={styles.headerOwlAnimation}
               />
-              <Text style={styles.levelText}>{category} - Level {level}</Text>
-              <ProgressBar
-                current={correctlyAnswered.filter(Boolean).length}
-                total={questions.length}
-                style={{ width: 160 }}
-              />
+
+              {isEndlessMode ? (
+                <>
+                  <Animated.Text style={[styles.scoreText, { transform: [{ scale: scoreScaleAnim }] }]}>
+                    Score: {endlessScore}
+                  </Animated.Text>
+                  <View style={styles.heartsContainer}>
+                    {[...Array(5)].map((_, i) => (
+                      <AntDesign
+                        key={i}
+                        name="heart"
+                        size={20}
+                        color={i < mistakesRemaining ? "#FF5252" : "rgba(255, 82, 82, 0.3)"}
+                        style={styles.heartIcon}
+                      />
+                    ))}
+                    {mistakesRemaining < 5 && (
+                      <Pressable onPress={showHeartRewardAd} style={{ marginLeft: 6 }}>
+                        <AntDesign name="pluscircle" size={18} color="#4CAF50" />
+                      </Pressable>
+                    )}
+                  </View>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.levelText}>{category} - Level {level}</Text>
+                  <ProgressBar
+                    current={correctlyAnswered.filter(Boolean).length}
+                    total={questions.length}
+                    style={{ width: 160 }}
+                  />
+                </>
+              )}
             </View>
+
+
             <Animated.View
               style={[
                 styles.hintButtonContainer,
@@ -997,8 +1273,6 @@ const GameScreen = ({ route, navigation }) => {
               )}
             </Pressable>
           </View>
-
-
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
@@ -1080,6 +1354,13 @@ const GameScreen = ({ route, navigation }) => {
             onNextLevel={handleNextLevel}
             onBackToMenu={handleBackToMenu}
           />
+          <GameOverModal
+            isVisible={isGameOver}
+            score={endlessScore}
+            isNewHighScore={isNewHighScore}
+            onPlayAgain={handlePlayAgain}
+            onBackToMenu={handleBackToMenu}
+          />
           {hintReminder.isVisible && (
             <Animated.View
               style={[
@@ -1101,6 +1382,12 @@ const GameScreen = ({ route, navigation }) => {
           <SettingsModal
             isVisible={isSettingsModalVisible}
             onClose={() => setSettingsModalVisible(false)}
+          />
+
+          <TutorialModal
+            isVisible={isEndlessTutorialVisible}
+            onComplete={handleEndlessTutorialComplete}
+            steps={ENDLESS_TUTORIAL_STEPS}
           />
 
           {/* Confetti Celebration */}
@@ -1131,7 +1418,7 @@ const GameScreen = ({ route, navigation }) => {
             </View>
           )}
         </View>
-      </ImageBackground>
+      </ImageBackground >
       <AchievementToast
         achievement={achievementToast.achievement}
         isVisible={achievementToast.isVisible}
@@ -1152,7 +1439,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 2,
-    paddingTop: 25,
+    paddingTop: 0,
     backgroundColor: '#1C3B4F',
     borderBottomWidth: 1,
     borderBottomColor: '#4A7E8E',
@@ -1298,6 +1585,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  endlessHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingHorizontal: 10,
+  },
+  mistakeCounter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  heartIcon: {
+    fontSize: 24,
+  },
+  scoreDisplay: {
+    backgroundColor: 'rgba(74, 126, 142, 0.8)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 215, 0, 0.4)',
+  },
+
   planetName: {
     color: '#E1E2E1',
     fontSize: 20,
@@ -1317,6 +1628,27 @@ const styles = StyleSheet.create({
     marginRight: 4,
     marginLeft: 2,
 
+  },
+  scoreText: {
+    color: '#FFD700',
+    fontSize: 22,
+    fontFamily: 'EagleLake-Regular',
+    // fontWeight removed to fix font rendering
+    marginBottom: 4,
+    marginRight: 35,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  heartsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 35,
+    gap: 4,
+  },
+  heartIcon: {
+    fontSize: 16,
   },
   menu: {
     position: 'absolute',
@@ -1339,7 +1671,7 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 4,
     paddingVertical: 4,
-    paddingTop: 8,
+    paddingTop: 1,
   },
   questionAnswerRow: {
     flexDirection: 'row',
@@ -1352,13 +1684,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 4,
     paddingVertical: 2,
-    minHeight: 100,
+    minHeight: 92,
     marginRight: 0,
   },
   questionText: {
     color: '#E1E2E1',
     fontSize: 15,
-    lineHeight: 21,
+    lineHeight: 19,
     fontFamily: 'EagleLake-Regular',
   },
   answerBoxesContainer: {
@@ -1473,6 +1805,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: '#000',
     zIndex: 1000,
+  },
+  bannerAdContainer: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#1C3B4F',
+    paddingVertical: 0,
+    borderBottomWidth: 0,
+    borderBottomColor: '#4A7E8E',
   },
 });
 

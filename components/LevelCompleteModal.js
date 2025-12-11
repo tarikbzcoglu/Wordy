@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import React from 'react';
@@ -132,32 +133,32 @@ const LevelCompleteModal = ({
         </View>
 
         {/* Star Rating */}
-        {stars > 0 && (
-          <View style={styles.starsContainer}>
-            {[1, 2, 3].map((index) => (
-              <Animated.Text
-                key={index}
-                style={[
-                  styles.star,
-                  {
-                    opacity: starAnims[index - 1],
-                    transform: [{ scale: starAnims[index - 1] }],
-                  },
-                ]}
-              >
-                {index <= stars ? '⭐' : '☆'}
-              </Animated.Text>
-            ))}
-          </View>
-        )}
+        <View style={styles.starsContainer}>
+          {[1, 2, 3].map((index) => (
+            <Animated.View
+              key={index}
+              style={[
+                styles.starWrapper,
+                index <= stars && {
+                  transform: [{ scale: starAnims[index - 1] }],
+                },
+              ]}
+            >
+              {/* Render empty star background for all positions */}
+              <AntDesign name="star" size={50} color="rgba(255, 215, 0, 0.2)" style={styles.starEmpty} />
+
+              {/* Overlay filled star if earned */}
+              {index <= stars && (
+                <AntDesign name="star" size={50} color="#FFD700" style={styles.starFilled} />
+              )}
+            </Animated.View>
+          ))}
+        </View>
 
         {/* Performance Stats */}
         {totalQuestions > 0 && (
           <View style={styles.statsContainer}>
-            <View style={styles.statRow}>
-              <Text style={styles.statLabel}>Correct:</Text>
-              <Text style={styles.statValue}>{questionsAnswered}/{totalQuestions}</Text>
-            </View>
+
             {hintsUsed > 0 && (
               <View style={styles.statRow}>
                 <Text style={styles.statLabel}>Hints Used:</Text>
@@ -290,10 +291,26 @@ const styles = StyleSheet.create({
   starsContainer: {
     flexDirection: 'row',
     marginBottom: 20,
+    justifyContent: 'center',
+    gap: 8,
   },
-  star: {
-    fontSize: 45,
-    marginHorizontal: 6,
+  starWrapper: {
+    position: 'relative',
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  starEmpty: {
+    position: 'absolute',
+  },
+  starFilled: {
+    position: 'absolute',
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 5,
   },
   statsContainer: {
     width: '100%',

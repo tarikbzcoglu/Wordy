@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import React, { useContext } from 'react';
-import { Animated, BackHandler, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, BackHandler, Pressable, StyleSheet, Switch, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { MusicContext } from '../context/MusicContext';
 
 const SettingsModal = ({ isVisible, onClose }) => {
@@ -45,39 +45,43 @@ const SettingsModal = ({ isVisible, onClose }) => {
 
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-      <View style={styles.modalView}>
-        <Text style={styles.headerTitle}>Settings</Text>
-        <View style={styles.settingItem}>
-          <Text style={styles.settingText}>Background Music</Text>
-          <Switch
-            trackColor={{ false: '#767577', true: '#4A7E8E' }}
-            thumbColor={isMusicEnabled ? '#68919E' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleMusic}
-            value={isMusicEnabled}
-          />
-        </View>
-        <View style={styles.settingItem}>
-          <Text style={styles.settingText}>Volume</Text>
-          <Slider
-            style={{ width: 200, height: 40 }}
-            minimumValue={0}
-            maximumValue={1}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-            value={volume}
-            onValueChange={setVolume}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.backButton} onPress={onClose}>
-            <Text style={styles.backButtonText}>Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quitButton} onPress={handleQuit}>
-            <Text style={styles.quitButtonText}>Quit</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <Pressable style={styles.overlay} onPress={onClose}>
+        <TouchableWithoutFeedback>
+          <View style={styles.modalView}>
+            <Text style={styles.headerTitle}>Settings</Text>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>Background Music</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#4A7E8E' }}
+                thumbColor={isMusicEnabled ? '#68919E' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleMusic}
+                value={isMusicEnabled}
+              />
+            </View>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>Volume</Text>
+              <Slider
+                style={{ width: 200, height: 40 }}
+                minimumValue={0}
+                maximumValue={1}
+                minimumTrackTintColor="#FFFFFF"
+                maximumTrackTintColor="#000000"
+                value={volume}
+                onValueChange={setVolume}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.backButton} onPress={onClose}>
+                <Text style={styles.backButtonText}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.quitButton} onPress={handleQuit}>
+                <Text style={styles.quitButtonText}>Quit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Pressable>
     </Animated.View>
   );
 };
@@ -89,10 +93,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     zIndex: 2000,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   modalView: {
     margin: 20,

@@ -37,7 +37,7 @@ const TUTORIAL_STEPS = [
     },
 ];
 
-const TutorialModal = ({ isVisible, onComplete }) => {
+const TutorialModal = ({ isVisible, onComplete, steps = TUTORIAL_STEPS }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
@@ -84,7 +84,7 @@ const TutorialModal = ({ isVisible, onComplete }) => {
     }
 
     const handleNext = () => {
-        if (currentStep < TUTORIAL_STEPS.length - 1) {
+        if (currentStep < steps.length - 1) {
             setCurrentStep(currentStep + 1);
         } else {
             onComplete();
@@ -101,8 +101,8 @@ const TutorialModal = ({ isVisible, onComplete }) => {
         }
     };
 
-    const step = TUTORIAL_STEPS[currentStep];
-    const isLastStep = currentStep === TUTORIAL_STEPS.length - 1;
+    const step = steps[currentStep];
+    const isLastStep = currentStep === steps.length - 1;
 
     return (
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
@@ -163,14 +163,14 @@ const TutorialModal = ({ isVisible, onComplete }) => {
                         },
                     ]}
                 >
-                    <Text style={styles.emoji}>{step.emoji}</Text>
+                    {step.emoji && <Text style={styles.emoji}>{step.emoji}</Text>}
                     <Text style={styles.titleText}>{step.title}</Text>
                     <Text style={styles.descriptionText}>{step.description}</Text>
                 </Animated.View>
 
                 {/* Progress Dots */}
                 <View style={styles.dotsContainer}>
-                    {TUTORIAL_STEPS.map((_, index) => (
+                    {steps.map((_, index) => (
                         <View
                             key={index}
                             style={[
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     },
     emoji: {
         fontSize: 50,
-        marginBottom: 15,
+        marginBottom: 10,
     },
     titleText: {
         color: '#FFD700',

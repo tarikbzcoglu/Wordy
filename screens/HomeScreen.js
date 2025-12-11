@@ -1,9 +1,11 @@
+import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Animated, BackHandler, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, BackHandler, ImageBackground, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BannerAdSize, GAMBannerAd, TestIds } from 'react-native-google-mobile-ads';
 import AchievementsModal from '../components/AchievementsModal';
 import CustomAlert from '../components/CustomAlert';
 
@@ -13,6 +15,10 @@ import TutorialModal from '../components/TutorialModal';
 import { MusicContext } from '../context/MusicContext'; // Import MusicContext
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
+
+const bannerAdUnitId = __DEV__ ? TestIds.BANNER : (Platform.OS === 'ios'
+  ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
+  : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
 
 const PULSING_CIRCLE_ANIMATION = {
   "v": "5.7.4",
@@ -147,21 +153,23 @@ const historyAndCivilizationAnimation = require('../assets/images/history&civili
 const moviesAndPopCultureAnimation = require('../assets/images/movies&popculture.json');
 const scienceAndNatureAnimation = require('../assets/images/science&nature.json');
 const travelAndGeographyAnimation = require('../assets/images/travel&geography.json');
+const rocketAnimation = require('../assets/images/rocket.json');
 
 const categoryAnimationsMap = {
-  'Art & Literature': artAndLiteratureAnimation,
-  'Food & Culture': foodsAndCultureAnimation,
-  'Games & Technology': gamesAndTechnologyAnimation,
+  'Mixed Categories': rocketAnimation,
+  'Planet Earth': planetEarthAnimation,
   'General Knowledge': generalKnowledgeAnimation,
+  'Science & Nature': scienceAndNatureAnimation,
+  'Food & Culture': foodsAndCultureAnimation,
   'History & Civilization': historyAndCivilizationAnimation,
   'Movies & Pop Culture': moviesAndPopCultureAnimation,
-  'Planet Earth': planetEarthAnimation,
-  'Science & Nature': scienceAndNatureAnimation,
+  'Art & Literature': artAndLiteratureAnimation,
+  'Games & Technology': gamesAndTechnologyAnimation,
   'Travel & Geography': travelAndGeographyAnimation,
 };
 
 const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
-const allCategories = [...new Set(questionsData.map(q => q.category))].sort((a, b) => {
+const allCategories = ['Mixed Categories', ...[...new Set(questionsData.map(q => q.category))].sort((a, b) => {
   const order = {
     'Planet Earth': 0,
     'General Knowledge': 1,
@@ -170,17 +178,18 @@ const allCategories = [...new Set(questionsData.map(q => q.category))].sort((a, 
     'History & Civilization': 4,
     'Movies & Pop Culture': 5,
     'Art & Literature': 6,
-    'Travel & Geography': 7,
-    'Games & Technology': 8,
+    'Games & Technology': 7,
+    'Travel & Geography': 8,
   };
   const aOrder = order.hasOwnProperty(a) ? order[a] : 1000;
   const bOrder = order.hasOwnProperty(b) ? order[b] : 1000;
   return aOrder - bOrder;
-});
+})];
 
 export default function HomeScreen({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
   const [categoryLevels, setCategoryLevels] = useState({});
+  const [endlessHighScore, setEndlessHighScore] = useState(0);
   const [isSettingsModalVisible, setSettingsModalVisible] = useState(false);
   const [isTutorialVisible, setTutorialVisible] = useState(false);
   const [isAchievementsModalVisible, setAchievementsModalVisible] = useState(false);
@@ -206,6 +215,24 @@ export default function HomeScreen({ navigation }) {
   const achievementsButtonScale = useRef(new Animated.Value(1)).current;
 
 
+  const scrollIndicatorAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(scrollIndicatorAnim, {
+          toValue: 10,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scrollIndicatorAnim, {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [scrollIndicatorAnim]);
   // Music playback logic is now in MusicContext, so remove related states and effects
   // const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   // const [soundObject, setSoundObject] = useState(null);
@@ -224,6 +251,9 @@ export default function HomeScreen({ navigation }) {
             levels[category] = savedLevel ? parseInt(savedLevel, 10) : 1;
           }
           setCategoryLevels(levels);
+
+          const savedHighScore = await AsyncStorage.getItem('high_score_endless');
+          setEndlessHighScore(savedHighScore ? parseInt(savedHighScore, 10) : 0);
 
           // Check if this is the first time opening the app
           const tutorialShown = await AsyncStorage.getItem('tutorial_shown');
@@ -321,26 +351,33 @@ export default function HomeScreen({ navigation }) {
   const renderCategories = () => (
     <View style={styles.categoryMenuContainer}>
       <Text style={styles.subtitle}>Select a Category</Text>
-      <ScrollView style={styles.scrollView} scrollEnabled={false}>
+      <ScrollView style={styles.scrollView} scrollEnabled={true} indicatorStyle="white">
         {allCategories.map(category => {
-          const currentLevel = categoryLevels[category] || 1;
-          const progress = (currentLevel / 50) * 100;
+          const isEndlessMode = category === 'Mixed Categories';
+          const currentLevel = isEndlessMode ? 0 : (categoryLevels[category] || 1);
+          const progress = isEndlessMode ? 0 : (currentLevel / 50) * 100;
 
           return (
             <Pressable
               key={category}
               style={({ pressed }) => [
                 styles.categoryCard,
+                isEndlessMode && styles.endlessModeCard,
                 { transform: [{ scale: pressed ? 0.97 : 1 }] }
               ]}
               onPress={() => handleCategoryPress(category)}
             >
               <LinearGradient
-                colors={['#4A7E8E', '#2C5F6F']}
+                colors={isEndlessMode ? ['#CD7F32', '#A0522D', '#8B4513'] : ['#4A7E8E', '#2C5F6F']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.categoryGradient}
               >
+                {isEndlessMode && (
+                  <View style={styles.endlessBadge}>
+                    <Text style={styles.endlessBadgeText}>ENDLESS</Text>
+                  </View>
+                )}
                 <LottieView
                   source={categoryAnimationsMap[category] || PULSING_CIRCLE_ANIMATION}
                   autoPlay
@@ -349,16 +386,23 @@ export default function HomeScreen({ navigation }) {
                 />
                 <View style={styles.categoryButtonTextContainer}>
                   <Text style={styles.categoryButtonText}>{category}</Text>
-                  <Text style={styles.levelText}>Level {currentLevel}/50</Text>
-                  <View style={styles.progressBarContainer}>
-                    <View style={[styles.progressBar, { width: `${progress}%` }]} />
-                  </View>
+                  {!isEndlessMode && <Text style={styles.levelText}>Level {currentLevel}/50</Text>}
+                  {isEndlessMode && <Text style={styles.endlessSubtext}>High Score: {endlessHighScore}</Text>}
+                  {!isEndlessMode && (
+                    <View style={styles.progressBarContainer}>
+                      <View style={[styles.progressBar, { width: `${progress}%` }]} />
+                    </View>
+                  )}
                 </View>
               </LinearGradient>
             </Pressable>
           );
         })}
+
       </ScrollView>
+      <Animated.View style={{ transform: [{ translateY: scrollIndicatorAnim }], marginBottom: 10 }}>
+        <AntDesign name="down" size={24} color="#FFF" style={{ opacity: 0.8 }} />
+      </Animated.View>
       <Pressable style={({ pressed }) => [
         styles.backButton,
         { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
@@ -601,6 +645,17 @@ export default function HomeScreen({ navigation }) {
     <ImageBackground source={image} style={styles.backgroundImage}>
       <View style={styles.overlay} />
 
+      {/* Banner Ad - Top */}
+      <View style={styles.bannerAdContainer}>
+        <GAMBannerAd
+          unitId={bannerAdUnitId}
+          sizes={[BannerAdSize.ANCHORED_ADAPTIVE_BANNER]}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
+
       {/* Profile Button */}
       {!showCategories && (
         <Pressable
@@ -727,9 +782,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '80%',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     zIndex: 2, // Place the menu above the Lottie animation
-    paddingVertical: 20,
+    paddingTop: 0,
+    paddingBottom: 5,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -746,6 +802,7 @@ const styles = StyleSheet.create({
     color: '#e6ca12ff',
     fontFamily: 'EagleLake-Regular',
     paddingBottom: 1,
+    marginTop: -10,
   },
   menu: {
     width: '100%',
@@ -788,13 +845,41 @@ const styles = StyleSheet.create({
   },
   categoryCard: {
     borderRadius: 15,
-    marginBottom: 4,
+    marginBottom: 5,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3,
     elevation: 5,
+  },
+  endlessModeCard: {
+    shadowColor: '#FFD700',
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  endlessBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#FF4500',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    zIndex: 10,
+  },
+  endlessBadgeText: {
+    color: '#FFF',
+    fontSize: 10,
+    fontWeight: 'bold',
+    fontFamily: 'EagleLake-Regular',
+  },
+  endlessSubtext: {
+    color: '#FFF',
+    fontSize: 14,
+    fontFamily: 'EagleLake-Regular',
+    marginTop: 2,
   },
   categoryGradient: {
     flexDirection: 'row',
@@ -845,10 +930,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 20,
     alignItems: 'center',
+    marginBottom: 50,
+    marginTop: 20,
   },
   backButtonText: {
     color: '#dcc40cff',
     fontSize: 20,
     fontFamily: 'EagleLake-Regular',
+  },
+  bannerAdContainer: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: 'rgba(28, 59, 79, 0.9)',
+    paddingVertical: 2,
   },
 });

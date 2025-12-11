@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import {
@@ -24,6 +25,9 @@ const StatsModal = ({ isVisible, onClose }) => {
 
     const loadStats = async () => {
         const playerStats = await getPlayerStats();
+        // Fetch endless high score
+        const endlessHigh = await AsyncStorage.getItem('high_score_endless');
+        playerStats.high_score_endless = endlessHigh ? parseInt(endlessHigh, 10) : 0;
         setStats(playerStats);
     };
 
@@ -107,6 +111,11 @@ const StatsModal = ({ isVisible, onClose }) => {
                         <View style={styles.sectionContainer}>
                             <Text style={styles.sectionTitle}>Performance</Text>
                             <View style={styles.detailsCard}>
+                                <DetailRow
+                                    label="Endless Mode High Score"
+                                    value={stats.high_score_endless}
+                                />
+                                <View style={styles.divider} />
                                 <DetailRow
                                     label="Perfect Levels (3 Stars)"
                                     value={stats.perfect_levels}
