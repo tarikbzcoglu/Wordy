@@ -158,18 +158,28 @@ const LevelCompleteModal = ({
         {/* Performance Stats */}
         {totalQuestions > 0 && (
           <View style={styles.statsContainer}>
-
-            {hintsUsed > 0 && (
-              <View style={styles.statRow}>
-                <Text style={styles.statLabel}>Hints Used:</Text>
-                <Text style={styles.statValue}>{hintsUsed}</Text>
+            {hintsUsed === 0 && mistakes === 0 ? (
+              // Perfect performance message
+              <View style={styles.flawlessContainer}>
+                <Text style={styles.flawlessText}>✨ Flawless! ✨</Text>
+                <Text style={styles.flawlessSubtext}>Perfect Performance!</Text>
               </View>
-            )}
-            {mistakes > 0 && (
-              <View style={styles.statRow}>
-                <Text style={styles.statLabel}>Mistakes:</Text>
-                <Text style={styles.statValue}>{mistakes}</Text>
-              </View>
+            ) : (
+              // Show mistakes/hints as before
+              <>
+                {hintsUsed > 0 && (
+                  <View style={styles.statRow}>
+                    <Text style={styles.statLabel}>Hints Used:</Text>
+                    <Text style={styles.statValue}>{hintsUsed}</Text>
+                  </View>
+                )}
+                {mistakes > 0 && (
+                  <View style={styles.statRow}>
+                    <Text style={styles.statLabel}>Mistakes:</Text>
+                    <Text style={styles.statValue}>{mistakes}</Text>
+                  </View>
+                )}
+              </>
             )}
           </View>
         )}
@@ -227,7 +237,7 @@ const LevelCompleteModal = ({
             }}
           >
             <LinearGradient
-              colors={['#808080', '#A9A9A9']}
+              colors={['#c63a3aff', '#A9A9A9']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -333,6 +343,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#E1E2E1',
     fontFamily: 'EagleLake-Regular',
+  },
+  flawlessContainer: {
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  flawlessText: {
+    fontSize: 28,
+    color: '#FFD700',
+    fontFamily: 'EagleLake-Regular',
+    textShadowColor: 'rgba(255, 215, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
+  },
+  flawlessSubtext: {
+    fontSize: 16,
+    color: '#4CAF50',
+    fontFamily: 'EagleLake-Regular',
+    marginTop: 4,
   },
   rewardsContainer: {
     width: '100%',

@@ -426,14 +426,11 @@ const GameScreen = ({ route, navigation }) => {
   useEffect(() => {
     const loadSavedLevel = async () => {
       const storageKey = getLevelStorageKey(category);
-      console.log(`Loading level for key: ${storageKey}`);
       try {
         const savedLevel = await AsyncStorage.getItem(storageKey);
-        console.log(`Loaded level value: ${savedLevel}`);
         if (savedLevel !== null) {
           setLevel(parseInt(savedLevel, 10));
         } else {
-          console.log('No level saved, defaulting to 1.');
           setLevel(1);
           // Show first-time hint reminder
           const firstTimeHintShown = await AsyncStorage.getItem(getFirstTimeHintKey(category));
@@ -565,10 +562,37 @@ const GameScreen = ({ route, navigation }) => {
       availableLengths = [availableLengths[0]];
     }
 
-    // Determine target length for this level
-    // Cycle through lengths: Level 1->Len A, Level 2->Len B, ...
-    const lengthIndex = (levelToLoad - 1) % availableLengths.length;
-    const targetLength = availableLengths[lengthIndex];
+    // Progressive difficulty: map level to answer length
+    const getTargetLengthForLevel = (level, lengths) => {
+      if (lengths.length === 0) return null;
+
+      // Divide levels into tiers for progressive difficulty
+      const tier1Max = 10;  // Levels 1-10: shortest answers (3-5 letters)
+      const tier2Max = 30;  // Levels 11-30: medium answers (6-8 letters)
+      // Levels 31-50: longest answers (9-11 letters)
+
+      const shortLengths = lengths.filter(l => l <= 5);
+      const mediumLengths = lengths.filter(l => l >= 6 && l <= 8);
+      const longLengths = lengths.filter(l => l >= 9);
+
+      let targetPool;
+      if (level <= tier1Max && shortLengths.length > 0) {
+        targetPool = shortLengths;
+      } else if (level <= tier2Max && mediumLengths.length > 0) {
+        targetPool = mediumLengths;
+      } else if (longLengths.length > 0) {
+        targetPool = longLengths;
+      } else {
+        // Fallback: use all available lengths
+        targetPool = lengths;
+      }
+
+      // Cycle through the appropriate pool
+      const poolIndex = (level - 1) % targetPool.length;
+      return targetPool[poolIndex];
+    };
+
+    const targetLength = getTargetLengthForLevel(levelToLoad, availableLengths);
     const targetQuestions = questionsByLength[targetLength];
 
     const questionCount = getQuestionCount(levelToLoad);
@@ -745,7 +769,6 @@ const GameScreen = ({ route, navigation }) => {
       const saveProgress = async () => {
         try {
           const storageKey = getLevelStorageKey(currentCategory);
-          console.log(`Level ${currentLevel} completed! Saving next level ${newLevel} for key: ${storageKey}`);
           await AsyncStorage.setItem(storageKey, newLevel.toString());
 
           // Save star rating
@@ -836,7 +859,7 @@ const GameScreen = ({ route, navigation }) => {
     playTapSound();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (hintsLeft <= 0) {
-      showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showRewardedAd);
+      showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showHintRewardAd);
       return;
     }
     const unansweredQuestionIndices = questions.map((_, index) => index).filter(index => !correctlyAnswered[index]);
@@ -868,7 +891,7 @@ const GameScreen = ({ route, navigation }) => {
     }
   };
 
-  const checkAnswer = (questionIndex) => {
+  const checkAnswer = async (questionIndex) => {
     if (correctlyAnswered[questionIndex]) return;
     const userAnswer = answers[questionIndex].map(cell => cell.letter).join('');
     const correctAnswer = questions[questionIndex].correct_answer;
@@ -918,37 +941,38 @@ const GameScreen = ({ route, navigation }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 
       if (isEndlessMode) {
-        setMistakesRemaining(prev => {
-          const newVal = prev - 1;
-          if (newVal <= 0) {
-            // Game Over
-            const saveHighScore = async () => {
-              try {
-                const storedHigh = await AsyncStorage.getItem('high_score_endless');
-                const high = storedHigh ? parseInt(storedHigh, 10) : 0;
-                if (endlessScore > high) {
-                  await AsyncStorage.setItem('high_score_endless', endlessScore.toString());
-                  setIsNewHighScore(true);
-                } else {
-                  setIsNewHighScore(false);
-                }
-              } catch (e) {
-                console.error('Failed to save high score', e);
-              }
-              setIsGameOver(true);
-            };
-            saveHighScore();
-            return 0;
-          }
-          return newVal;
-        });
-      }
+        const newMistakes = mistakesRemaining - 1;
+        setMistakesRemaining(newMistakes);
 
-      // Track mistake
-      setLevelStats(prev => ({
-        ...prev,
-        mistakes: prev.mistakes + 1,
-      }));
+        // Show warning when hearts drop to 1
+        if (newMistakes === 1) {
+          showAlert('💔 Last heart! Watch an ad to recover hearts.', 'Watch Ad', showHeartRewardAd);
+        }
+
+        if (newMistakes === 0) {
+          const currentHighScore = await AsyncStorage.getItem('high_score_endless');
+          const highScore = currentHighScore ? parseInt(currentHighScore, 10) : 0;
+          const isNewHigh = endlessScore > highScore;
+          if (isNewHigh) {
+            await AsyncStorage.setItem('high_score_endless', endlessScore.toString());
+            setIsNewHighScore(true);
+          }
+          // Save stats before game over
+          await updatePlayerStats({
+            category: 'karışık',
+            level: endlessScore,
+          });
+          // Removed playTimeUpSound() - no sound on game over
+          setIsGameOver(true);
+          return;
+        }
+      } else {
+        // Track mistake for non-endless mode
+        setLevelStats(prev => ({
+          ...prev,
+          mistakes: prev.mistakes + 1,
+        }));
+      }
 
       // Trigger shake animation - subtle and controlled
       if (shakeAnims[questionIndex]) {
@@ -1099,10 +1123,19 @@ const GameScreen = ({ route, navigation }) => {
   };
 
   const handlePlayAgain = () => {
+    // Reset processing flag to allow cell clicks
+    isProcessingAttempt.current = false;
+
     setEndlessScore(0);
     setMistakesRemaining(5);
     setIsGameOver(false);
+    setIsNewHighScore(false);
     setQuestions([]); // Clear current questions
+    setAnswers([]); // Clear answers
+    setCorrectlyAnswered([]); // Clear correctly answered
+    setActiveQuestionIndex(null); // Reset active question
+    setActiveInputIndex(null); // Reset active input
+    setHintsLeft(3); // Reset hints
 
     // Reset stats
     setLevelStats({
@@ -1201,8 +1234,11 @@ const GameScreen = ({ route, navigation }) => {
                       />
                     ))}
                     {mistakesRemaining < 5 && (
-                      <Pressable onPress={showHeartRewardAd} style={{ marginLeft: 6 }}>
-                        <AntDesign name="pluscircle" size={18} color="#4CAF50" />
+                      <Pressable
+                        onPress={showHeartRewardAd}
+                        style={styles.adButton}
+                      >
+                        <Text style={styles.adButtonText}>Ad</Text>
                       </Pressable>
                     )}
                   </View>
@@ -1649,6 +1685,20 @@ const styles = StyleSheet.create({
   },
   heartIcon: {
     fontSize: 16,
+  },
+  adButton: {
+    marginLeft: 6,
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#66BB6A',
+  },
+  adButtonText: {
+    color: '#FFF',
+    fontSize: 11,
+    fontFamily: 'EagleLake-Regular',
   },
   menu: {
     position: 'absolute',

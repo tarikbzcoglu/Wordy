@@ -669,7 +669,12 @@ export default function HomeScreen({ navigation }) {
             colors={['#2C3E50', '#34495E']}
             style={styles.profileButtonGradient}
           >
-            <Text style={styles.profileButtonIcon}>📊</Text>
+            <LottieView
+              source={require('../assets/images/stats.json')}
+              autoPlay
+              loop
+              style={styles.statsAnimation}
+            />
           </LinearGradient>
         </Pressable>
       )}
@@ -735,7 +740,7 @@ const styles = StyleSheet.create({
   },
   profileButton: {
     position: 'absolute',
-    top: 50,
+    top: 80,
     right: 20,
     zIndex: 110,
     borderRadius: 25,
@@ -756,6 +761,10 @@ const styles = StyleSheet.create({
   },
   profileButtonIcon: {
     fontSize: 24,
+  },
+  statsAnimation: {
+    width: 40,
+    height: 40,
   },
   lottieAnimation: {
     width: 133,
@@ -802,7 +811,7 @@ const styles = StyleSheet.create({
     color: '#e6ca12ff',
     fontFamily: 'EagleLake-Regular',
     paddingBottom: 1,
-    marginTop: -10,
+    marginTop: -4,
   },
   menu: {
     width: '100%',
@@ -861,23 +870,22 @@ const styles = StyleSheet.create({
   },
   endlessBadge: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: 22,
+    right: 6,
     backgroundColor: '#FF4500',
-    paddingHorizontal: 8,
+    paddingHorizontal: 3,
     paddingVertical: 3,
     borderRadius: 10,
     zIndex: 10,
   },
   endlessBadgeText: {
     color: '#FFF',
-    fontSize: 10,
-    fontWeight: 'bold',
+    fontSize: 11,
     fontFamily: 'EagleLake-Regular',
   },
   endlessSubtext: {
-    color: '#FFF',
-    fontSize: 14,
+    color: '#FFD700',
+    fontSize: 15,
     fontFamily: 'EagleLake-Regular',
     marginTop: 2,
   },
@@ -905,7 +913,7 @@ const styles = StyleSheet.create({
   levelText: {
     color: '#FFD700',
     fontSize: 13,
-    fontFamily: 'Goldman-Regular',
+    fontFamily: 'EagleLake-Regular',
     marginTop: 3,
   },
   progressBarContainer: {

@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import LottieView from 'lottie-react-native';
 import { useEffect, useState } from 'react';
 import {
     Dimensions,
@@ -33,15 +34,20 @@ const StatsModal = ({ isVisible, onClose }) => {
 
     if (!stats) return null;
 
-    const StatCard = ({ title, value, icon, color }) => (
+    const StatCard = ({ title, value, iconSource, color, iconStyle, titleStyle, valueStyle }) => (
         <View style={styles.statCardContainer}>
             <LinearGradient
                 colors={color}
                 style={styles.statCard}
             >
-                <Text style={styles.statIcon}>{icon}</Text>
-                <Text style={styles.statValue}>{value}</Text>
-                <Text style={styles.statTitle}>{title}</Text>
+                <LottieView
+                    source={iconSource}
+                    autoPlay
+                    loop
+                    style={iconStyle || styles.statIcon}
+                />
+                <Text style={[styles.statValue, valueStyle]}>{value}</Text>
+                <Text style={[styles.statTitle, titleStyle]}>{title}</Text>
             </LinearGradient>
         </View>
     );
@@ -67,7 +73,15 @@ const StatsModal = ({ isVisible, onClose }) => {
                 <View style={styles.modalContainer}>
                     {/* Header */}
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>📊 Player Profile</Text>
+                        <View style={styles.headerTitleContainer}>
+                            <LottieView
+                                source={require('../assets/images/stats.json')}
+                                autoPlay
+                                loop
+                                style={styles.headerStatsAnimation}
+                            />
+                            <Text style={styles.headerTitle}>Player Profile</Text>
+                        </View>
                         <Pressable onPress={onClose} style={styles.closeButton}>
                             <Text style={styles.closeButtonText}>✕</Text>
                         </Pressable>
@@ -83,13 +97,16 @@ const StatsModal = ({ isVisible, onClose }) => {
                                 <StatCard
                                     title="Levels"
                                     value={stats.total_levels_completed}
-                                    icon="🏆"
+                                    iconSource={require('../assets/images/Achievements.json')}
                                     color={['#3498DB', '#2980B9']}
                                 />
                                 <StatCard
                                     title="Stars"
                                     value={stats.total_stars}
-                                    icon="⭐"
+                                    iconSource={require('../assets/images/star.json')}
+                                    iconStyle={styles.starIconLarge}
+                                    valueStyle={{ marginTop: -25 }}
+                                    titleStyle={{ marginTop: 0 }}
                                     color={['#F1C40F', '#F39C12']}
                                 />
                             </View>
@@ -97,7 +114,12 @@ const StatsModal = ({ isVisible, onClose }) => {
                             <View style={styles.streakContainer}>
                                 <LinearGradient colors={['#E74C3C', '#C0392B']} style={styles.streakCard}>
                                     <View style={styles.streakInfo}>
-                                        <Text style={styles.streakIcon}>🔥</Text>
+                                        <LottieView
+                                            source={require('../assets/images/streak.json')}
+                                            autoPlay
+                                            loop
+                                            style={styles.streakIcon}
+                                        />
                                         <View>
                                             <Text style={styles.streakValue}>{stats.current_streak} Day Streak</Text>
                                             <Text style={styles.streakSub}>Best: {stats.longest_streak || stats.current_streak} days</Text>
@@ -143,17 +165,29 @@ const StatsModal = ({ isVisible, onClose }) => {
                         <View style={[styles.sectionContainer, { marginBottom: 30 }]}>
                             <Text style={styles.sectionTitle}>Category Progress</Text>
                             <View style={styles.detailsCard}>
-                                {stats.category_levels && Object.entries(stats.category_levels)
-                                    .sort(([, lvlA], [, lvlB]) => lvlB - lvlA)
-                                    .map(([cat, lvl], index, arr) => (
+                                {stats.category_levels && (() => {
+                                    const entries = Object.entries(stats.category_levels);
+                                    // Separate endless mode from other categories
+                                    const endlessEntry = entries.find(([cat]) => cat === 'karışık');
+                                    const otherEntries = entries
+                                        .filter(([cat]) => cat !== 'karışık')
+                                        .sort(([, lvlA], [, lvlB]) => lvlB - lvlA);
+
+                                    // Combine with endless mode first
+                                    const sortedEntries = endlessEntry
+                                        ? [endlessEntry, ...otherEntries]
+                                        : otherEntries;
+
+                                    return sortedEntries.map(([cat, lvl], index) => (
                                         <View key={cat}>
                                             <DetailRow
-                                                label={cat}
-                                                value={`Lvl ${lvl}`}
+                                                label={cat === 'karışık' ? 'Endless Mode' : cat}
+                                                value={cat === 'karışık' ? `High Score: ${lvl}` : `Lvl ${lvl}`}
                                             />
-                                            {index < arr.length - 1 && <View style={styles.divider} />}
+                                            {index < sortedEntries.length - 1 && <View style={styles.divider} />}
                                         </View>
-                                    ))}
+                                    ));
+                                })()}
                                 {(!stats.category_levels || Object.keys(stats.category_levels).length === 0) && (
                                     <Text style={styles.emptyText}>Play levels to see progress!</Text>
                                 )}
@@ -191,6 +225,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#68919E',
         backgroundColor: '#152C3C',
+    },
+    headerTitleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    headerStatsAnimation: {
+        width: 32,
+        height: 32,
     },
     headerTitle: {
         fontSize: 26,
@@ -238,15 +281,21 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     statCard: {
-        padding: 15,
+        padding: 0,
         alignItems: 'center',
-        justifyContent: 'center',
-        height: 100,
+        justifyContent: 'flex-start',
+        height: 122,
+        gap: 8,
     },
     statIcon: {
-        fontSize: 24,
-        marginBottom: 5,
-        fontFamily: 'EagleLake-Regular',
+        width: 36,
+        height: 36,
+        marginTop: 10,
+    },
+    starIconLarge: {
+        width: 100,
+        height: 100,
+        marginTop: -30,
     },
     statValue: {
         fontSize: 24,
@@ -266,7 +315,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     streakCard: {
-        padding: 15,
+        padding: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -276,9 +325,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     streakIcon: {
-        fontSize: 32,
+        width: 40,
+        height: 40,
         marginRight: 15,
-        fontFamily: 'EagleLake-Regular',
     },
     streakValue: {
         fontSize: 20,
@@ -287,7 +336,7 @@ const styles = StyleSheet.create({
     },
     streakSub: {
         fontSize: 12,
-        color: 'rgba(255,255,255,0.8)',
+        color: '#FFD700',
         fontFamily: 'EagleLake-Regular',
     },
     sectionContainer: {

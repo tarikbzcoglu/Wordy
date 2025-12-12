@@ -12,7 +12,7 @@ export const useSound = (soundFile) => {
         console.log('Error replaying sound', e);
       }
     } else {
-      console.log('Sound not loaded yet');
+      // Sound not loaded yet, skip silently
     }
   }, [sound]);
 
