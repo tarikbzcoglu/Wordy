@@ -16,16 +16,17 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     justifyContent: 'center',
     paddingVertical: 5,
+    paddingBottom: 20,
     backgroundColor: 'rgba(28, 59, 79, 0.3)',
   },
   keyText: {
-    fontSize: 20,
+    fontSize: 22,
     color: '#E1E2E1',
     fontFamily: 'EagleLake-Regular',
   },
   keyRow: {
     flexDirection: 'row',
-    marginBottom: 5,
+    marginBottom: 10,
     justifyContent: 'center',
     paddingHorizontal: keyboardPaddingHorizontal,
   },
@@ -154,6 +155,30 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
         borderBottomRightRadius: 4,
         paddingBottom: 2,
       },
+      goldKey: {
+        width: 40,
+        height: 40,
+        margin: keyMargin,
+        backgroundColor: '#b22711ff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
+      },
+      goldKeyShadow: {
+        backgroundColor: '#7b1a07ff',
+        width: 40,
+        height: 40,
+        margin: keyMargin,
+        marginLeft: 15,
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
+        paddingBottom: 2,
+      },
     };
   }, [screenWidth]);
 
@@ -184,28 +209,20 @@ export default function Keyboard({ onKeyPress, onBackspace, onEnter, screenWidth
           shadowStyle={dynamicStyles.keyShadow}
         />
       ))}
+      {rowIndex === 2 && (
+        <KeyButton
+          letter="⌫"
+          onPress={handleBackspace}
+          keyStyle={dynamicStyles.goldKey}
+          shadowStyle={dynamicStyles.goldKeyShadow}
+        />
+      )}
     </View>
-  )), [dynamicStyles.key, dynamicStyles.keyShadow, handleKeyPress]);
+  )), [dynamicStyles.key, dynamicStyles.keyShadow, dynamicStyles.goldKey, dynamicStyles.goldKeyShadow, handleKeyPress, handleBackspace]);
 
   return (
     <View style={styles.keyboardContainer}>
       {keyRows}
-      <View style={styles.keyRow}>
-        <KeyButton
-          letter="ENTER"
-          onPress={handleEnter}
-          keyStyle={dynamicStyles.wideKey}
-          shadowStyle={dynamicStyles.wideShadow}
-          isWide={true}
-        />
-        <KeyButton
-          letter="⌫"
-          onPress={handleBackspace}
-          keyStyle={dynamicStyles.wideKey}
-          shadowStyle={dynamicStyles.wideShadow}
-          isWide={true}
-        />
-      </View>
     </View>
   );
 }

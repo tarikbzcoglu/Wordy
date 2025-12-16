@@ -343,6 +343,19 @@ const GameScreen = ({ route, navigation }) => {
   const playAchievementSound = useSound(require('../assets/sounds/achievement.mp3'));
   const playTapSound = useSound(require('../assets/sounds/screentap.mp3'));
 
+  const handleAchievementCheck = async (delay = 0, temporaryStats = null) => {
+    const newAchievements = await checkAchievements(temporaryStats);
+    if (newAchievements && newAchievements.length > 0) {
+      setTimeout(() => {
+        playAchievementSound();
+        setAchievementToast({
+          isVisible: true,
+          achievement: newAchievements[0],
+        });
+      }, delay);
+    }
+  };
+
   const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
   const getFirstTimeHintKey = (cat) => `first_time_hint_${cat.replace(/ & /g, '_')}`;
 
@@ -830,17 +843,7 @@ const GameScreen = ({ route, navigation }) => {
 
 
         // Check for new achievements
-        const newAchievements = await checkAchievements();
-        if (newAchievements.length > 0) {
-          playAchievementSound();
-          // Show first achievement (can queue others later)
-          setTimeout(() => {
-            setAchievementToast({
-              isVisible: true,
-              achievement: newAchievements[0],
-            });
-          }, 2500); // Show after level complete modal
-        }
+        handleAchievementCheck(0);
 
         setIsLevelComplete(true);
         setShowConfetti(false);
@@ -899,7 +902,12 @@ const GameScreen = ({ route, navigation }) => {
     if (userAnswer === correctAnswer) {
       playCorrectSound();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      if (isEndlessMode) setEndlessScore(s => s + 10);
+      if (isEndlessMode) {
+        const newScore = endlessScore + 10;
+        setEndlessScore(newScore);
+        // Instant achievement check with current score
+        handleAchievementCheck(0, { high_score_endless: newScore });
+      }
       let newCorrectlyAnswered = [...correctlyAnswered];
       let newAnswers = JSON.parse(JSON.stringify(answers));
       let queue = [questionIndex];
@@ -962,6 +970,9 @@ const GameScreen = ({ route, navigation }) => {
             category: 'karışık',
             level: endlessScore,
           });
+
+          await handleAchievementCheck();
+
           // Removed playTimeUpSound() - no sound on game over
           setIsGameOver(true);
           return;
@@ -1661,8 +1672,8 @@ const styles = StyleSheet.create({
     color: '#e0cb0bff',
     fontSize: 11,
     fontFamily: 'EagleLake-Regular',
-    marginRight: 4,
-    marginLeft: 2,
+    marginRight: 5,
+    marginLeft: 0,
 
   },
   scoreText: {

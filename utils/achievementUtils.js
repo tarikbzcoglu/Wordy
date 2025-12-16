@@ -34,8 +34,31 @@ export const initializePlayerStats = async () => {
 // Get player stats
 export const getPlayerStats = async () => {
     try {
-        const stats = await AsyncStorage.getItem(STATS_KEY);
-        return stats ? JSON.parse(stats) : null;
+        const statsJson = await AsyncStorage.getItem(STATS_KEY);
+        let stats = statsJson ? JSON.parse(statsJson) : null;
+
+        if (!stats) {
+            // Return default stats if not found, but don't save yet (let update handle it)
+            stats = {
+                total_levels_completed: 0,
+                total_stars: 0,
+                perfect_levels: 0,
+                no_hint_levels: 0,
+                no_mistake_levels: 0,
+                fast_levels: 0,
+                categories_played: [],
+                category_levels: {},
+                current_streak: 1,
+                longest_streak: 1,
+                last_played_date: null,
+            };
+        }
+
+        // Merge endless high score
+        const endlessHigh = await AsyncStorage.getItem('high_score_endless');
+        stats.high_score_endless = endlessHigh ? parseInt(endlessHigh, 10) : 0;
+
+        return stats;
     } catch (error) {
         console.error('Failed to get player stats:', error);
         return null;
@@ -45,8 +68,8 @@ export const getPlayerStats = async () => {
 // Update player stats
 export const updatePlayerStats = async (updates) => {
     try {
-        const currentStats = await getPlayerStats();
-        if (!currentStats) return;
+        let currentStats = await getPlayerStats();
+        // getPlayerStats now returns default object if null, so currentStats is guaranteed (mostly)
 
         const newStats = { ...currentStats };
 
@@ -187,16 +210,24 @@ const isAchievementUnlocked = (achievement, stats) => {
         case 'streak':
             return stats.current_streak >= requirement.count;
 
+        case 'endless_high_score':
+            return (stats.high_score_endless || 0) >= requirement.count;
+
         default:
             return false;
     }
 };
 
 // Check for new achievements
-export const checkAchievements = async () => {
+export const checkAchievements = async (temporaryStats = null) => {
     try {
-        const stats = await getPlayerStats();
+        let stats = await getPlayerStats();
         if (!stats) return [];
+
+        // Apply temporary stats overrides (e.g. current endless score from game loop)
+        if (temporaryStats) {
+            stats = { ...stats, ...temporaryStats };
+        }
 
         const unlockedAchievements = await getUnlockedAchievements();
         const newAchievements = [];
@@ -253,6 +284,9 @@ export const getAchievementProgress = async (achievement) => {
                 break;
             case 'streak':
                 current = stats.current_streak;
+                break;
+            case 'endless_high_score':
+                current = stats.high_score_endless || 0;
                 break;
         }
 

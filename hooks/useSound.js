@@ -7,12 +7,10 @@ export const useSound = (soundFile) => {
   const playSound = useCallback(async () => {
     if (sound) {
       try {
-        await sound.replayAsync();
+        await sound.playFromPositionAsync(0);
       } catch (e) {
-        console.log('Error replaying sound', e);
+        // Silently fail if sound cannot be played (e.g. background mode)
       }
-    } else {
-      // Sound not loaded yet, skip silently
     }
   }, [sound]);
 
@@ -22,14 +20,6 @@ export const useSound = (soundFile) => {
 
     const loadSound = async () => {
       try {
-        // Ensure audio plays even in silent mode on iOS
-        await Audio.setAudioModeAsync({
-          playsInSilentModeIOS: true,
-          staysActiveInBackground: false,
-          shouldDuckAndroid: true,
-          playThroughEarpieceAndroid: false,
-        });
-
         const { sound: newSound } = await Audio.Sound.createAsync(soundFile);
         soundObject = newSound;
 

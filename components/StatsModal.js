@@ -25,7 +25,23 @@ const StatsModal = ({ isVisible, onClose }) => {
     }, [isVisible]);
 
     const loadStats = async () => {
-        const playerStats = await getPlayerStats();
+        let playerStats = await getPlayerStats();
+
+        // If stats don't exist yet, create default structure
+        if (!playerStats) {
+            playerStats = {
+                total_levels_completed: 0,
+                total_stars: 0,
+                current_streak: 0,
+                longest_streak: 0,
+                perfect_levels: 0,
+                no_mistake_levels: 0,
+                no_hint_levels: 0,
+                fast_levels: 0,
+                category_levels: {},
+            };
+        }
+
         // Fetch endless high score
         const endlessHigh = await AsyncStorage.getItem('high_score_endless');
         playerStats.high_score_endless = endlessHigh ? parseInt(endlessHigh, 10) : 0;
@@ -182,7 +198,7 @@ const StatsModal = ({ isVisible, onClose }) => {
                                         <View key={cat}>
                                             <DetailRow
                                                 label={cat === 'karışık' ? 'Endless Mode' : cat}
-                                                value={cat === 'karışık' ? `High Score: ${lvl}` : `Lvl ${lvl}`}
+                                                value={cat === 'karışık' ? `High Score: ${stats.high_score_endless}` : `Lvl ${lvl}`}
                                             />
                                             {index < sortedEntries.length - 1 && <View style={styles.divider} />}
                                         </View>
@@ -363,7 +379,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
     detailLabel: {
-        color: '#E0E0E0',
+        color: '#efcd37ff',
         fontSize: 16,
         fontFamily: 'EagleLake-Regular',
     },

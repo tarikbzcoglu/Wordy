@@ -6,34 +6,35 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const TUTORIAL_STEPS = [
     {
-        title: 'Welcome to Wordy! 📚',
+        title: 'Welcome to Wordy!',
         description: 'A fun word puzzle game where you solve questions across different categories.',
-        emoji: '🎮',
         animation: require('../assets/images/owl_hi.json'),
+        secondaryAnimation: require('../assets/images/generalKnowledge.json'),
     },
     {
-        title: 'Read & Answer 💡',
+        title: 'Read & Answer',
         description: 'Read the questions carefully and fill in the answers using the on-screen keyboard.',
-        emoji: '⌨️',
         animation: require('../assets/images/owl_idle.json'),
+        secondaryAnimation: require('../assets/images/history&civilization.json'),
     },
     {
-        title: 'Auto-Reveal Magic ✨',
+        title: 'Auto-Reveal Magic',
         description: 'When you answer correctly, matching letters automatically appear in other questions!',
-        emoji: '🔮',
         animation: require('../assets/images/owl_idle2.json'),
+        secondaryAnimation: require('../assets/images/feather.json'),
+        secondaryAnimationStyle: { width: 120, height: 120, marginTop: -20, marginBottom: -20 },
     },
     {
-        title: 'Use Hints Wisely 💭',
+        title: 'Use Hints Wisely',
         description: 'Stuck? Use hints to reveal letters. Watch ads to earn more hints!',
-        emoji: '💡',
         animation: require('../assets/images/owl_idle3.json'),
+        secondaryAnimation: require('../assets/images/hint.json'),
     },
     {
-        title: 'Ready to Play! 🎉',
+        title: 'Ready to Play!',
         description: 'Complete all questions to advance levels. Good luck!',
-        emoji: '🏆',
         animation: require('../assets/images/owl_levelup2.json'),
+        secondaryAnimation: require('../assets/images/rocket.json'),
     },
 ];
 
@@ -163,8 +164,15 @@ const TutorialModal = ({ isVisible, onComplete, steps = TUTORIAL_STEPS }) => {
                         },
                     ]}
                 >
-                    {step.emoji && <Text style={styles.emoji}>{step.emoji}</Text>}
                     <Text style={styles.titleText}>{step.title}</Text>
+                    {step.secondaryAnimation && (
+                        <LottieView
+                            source={step.secondaryAnimation}
+                            autoPlay
+                            loop
+                            style={[styles.secondaryAnimation, step.secondaryAnimationStyle]}
+                        />
+                    )}
                     <Text style={styles.descriptionText}>{step.description}</Text>
                 </Animated.View>
 
@@ -225,7 +233,7 @@ const styles = StyleSheet.create({
         width: '90%',
         maxWidth: 400,
         paddingHorizontal: 24,
-        paddingVertical: 30,
+        paddingVertical: 24,
         backgroundColor: '#1C3B4F',
         borderRadius: 20,
         borderWidth: 2,
@@ -256,7 +264,7 @@ const styles = StyleSheet.create({
         fontFamily: 'EagleLake-Regular',
     },
     animationContainer: {
-        marginBottom: 20,
+        marginBottom: 10,
     },
     lottieAnimation: {
         width: 150,
@@ -264,17 +272,19 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         alignItems: 'center',
-        marginBottom: 25,
+        marginBottom: 20,
     },
-    emoji: {
-        fontSize: 50,
-        marginBottom: 10,
+    secondaryAnimation: {
+        width: 60,
+        height: 60,
+        marginBottom: 5,
+        marginTop: 5,
     },
     titleText: {
         color: '#FFD700',
         fontSize: 28,
         fontFamily: 'EagleLake-Regular',
-        marginBottom: 15,
+        marginBottom: 5,
         textAlign: 'center',
         textShadowColor: 'rgba(255, 215, 0, 0.3)',
         textShadowOffset: { width: 0, height: 0 },

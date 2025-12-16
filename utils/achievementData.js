@@ -133,6 +133,52 @@ export const ACHIEVEMENTS = {
         requirement: { type: 'streak', count: 30 },
         reward: { coins: 1000 },
     },
+    // Endless Mode Achievements
+    ENDLESS_NOVICE: {
+        id: 'endless_novice',
+        title: 'Survivor',
+        description: 'Score 50 in Endless Mode',
+        icon: '🛡️',
+        category: 'endless',
+        requirement: { type: 'endless_high_score', count: 50 },
+        reward: { coins: 100 },
+    },
+    ENDLESS_EXPERT: {
+        id: 'endless_expert',
+        title: 'Marathon Runner',
+        description: 'Score 100 in Endless Mode',
+        icon: '🏃',
+        category: 'endless',
+        requirement: { type: 'endless_high_score', count: 100 },
+        reward: { coins: 300 },
+    },
+    ENDLESS_MASTER: {
+        id: 'endless_master',
+        title: 'Unstoppable',
+        description: 'Score 200 in Endless Mode',
+        icon: '♾️',
+        category: 'endless',
+        requirement: { type: 'endless_high_score', count: 200 },
+        reward: { coins: 500 },
+    },
+    ENDLESS_GOD: {
+        id: 'endless_god',
+        title: 'Wordy God',
+        description: 'Score 500 in Endless Mode',
+        icon: '⚡',
+        category: 'endless',
+        requirement: { type: 'endless_high_score', count: 500 },
+        reward: { coins: 1000 },
+    },
+    ENDLESS_LEGEND: {
+        id: 'endless_legend',
+        title: 'Eternal Legend',
+        description: 'Score 1000 in Endless Mode',
+        icon: '🌌',
+        category: 'endless',
+        requirement: { type: 'endless_high_score', count: 1000 },
+        reward: { coins: 5000 },
+    },
 };
 
 // Achievement categories for grouping
@@ -141,6 +187,7 @@ export const ACHIEVEMENT_CATEGORIES = {
     category: { name: 'Category', icon: '📚' },
     performance: { name: 'Performance', icon: '💎' },
     streak: { name: 'Streak', icon: '🔥' },
+    endless: { name: 'Endless', icon: '♾️' },
 };
 
 // Get all achievements as array
