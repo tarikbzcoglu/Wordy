@@ -1,18 +1,16 @@
-import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
 import { decode } from 'html-entities';
-import LottieView from 'lottie-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, ImageBackground, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BannerAdSize, GAMBannerAd, RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import AchievementToast from '../components/AchievementToast';
 import CustomAlert from '../components/CustomAlert';
+import GameHeader from '../components/GameHeader';
 import GameOverModal from '../components/GameOverModal';
 import Keyboard from '../components/Keyboard';
 import LevelCompleteModal from '../components/LevelCompleteModal';
-import ProgressBar from '../components/ProgressBar';
 import SettingsModal from '../components/SettingsModal';
 import TutorialModal from '../components/TutorialModal';
 import { useSound } from '../hooks/useSound';
@@ -48,202 +46,7 @@ const ENDLESS_TUTORIAL_STEPS = [
   },
 ];
 
-const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorrect, onPress, disabled }) => {
-  const scaleAnim = useRef(new Animated.Value(0)).current;
-  const shimmerAnim = useRef(new Animated.Value(0)).current;
-  const shimmer2Anim = useRef(new Animated.Value(0)).current;
-  const bounceAnim = useRef(new Animated.Value(0)).current;
-  const glowAnim = useRef(new Animated.Value(0)).current;
-  const rainbowAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (letter) {
-      // Modern elastic pop-in
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 6,
-        tension: 200,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      scaleAnim.setValue(0);
-    }
-  }, [letter]);
-
-  useEffect(() => {
-    if (status === 'revealed' || status === 'hint') {
-      // Enhanced reveal: smoother shimmer + prominent glow + bounce
-      Animated.parallel([
-        // Main shimmer sweep (faster and more prominent)
-        Animated.timing(shimmerAnim, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        // Second shimmer (closer timing for better effect)
-        Animated.sequence([
-          Animated.delay(100),
-          Animated.timing(shimmer2Anim, {
-            toValue: 1,
-            duration: 450,
-            useNativeDriver: true,
-          }),
-        ]),
-        // Rainbow glow pulse (longer and more visible)
-        Animated.sequence([
-          Animated.timing(rainbowAnim, {
-            toValue: 1,
-            duration: 250,
-            useNativeDriver: true,
-          }),
-          Animated.timing(rainbowAnim, {
-            toValue: 0,
-            duration: 350,
-            useNativeDriver: true,
-          }),
-        ]),
-        // Stronger glow pulse
-        Animated.sequence([
-          Animated.timing(glowAnim, {
-            toValue: 1,
-            duration: 250,
-            useNativeDriver: true,
-          }),
-          Animated.timing(glowAnim, {
-            toValue: 0.3,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(glowAnim, {
-            toValue: 0,
-            duration: 200,
-            useNativeDriver: true,
-          }),
-        ]),
-        // Smooth bounce
-        Animated.sequence([
-          Animated.spring(bounceAnim, {
-            toValue: 1,
-            friction: 4,
-            tension: 180,
-            useNativeDriver: true,
-          }),
-          Animated.spring(bounceAnim, {
-            toValue: 0,
-            friction: 6,
-            tension: 120,
-            useNativeDriver: true,
-          }),
-        ]),
-      ]).start(() => {
-        shimmerAnim.setValue(0);
-        shimmer2Anim.setValue(0);
-      });
-    }
-  }, [status]);
-
-  const shimmerTranslate = shimmerAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-width * 2, width * 2]
-  });
-
-  const shimmer2Translate = shimmer2Anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-width * 2, width * 2]
-  });
-
-  const bounceScale = bounceAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 1.2]
-  });
-
-  const glowOpacity = glowAnim.interpolate({
-    inputRange: [0, 0.3, 1],
-    outputRange: [0, 0.5, 0.6]
-  });
-
-  const rainbowOpacity = rainbowAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 0.5]
-  });
-
-  return (
-    <View>
-      {/* Rainbow glow layer */}
-      <Animated.View
-        style={{
-          position: 'absolute',
-          width: width + 8,
-          height: height + 8,
-          left: -4,
-          top: -4,
-          borderRadius: 8,
-          backgroundColor: '#FF69B4',
-          opacity: rainbowOpacity,
-        }}
-      />
-      {/* Subtle glow background */}
-      <Animated.View
-        style={{
-          position: 'absolute',
-          width: width + 6,
-          height: height + 6,
-          left: -3,
-          top: -3,
-          borderRadius: 6,
-          backgroundColor: status === 'hint' ? '#87CEEB' : '#FFD700',
-          opacity: glowOpacity,
-        }}
-      />
-      <Pressable
-        style={[
-          styles.letterCell,
-          { width, height, overflow: 'hidden' },
-          isSelected && styles.selectedCell,
-          isCorrect && styles.correctAnswerCell,
-          status === 'incorrect' && styles.incorrectAnswerCell,
-          status === 'hint' && styles.hintLetterCell
-        ]}
-        onPress={onPress}
-        disabled={disabled}
-      >
-        {/* First shimmer */}
-        <Animated.View
-          style={{
-            position: 'absolute',
-            width: width * 0.6,
-            height: height * 2,
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-            transform: [
-              { translateX: shimmerTranslate },
-              { rotate: '25deg' }
-            ],
-          }}
-        />
-        {/* Second shimmer (trailing) */}
-        <Animated.View
-          style={{
-            position: 'absolute',
-            width: width * 0.4,
-            height: height * 2,
-            backgroundColor: 'rgba(255, 255, 255, 0.5)',
-            transform: [
-              { translateX: shimmer2Translate },
-              { rotate: '25deg' }
-            ],
-          }}
-        />
-        <Animated.View style={{
-          transform: [
-            { scale: Animated.multiply(scaleAnim, bounceScale) }
-          ]
-        }}>
-          <Text style={[styles.letterText, { fontSize: width < 30 ? 20 : 24 }]}>{letter}</Text>
-        </Animated.View>
-      </Pressable>
-    </View>
-  );
-};
+import AnimatedLetterCell from '../components/AnimatedLetterCell';
 
 const GameScreen = ({ route, navigation }) => {
   const { category } = route.params;
@@ -281,7 +84,6 @@ const GameScreen = ({ route, navigation }) => {
   });
 
   const hintReminderAnim = useRef(new Animated.Value(0)).current;
-  const hintButtonPulseAnim = useRef(new Animated.Value(1)).current;
   const scoreScaleAnim = useRef(new Animated.Value(1)).current;
   const confettiAnims = useRef([...Array(20)].map(() => ({
     x: new Animated.Value(0),
@@ -303,6 +105,7 @@ const GameScreen = ({ route, navigation }) => {
 
   const activeQuestionRef = useRef(null);
   const isProcessingAttempt = useRef(false);
+  const isHintProcessing = useRef(false);
   const [isEndlessTutorialVisible, setIsEndlessTutorialVisible] = useState(false);
 
   const adRef = useRef(null);
@@ -483,29 +286,7 @@ const GameScreen = ({ route, navigation }) => {
     }
   }, [hintReminder.isVisible]);
 
-  // Animate hint button pulse when highlighted
-  useEffect(() => {
-    if (highlightHintButton) {
-      const pulseAnimation = Animated.loop(
-        Animated.sequence([
-          Animated.timing(hintButtonPulseAnim, {
-            toValue: 1.1,
-            duration: 800,
-            useNativeDriver: true,
-          }),
-          Animated.timing(hintButtonPulseAnim, {
-            toValue: 1,
-            duration: 800,
-            useNativeDriver: true,
-          }),
-        ])
-      );
-      pulseAnimation.start();
-      return () => pulseAnimation.stop();
-    } else {
-      hintButtonPulseAnim.setValue(1);
-    }
-  }, [highlightHintButton]);
+
 
   // Trigger Watch Ad alert when hints reach 0
   useEffect(() => {
@@ -576,69 +357,95 @@ const GameScreen = ({ route, navigation }) => {
     }
 
     // Progressive difficulty: map level to answer length
-    const getTargetLengthForLevel = (level, lengths) => {
-      if (lengths.length === 0) return null;
-
-      // Divide levels into tiers for progressive difficulty
-      const tier1Max = 10;  // Levels 1-10: shortest answers (3-5 letters)
-      const tier2Max = 30;  // Levels 11-30: medium answers (6-8 letters)
-      // Levels 31-50: longest answers (9-11 letters)
-
+    // Progressive difficulty tiers
+    const getTierPool = (simLevel, lengths) => {
+      const tier1Max = 10;
+      const tier2Max = 30;
       const shortLengths = lengths.filter(l => l <= 5);
       const mediumLengths = lengths.filter(l => l >= 6 && l <= 8);
       const longLengths = lengths.filter(l => l >= 9);
 
-      let targetPool;
-      if (level <= tier1Max && shortLengths.length > 0) {
-        targetPool = shortLengths;
-      } else if (level <= tier2Max && mediumLengths.length > 0) {
-        targetPool = mediumLengths;
-      } else if (longLengths.length > 0) {
-        targetPool = longLengths;
-      } else {
-        // Fallback: use all available lengths
-        targetPool = lengths;
-      }
-
-      // Cycle through the appropriate pool
-      const poolIndex = (level - 1) % targetPool.length;
-      return targetPool[poolIndex];
+      if (simLevel <= tier1Max && shortLengths.length > 0) return shortLengths;
+      if (simLevel <= tier2Max && mediumLengths.length > 0) return mediumLengths;
+      if (longLengths.length > 0) return longLengths;
+      return lengths;
     };
 
-    const targetLength = getTargetLengthForLevel(levelToLoad, availableLengths);
-    const targetQuestions = questionsByLength[targetLength];
+    // HISTORY SIMULATION WITH SMART SKIP
+    // We simulate from Level 1 to current level to know exactly which questions were used.
+    // If a length is exhausted, we skip to the next available one in the tier.
+    const usageCounts = {}; // Key: length, Value: count of questions used
 
+    let finalTargetLength = availableLengths[0];
+    let finalStartIndex = 0;
+
+    for (let l = 1; l <= levelToLoad; l++) {
+      const pool = getTierPool(l, availableLengths);
+
+      // Default choice (Round Robin)
+      let initialIndex = (l - 1) % pool.length;
+      let selectedLen = pool[initialIndex];
+      let foundFresh = false;
+
+      // Smart Skip: Look for a length in the pool that isn't exhausted
+      for (let offset = 0; offset < pool.length; offset++) {
+        const tryIndex = (initialIndex + offset) % pool.length;
+        const tryLen = pool[tryIndex];
+        const totalAvailable = questionsByLength[tryLen].length;
+        const usedSoFar = usageCounts[tryLen] || 0;
+
+        // If we have at least 5 fresh questions left, grab it!
+        if (usedSoFar + 5 <= totalAvailable) {
+          selectedLen = tryLen;
+          foundFresh = true;
+          break;
+        }
+      }
+
+      // Record state for the requested level
+      if (l === levelToLoad) {
+        finalTargetLength = selectedLen;
+        finalStartIndex = usageCounts[selectedLen] || 0;
+      }
+
+      // Update usage for the next iteration
+      usageCounts[selectedLen] = (usageCounts[selectedLen] || 0) + 5;
+    }
+
+    const targetQuestions = questionsByLength[finalTargetLength];
+    const startIndex = finalStartIndex; // Determined by simulation
     const questionCount = getQuestionCount(levelToLoad);
-
-    // Determine which "page" of questions to use for this length
-    const usageCycle = Math.floor((levelToLoad - 1) / availableLengths.length);
-    const startIndex = usageCycle * questionCount;
 
     let selectedQuestions = [];
 
-    // If we have enough unique questions in this group for the current cycle
-    if (startIndex + questionCount <= targetQuestions.length) {
+    // Valid unique questions found by simulation
+    if (targetQuestions && startIndex + questionCount <= targetQuestions.length) {
       selectedQuestions = targetQuestions.slice(startIndex, startIndex + questionCount);
     } else {
-      // If we ran out of unique questions for this length, pick random ones from this length group
-      // Since we filtered for MIN_QUESTIONS_PER_LEVEL, we know we have at least that many.
-      // If questionCount > total questions (e.g. need 10 but have 5), we MUST repeat or just take all unique.
-      // But the user hates repetition. 
-      // Compromise: If we need more than we have total, we take all unique and then fill with randoms from the same pool.
-      // This is better than repeating a pool of 2 questions 3 times.
+      // Complete Fallback: If simulation says everything is exhausted (or logic flaw),
+      // we must repeat. We shuffle the entire pool of that length and pick randoms.
+      // This only happens if user plays SO many levels that ALL lengths in the tier are empty.
+      let pool = [...(targetQuestions || [])];
+      if (pool.length === 0) {
+        // Emergency: No info for this length? potentially bad DB state.
+        // Fallback to ANY questions from DB to prevent crash
+        pool = allCategoryQuestions.slice(0, 20);
+      }
 
-      let pool = [...targetQuestions];
       const shuffled = pool.sort(() => 0.5 - Math.random());
 
-      // If we need more questions than exist in the pool, we have to repeat some
-      if (questionCount > pool.length) {
-        while (selectedQuestions.length < questionCount) {
-          selectedQuestions = [...selectedQuestions, ...shuffled];
-        }
-        selectedQuestions = selectedQuestions.slice(0, questionCount);
-      } else {
-        selectedQuestions = shuffled.slice(0, questionCount);
+      // Fill strictly to 5 even if we have to loop
+      while (selectedQuestions.length < questionCount) {
+        if (shuffled.length === 0) break; // formatting protection
+        selectedQuestions = [...selectedQuestions, ...shuffled];
       }
+      selectedQuestions = selectedQuestions.slice(0, questionCount);
+    }
+
+    // Safety check ensuring we never pass empty array
+    if (selectedQuestions.length === 0) {
+      // Ultimate logic fail protection
+      selectedQuestions = allCategoryQuestions.slice(0, 5);
     }
 
     const decodedQuestions = selectedQuestions.map(q => {
@@ -859,12 +666,24 @@ const GameScreen = ({ route, navigation }) => {
   }, [correctlyAnswered, playLevelUpSound, questions.length]);
 
   const handleHint = () => {
+    if (isHintProcessing.current) return;
+
     playTapSound();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
     if (hintsLeft <= 0) {
       showAlert('Watch a short video to earn a free hint?', 'Watch Ad', showHintRewardAd);
       return;
     }
+
+    // Lock hint processing
+    isHintProcessing.current = true;
+
+    // Unlock after delay to prevent double-tap
+    setTimeout(() => {
+      isHintProcessing.current = false;
+    }, 500);
+
     const unansweredQuestionIndices = questions.map((_, index) => index).filter(index => !correctlyAnswered[index]);
     if (unansweredQuestionIndices.length === 0) {
       showAlert('All questions are answered!');
@@ -1185,287 +1004,195 @@ const GameScreen = ({ route, navigation }) => {
     const interval = setInterval(() => {
       setHeaderOwlAnim(Math.floor(Math.random() * 6) + 1); // Random 1-6
     }, 10000); // 10 seconds
-
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
-      <ImageBackground source={require('../assets/images/background3.jpeg')} style={{ flex: 1 }}>
-        <View style={styles.container}>
-          {/* Banner Ad - Very Top */}
-          <View style={styles.bannerAdContainer}>
-            <GAMBannerAd
-              unitId={bannerAdUnitId}
-              sizes={[BannerAdSize.ANCHORED_ADAPTIVE_BANNER]}
-              requestOptions={{
-                requestNonPersonalizedAdsOnly: true,
-              }}
-            />
-          </View>
-
-          <View style={styles.header}>
-            <Pressable
-              style={styles.backButtonModern}
-              onPress={() => { playTapSound(); navigation.goBack(); }}
-            >
-              {({ pressed }) => (
-                <View style={[
-                  styles.backButtonInner,
-                  { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
-                ]}>
-                  <Text style={styles.backButtonTextModern}>←</Text>
-                </View>
-              )}
-            </Pressable>
-
-
-            {/* Header Info - Conditional for Endless vs Classic */}
-            <View style={styles.planetInfo}>
-              <LottieView
-                source={getHeaderOwlSource()}
-                autoPlay
-                loop
-                style={styles.headerOwlAnimation}
+      <View style={styles.container}>
+        <Image
+          source={require('../assets/images/background3.jpeg')}
+          style={[StyleSheet.absoluteFillObject, { zIndex: -1 }]}
+          contentFit="cover"
+          transition={500}
+        />
+        <View style={{ flex: 1 }}>
+          <View style={styles.container}>
+            {/* Banner Ad - Very Top */}
+            <View style={styles.bannerAdContainer}>
+              <GAMBannerAd
+                unitId={bannerAdUnitId}
+                sizes={[BannerAdSize.ANCHORED_ADAPTIVE_BANNER]}
+                requestOptions={{
+                  requestNonPersonalizedAdsOnly: true,
+                }}
               />
-
-              {isEndlessMode ? (
-                <>
-                  <Animated.Text style={[styles.scoreText, { transform: [{ scale: scoreScaleAnim }] }]}>
-                    Score: {endlessScore}
-                  </Animated.Text>
-                  <View style={styles.heartsContainer}>
-                    {[...Array(5)].map((_, i) => (
-                      <AntDesign
-                        key={i}
-                        name="heart"
-                        size={20}
-                        color={i < mistakesRemaining ? "#FF5252" : "rgba(255, 82, 82, 0.3)"}
-                        style={styles.heartIcon}
-                      />
-                    ))}
-                    {mistakesRemaining < 5 && (
-                      <Pressable
-                        onPress={showHeartRewardAd}
-                        style={styles.adButton}
-                      >
-                        <Text style={styles.adButtonText}>Ad</Text>
-                      </Pressable>
-                    )}
-                  </View>
-                </>
-              ) : (
-                <>
-                  <Text style={styles.levelText}>{category} - Level {level}</Text>
-                  <ProgressBar
-                    current={correctlyAnswered.filter(Boolean).length}
-                    total={questions.length}
-                    style={{ width: 160 }}
-                  />
-                </>
-              )}
             </View>
 
-
-            <Animated.View
-              style={[
-                styles.hintButtonContainer,
-                highlightHintButton && {
-                  transform: [{ scale: hintButtonPulseAnim }]
-                }
-              ]}
+            <GameHeader
+              navigation={navigation}
+              playTapSound={playTapSound}
+              isEndlessMode={isEndlessMode}
+              endlessScore={endlessScore}
+              scoreScaleAnim={scoreScaleAnim}
+              mistakesRemaining={mistakesRemaining}
+              showHeartRewardAd={showHeartRewardAd}
+              category={category}
+              level={level}
+              correctlyAnswered={correctlyAnswered.filter(Boolean).length}
+              totalQuestions={questions.length}
+              hintsLeft={hintsLeft}
+              onHint={handleHint}
+              isHintHighlighted={highlightHintButton}
+              onSettings={() => setSettingsModalVisible(true)}
+            />
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={{ flex: 1 }}
+              keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
             >
-              <Pressable
-                onPress={handleHint}
-                style={styles.hintButtonNoBg}
+              <ScrollView
+                contentContainerStyle={styles.gameBoard}
+                scrollEnabled={false}
               >
-                {highlightHintButton ? (
-                  <LinearGradient
-                    colors={['#DAA520', '#FF8C00', '#DAA520']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.hintButtonGradientNoBg}
-                  >
-                    <LottieView
-                      source={require('../assets/images/hint.json')}
-                      autoPlay
-                      loop
-                      style={styles.hintAnimationLarge}
-                    />
-                  </LinearGradient>
-                ) : (
-                  <LottieView
-                    source={require('../assets/images/hint.json')}
-                    autoPlay
-                    loop
-                    style={styles.hintAnimationLarge}
-                  />
-                )}
-              </Pressable>
-              <Text style={styles.hintButtonTextBelow}>Hints: {hintsLeft}</Text>
-            </Animated.View>
-            <Pressable
-              style={styles.settingsButtonModern}
-              onPress={() => { playTapSound(); setSettingsModalVisible(true); }}
-            >
-              {({ pressed }) => (
-                <View style={[
-                  styles.settingsButtonInner,
-                  { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
-                ]}>
-                  <View style={styles.hamburgerLine} />
-                  <View style={styles.hamburgerLine} />
-                  <View style={styles.hamburgerLine} />
-                </View>
-              )}
-            </Pressable>
-          </View>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-          >
-            <ScrollView
-              contentContainerStyle={styles.gameBoard}
-              scrollEnabled={false}
-            >
-              {questions.map((question, questionIndex) => {
-                const currentAnswerLength = question.correct_answer.length;
-                const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
-                return (
+                {questions.map((question, questionIndex) => {
+                  const currentAnswerLength = question.correct_answer.length;
+                  const dynamicCellSize = (answerColumnWidth - (currentAnswerLength * cellMargin * 2)) / currentAnswerLength;
+                  return (
+                    <Animated.View
+                      key={questionIndex}
+                      style={[
+                        styles.questionAnswerRow,
+                        shakeAnims[questionIndex] && {
+                          transform: [{
+                            translateX: shakeAnims[questionIndex]
+                          }]
+                        }
+                      ]}
+                    >
+                      <View style={[styles.questionRow, { width: questionColumnWidth }]}>
+                        <Text style={styles.questionText}>{question.text}</Text>
+                      </View>
+                      <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
+                        {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
+                          <AnimatedLetterCell
+                            key={inputIndex}
+                            letter={cell.letter}
+                            status={cell.status}
+                            width={dynamicCellSize}
+                            height={60}
+                            isSelected={activeQuestionIndex === questionIndex && activeInputIndex === inputIndex}
+                            isCorrect={correctlyAnswered[questionIndex]}
+                            onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
+                            disabled={correctlyAnswered[questionIndex]}
+                          />
+                        ))}
+                      </View>
+                    </Animated.View>
+                  );
+                })}
+              </ScrollView>
+            </KeyboardAvoidingView>
+
+            {/* Modal fade overlay */}
+            {isLevelComplete && (
+              <Animated.View
+                style={[
+                  styles.modalOverlay,
+                  {
+                    opacity: modalOverlayAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 0.3]
+                    })
+                  }
+                ]}
+              />
+            )}
+
+            <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
+
+            <CustomAlert
+              message={alertInfo.message}
+              isVisible={alertInfo.isVisible}
+              buttonText={alertInfo.buttonText}
+              onButtonPress={alertInfo.onButtonPress}
+              onBackdropPress={hideAlert}
+            />
+            <LevelCompleteModal
+              isVisible={isLevelComplete}
+              level={level}
+              stars={starRating}
+              stats={levelStats}
+              isMilestone={isMilestone(level)}
+              onNextLevel={handleNextLevel}
+              onBackToMenu={handleBackToMenu}
+            />
+            <GameOverModal
+              isVisible={isGameOver}
+              score={endlessScore}
+              isNewHighScore={isNewHighScore}
+              onPlayAgain={handlePlayAgain}
+              onBackToMenu={handleBackToMenu}
+            />
+            {hintReminder.isVisible && (
+              <Animated.View
+                style={[
+                  styles.hintReminderContainer,
+                  {
+                    opacity: hintReminderAnim,
+                    transform: [{
+                      translateY: hintReminderAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-20, 0]
+                      })
+                    }]
+                  }
+                ]}
+              >
+                <Text style={styles.hintReminderText}>💡 {hintReminder.message}</Text>
+              </Animated.View>
+            )}
+            <SettingsModal
+              isVisible={isSettingsModalVisible}
+              onClose={() => setSettingsModalVisible(false)}
+            />
+
+            <TutorialModal
+              isVisible={isEndlessTutorialVisible}
+              onComplete={handleEndlessTutorialComplete}
+              steps={ENDLESS_TUTORIAL_STEPS}
+            />
+
+            {/* Confetti Celebration */}
+            {showConfetti && (
+              <View style={styles.confettiContainer}>
+                {confettiAnims.map((anim, i) => (
                   <Animated.View
-                    key={questionIndex}
+                    key={i}
                     style={[
-                      styles.questionAnswerRow,
-                      shakeAnims[questionIndex] && {
-                        transform: [{
-                          translateX: shakeAnims[questionIndex]
-                        }]
+                      styles.confetti,
+                      {
+                        backgroundColor: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FF6347'][i % 5],
+                        transform: [
+                          { translateX: anim.x },
+                          { translateY: anim.y },
+                          {
+                            rotate: anim.rotate.interpolate({
+                              inputRange: [0, 720],
+                              outputRange: ['0deg', '720deg']
+                            })
+                          }
+                        ],
+                        opacity: anim.opacity,
                       }
                     ]}
-                  >
-                    <View style={[styles.questionRow, { width: questionColumnWidth }]}>
-                      <Text style={styles.questionText}>{question.text}</Text>
-                    </View>
-                    <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
-                      {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
-                        <AnimatedLetterCell
-                          key={inputIndex}
-                          letter={cell.letter}
-                          status={cell.status}
-                          width={dynamicCellSize}
-                          height={60}
-                          isSelected={activeQuestionIndex === questionIndex && activeInputIndex === inputIndex}
-                          isCorrect={correctlyAnswered[questionIndex]}
-                          onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
-                          disabled={correctlyAnswered[questionIndex]}
-                        />
-                      ))}
-                    </View>
-                  </Animated.View>
-                );
-              })}
-            </ScrollView>
-          </KeyboardAvoidingView>
-
-          {/* Modal fade overlay */}
-          {isLevelComplete && (
-            <Animated.View
-              style={[
-                styles.modalOverlay,
-                {
-                  opacity: modalOverlayAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 0.3]
-                  })
-                }
-              ]}
-            />
-          )}
-
-          <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
-
-          <CustomAlert
-            message={alertInfo.message}
-            isVisible={alertInfo.isVisible}
-            buttonText={alertInfo.buttonText}
-            onButtonPress={alertInfo.onButtonPress}
-            onBackdropPress={hideAlert}
-          />
-          <LevelCompleteModal
-            isVisible={isLevelComplete}
-            level={level}
-            stars={starRating}
-            stats={levelStats}
-            isMilestone={isMilestone(level)}
-            onNextLevel={handleNextLevel}
-            onBackToMenu={handleBackToMenu}
-          />
-          <GameOverModal
-            isVisible={isGameOver}
-            score={endlessScore}
-            isNewHighScore={isNewHighScore}
-            onPlayAgain={handlePlayAgain}
-            onBackToMenu={handleBackToMenu}
-          />
-          {hintReminder.isVisible && (
-            <Animated.View
-              style={[
-                styles.hintReminderContainer,
-                {
-                  opacity: hintReminderAnim,
-                  transform: [{
-                    translateY: hintReminderAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-20, 0]
-                    })
-                  }]
-                }
-              ]}
-            >
-              <Text style={styles.hintReminderText}>💡 {hintReminder.message}</Text>
-            </Animated.View>
-          )}
-          <SettingsModal
-            isVisible={isSettingsModalVisible}
-            onClose={() => setSettingsModalVisible(false)}
-          />
-
-          <TutorialModal
-            isVisible={isEndlessTutorialVisible}
-            onComplete={handleEndlessTutorialComplete}
-            steps={ENDLESS_TUTORIAL_STEPS}
-          />
-
-          {/* Confetti Celebration */}
-          {showConfetti && (
-            <View style={styles.confettiContainer}>
-              {confettiAnims.map((anim, i) => (
-                <Animated.View
-                  key={i}
-                  style={[
-                    styles.confetti,
-                    {
-                      backgroundColor: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FF6347'][i % 5],
-                      transform: [
-                        { translateX: anim.x },
-                        { translateY: anim.y },
-                        {
-                          rotate: anim.rotate.interpolate({
-                            inputRange: [0, 720],
-                            outputRange: ['0deg', '720deg']
-                          })
-                        }
-                      ],
-                      opacity: anim.opacity,
-                    }
-                  ]}
-                />
-              ))}
-            </View>
-          )}
+                  />
+                ))}
+              </View>
+            )}
+          </View>
         </View>
-      </ImageBackground >
+      </View>
       <AchievementToast
         achievement={achievementToast.achievement}
         isVisible={achievementToast.isVisible}

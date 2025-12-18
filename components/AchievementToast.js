@@ -76,7 +76,7 @@ const AchievementToast = ({ achievement, isVisible, onHide }) => {
 
                 {/* Achievement Info */}
                 <View style={styles.infoContainer}>
-                    <Text style={styles.label}>🏆 Başarım Kazanıldı!</Text>
+                    <Text style={styles.label}>🏆 Achievement Unlocked!</Text>
                     <Text style={styles.title}>{achievement.title}</Text>
                     <Text style={styles.description}>{achievement.description}</Text>
 

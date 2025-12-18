@@ -33,10 +33,12 @@ const LevelCompleteModal = ({
   React.useEffect(() => {
     if (isVisible) {
       // Select random levelup animation when modal opens
-      const random = Math.floor(Math.random() * 3) + 1;
+      const random = Math.floor(Math.random() * 5) + 1;
       if (random === 1) setRandomLevelUpAnim(require('../assets/images/owl_levelup.json'));
       else if (random === 2) setRandomLevelUpAnim(require('../assets/images/owl_levelup2.json'));
-      else setRandomLevelUpAnim(require('../assets/images/owl_levelup3.json'));
+      else if (random === 3) setRandomLevelUpAnim(require('../assets/images/owl_levelup3.json'));
+      else if (random === 4) setRandomLevelUpAnim(require('../assets/images/owl_levelup4.json'));
+      else setRandomLevelUpAnim(require('../assets/images/owl_levelup5.json'));
 
       // Entrance animations
       Animated.timing(fadeAnim, {
@@ -98,6 +100,21 @@ const LevelCompleteModal = ({
       );
       pulse.start();
       return () => pulse.stop();
+    }
+  }, [isVisible, isMilestone]);
+
+  // Request Review on Milestones
+  React.useEffect(() => {
+    if (isVisible && isMilestone) {
+      const requestReview = async () => {
+        if (await StoreReview.isAvailableAsync()) {
+          // Delay to let the user enjoy the animation and feel accomplished
+          setTimeout(() => {
+            StoreReview.requestReview();
+          }, 1500); // 1.5s delay
+        }
+      };
+      requestReview();
     }
   }, [isVisible, isMilestone]);
 

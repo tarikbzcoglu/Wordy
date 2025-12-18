@@ -2,6 +2,7 @@ import { Audio } from 'expo-av';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
+import ErrorBoundary from './components/ErrorBoundary';
 import AppNavigator from './navigation/AppNavigator';
 
 export default function App() {
@@ -25,5 +26,9 @@ export default function App() {
     initApp();
   }, []);
 
-  return <AppNavigator />;
+  return (
+    <ErrorBoundary>
+      <AppNavigator />
+    </ErrorBoundary>
+  );
 }

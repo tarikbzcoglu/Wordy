@@ -12,12 +12,6 @@
     "answer": "Abolition"
   },
   {
-    "category": "Science & Nature",
-    "difficulty": "hard",
-    "question": "Rate of change of velocity",
-    "answer": "Accel"
-  },
-  {
     "category": "General Knowledge",
     "difficulty": "medium",
     "question": "Card worth 1 or 11",
@@ -1044,12 +1038,6 @@
     "answer": "Baudelaire"
   },
   {
-    "category": "Art & Literature",
-    "difficulty": "easy",
-    "question": "Fictional bear Paddington",
-    "answer": "Bear"
-  },
-  {
     "category": "Travel & Geography",
     "difficulty": "hard",
     "question": "Direction of travel",
@@ -1264,12 +1252,6 @@
     "difficulty": "hard",
     "question": "Sea bordering Turkiye to the north",
     "answer": "BlackSea"
-  },
-  {
-    "category": "Movies & Pop Culture",
-    "difficulty": "hard",
-    "question": "Sci-fi film with replicants",
-    "answer": "BladeRun"
   },
   {
     "category": "Planet Earth",
@@ -2322,12 +2304,6 @@
     "answer": "Clown"
   },
   {
-    "category": "General Knowledge",
-    "difficulty": "medium",
-    "question": "Primary colors of pigment?",
-    "answer": "CMY"
-  },
-  {
     "category": "Food & Culture",
     "difficulty": "medium",
     "question": "Bean used for chocolate",
@@ -3350,7 +3326,7 @@
   {
     "category": "Travel & Geography",
     "difficulty": "easy",
-    "question": "Tallest building Burj Khalifa",
+    "question": "Location of Tallest building Burj Khalifa",
     "answer": "Dubai"
   },
   {
@@ -4706,7 +4682,7 @@
   {
     "category": "Movies & Pop Culture",
     "difficulty": "medium",
-    "question": "Show about the life of a high school glee club",
+    "question": "Show about the life of a high school club",
     "answer": "Glee"
   },
   {
@@ -4912,12 +4888,6 @@
     "difficulty": "medium",
     "question": "Largest island?",
     "answer": "Greenland"
-  },
-  {
-    "category": "Art & Literature",
-    "difficulty": "easy",
-    "question": "Fictional wizard Gandalf",
-    "answer": "Grey"
   },
   {
     "category": "Movies & Pop Culture",
@@ -5691,7 +5661,7 @@
     "category": "Movies & Pop Culture",
     "difficulty": "easy",
     "question": "Famous archaeologist with a whip",
-    "answer": "Indy"
+    "answer": "IndianaJones"
   },
   {
     "category": "Movies & Pop Culture",
@@ -6878,7 +6848,7 @@
   {
     "category": "Art & Literature",
     "difficulty": "easy",
-    "question": "Comic style using speech bubbles",
+    "question": "Japanese comic style",
     "answer": "Manga"
   },
   {
@@ -8626,12 +8596,6 @@
     "difficulty": "medium",
     "question": "Person receiving money",
     "answer": "Payee"
-  },
-  {
-    "category": "Food & Culture",
-    "difficulty": "medium",
-    "question": "American sandwich with peanut butter and jelly?",
-    "answer": "PBJ"
   },
   {
     "category": "Games & Technology",
@@ -14230,12 +14194,6 @@
     "difficulty": "easy",
     "question": "Person controlling puppets",
     "answer": "Puppeteer"
-  },
-  {
-    "category": "Movies & Pop Culture",
-    "difficulty": "easy",
-    "question": "The hero of the story",
-    "answer": "Hero"
   },
   {
     "category": "Movies & Pop Culture",

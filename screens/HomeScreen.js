@@ -1,10 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Animated, BackHandler, ImageBackground, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, BackHandler, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BannerAdSize, GAMBannerAd, TestIds } from 'react-native-google-mobile-ads';
 import AchievementsModal from '../components/AchievementsModal';
 import CustomAlert from '../components/CustomAlert';
@@ -642,7 +643,13 @@ export default function HomeScreen({ navigation }) {
   }, [owlState]);
 
   return (
-    <ImageBackground source={image} style={styles.backgroundImage}>
+    <View style={styles.backgroundImage}>
+      <Image
+        source={image}
+        style={[StyleSheet.absoluteFillObject, { zIndex: -1 }]}
+        contentFit="cover"
+        transition={500}
+      />
       <View style={styles.overlay} />
 
       {/* Banner Ad - Top */}
@@ -723,7 +730,7 @@ export default function HomeScreen({ navigation }) {
         onCancelButtonPress={alertInfo.onCancelButtonPress}
         onBackdropPress={() => setAlertInfo({ ...alertInfo, isVisible: false })}
       />
-    </ImageBackground>
+    </View>
   );
 }
 
