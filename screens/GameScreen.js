@@ -16,6 +16,7 @@ import TutorialModal from '../components/TutorialModal';
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
 import { checkAchievements, updatePlayerStats } from '../utils/achievementUtils';
+import { submitScore } from '../utils/leaderboardUtils';
 import { calculateStarRating, getQuestionCount, isMilestone } from '../utils/levelUtils';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -24,13 +25,14 @@ const adUnitId = __DEV__ ? TestIds.REWARDED : (Platform.OS === 'ios'
   ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
   : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
 
+
 const bannerAdUnitId = __DEV__ ? TestIds.BANNER : (Platform.OS === 'ios'
   ? 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx'
   : 'ca-app-pub-xxxxxxxxxx/xxxxxxxxxx');
 
 const ENDLESS_TUTORIAL_STEPS = [
   {
-    title: 'Endless Mode ♾️',
+    title: 'Endless Mode',
     description: 'Survive as long as you can! Questions get harder as you go.',
     animation: require('../assets/images/rocket.json'),
   },
@@ -40,7 +42,7 @@ const ENDLESS_TUTORIAL_STEPS = [
     animation: require('../assets/images/gameover.json'),
   },
   {
-    title: 'High Scores 🏆',
+    title: 'High Scores',
     description: 'Beat your best score and climb the leaderboard. Good luck!',
     animation: require('../assets/images/milestone.json'),
   },
@@ -158,6 +160,8 @@ const GameScreen = ({ route, navigation }) => {
       }, delay);
     }
   };
+
+
 
   const getLevelStorageKey = (cat) => `level_${cat.replace(/ & /g, '_')}`;
   const getFirstTimeHintKey = (cat) => `first_time_hint_${cat.replace(/ & /g, '_')}`;
@@ -477,6 +481,17 @@ const GameScreen = ({ route, navigation }) => {
     }
   }, [level, loadLevel, isEndlessMode, loadEndlessQuestions]);
 
+  // Auto-select first question for tutorial level to ensure keyboard is shown
+  useEffect(() => {
+    if (level === 1 && category === 'Planet Earth' && questions.length > 0 && activeQuestionIndex === null) {
+      // Slightly delay to ensure layout is ready
+      setTimeout(() => {
+        setActiveQuestionIndex(0);
+        setActiveInputIndex(0);
+      }, 500);
+    }
+  }, [questions, level, category, activeQuestionIndex]);
+
   // Animate overlay when modal appears
   useEffect(() => {
     if (isLevelComplete) {
@@ -647,7 +662,26 @@ const GameScreen = ({ route, navigation }) => {
           category: category,
         });
 
+        // Submit category score to leaderboard
+        try {
+          const userId = await AsyncStorage.getItem('user_id') || Math.random().toString(36).substr(2, 9);
+          if (!await AsyncStorage.getItem('user_id')) {
+            await AsyncStorage.setItem('user_id', userId);
+          }
+          const username = await AsyncStorage.getItem('username') || 'Player' + userId.substr(0, 4);
 
+          // Check if this is a new high score for this category
+          const categoryKey = `high_score_${category.replace(/\s+/g, '_')}`;
+          const currentHigh = await AsyncStorage.getItem(categoryKey);
+          const currentHighScore = currentHigh ? parseInt(currentHigh, 10) : 0;
+
+          if (newLevel > currentHighScore) {
+            await AsyncStorage.setItem(categoryKey, newLevel.toString());
+            await submitScore(userId, username, newLevel, category);
+          }
+        } catch (error) {
+          console.error('Failed to submit category score:', error);
+        }
 
         // Check for new achievements
         handleAchievementCheck(0);
@@ -791,6 +825,18 @@ const GameScreen = ({ route, navigation }) => {
           });
 
           await handleAchievementCheck();
+
+          // Submit Score to Global Leaderboard
+          try {
+            const userId = await AsyncStorage.getItem('user_id') || Math.random().toString(36).substr(2, 9);
+            if (!await AsyncStorage.getItem('user_id')) {
+              await AsyncStorage.setItem('user_id', userId);
+            }
+            const username = await AsyncStorage.getItem('username') || 'Player' + userId.substr(0, 4);
+            await submitScore(userId, username, endlessScore, 'Mixed Categories');
+          } catch (error) {
+            console.error('Failed to submit score to leaderboard:', error);
+          }
 
           // Removed playTimeUpSound() - no sound on game over
           setIsGameOver(true);
@@ -1109,7 +1155,12 @@ const GameScreen = ({ route, navigation }) => {
               />
             )}
 
-            <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onEnter={handleEnter} screenWidth={SCREEN_WIDTH} />
+            <Keyboard
+              onKeyPress={handleKeyPress}
+              onBackspace={handleBackspace}
+              onEnter={handleEnter}
+              screenWidth={SCREEN_WIDTH}
+            />
 
             <CustomAlert
               message={alertInfo.message}
@@ -1341,7 +1392,7 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   hintButtonTextBelow: {
-    color: '#E1E2E1',
+    color: '#FFD700',
     fontSize: 16,
     fontFamily: 'EagleLake-Regular',
     marginTop: 0,

@@ -17,12 +17,25 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const StatsModal = ({ isVisible, onClose }) => {
     const [stats, setStats] = useState(null);
+    const [username, setUsername] = useState('Player');
 
     useEffect(() => {
         if (isVisible) {
             loadStats();
+            loadUsername();
         }
     }, [isVisible]);
+
+    const loadUsername = async () => {
+        try {
+            const savedUsername = await AsyncStorage.getItem('username');
+            if (savedUsername) {
+                setUsername(savedUsername);
+            }
+        } catch (error) {
+            console.error('Failed to load username:', error);
+        }
+    };
 
     const loadStats = async () => {
         let playerStats = await getPlayerStats();
@@ -96,7 +109,7 @@ const StatsModal = ({ isVisible, onClose }) => {
                                 loop
                                 style={styles.headerStatsAnimation}
                             />
-                            <Text style={styles.headerTitle}>Player Profile</Text>
+                            <Text style={styles.headerTitle}>{username}</Text>
                         </View>
                         <Pressable onPress={onClose} style={styles.closeButton}>
                             <Text style={styles.closeButtonText}>✕</Text>

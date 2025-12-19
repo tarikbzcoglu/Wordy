@@ -1,18 +1,21 @@
 import { Audio } from 'expo-av';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { MusicContext } from '../context/MusicContext';
 
 export const useSound = (soundFile) => {
   const [sound, setSound] = useState();
+  const { sfxVolume } = useContext(MusicContext);
 
   const playSound = useCallback(async () => {
     if (sound) {
       try {
+        await sound.setVolumeAsync(sfxVolume);
         await sound.playFromPositionAsync(0);
       } catch (e) {
         // Silently fail if sound cannot be played (e.g. background mode)
       }
     }
-  }, [sound]);
+  }, [sound, sfxVolume]);
 
   useEffect(() => {
     let soundObject = null;

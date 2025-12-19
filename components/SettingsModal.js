@@ -5,7 +5,7 @@ import { Animated, BackHandler, Pressable, StyleSheet, Switch, Text, TouchableOp
 import { MusicContext } from '../context/MusicContext';
 
 const SettingsModal = ({ isVisible, onClose }) => {
-  const { isMusicEnabled, setIsMusicEnabled, volume, setVolume } = useContext(MusicContext);
+  const { isMusicEnabled, setIsMusicEnabled, volume, setVolume, sfxVolume, setSfxVolume } = useContext(MusicContext);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -60,15 +60,29 @@ const SettingsModal = ({ isVisible, onClose }) => {
               />
             </View>
             <View style={styles.settingItem}>
-              <Text style={styles.settingText}>Volume</Text>
+              <Text style={styles.settingText}>Music Volume</Text>
               <Slider
-                style={{ width: 200, height: 40 }}
+                style={{ width: 140, height: 40 }}
                 minimumValue={0}
                 maximumValue={1}
-                minimumTrackTintColor="#FFFFFF"
+                minimumTrackTintColor="#4A7E8E"
                 maximumTrackTintColor="#000000"
+                thumbTintColor="#4A7E8E"
                 value={volume}
                 onValueChange={setVolume}
+              />
+            </View>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>SFX Volume</Text>
+              <Slider
+                style={{ width: 140, height: 40 }}
+                minimumValue={0}
+                maximumValue={1}
+                minimumTrackTintColor="#4A7E8E"
+                maximumTrackTintColor="#000000"
+                thumbTintColor="#4A7E8E"
+                value={sfxVolume}
+                onValueChange={setSfxVolume}
               />
             </View>
             <View style={styles.buttonContainer}>

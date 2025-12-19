@@ -16,6 +16,7 @@ export const MusicProvider = ({ children }) => {
   const [soundObject, setSoundObject] = useState(null);
   const [isMusicEnabled, setIsMusicEnabled] = useState(true);
   const [volume, setVolume] = useState(0.5);
+  const [sfxVolume, setSfxVolume] = useState(1.0);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Load saved settings on mount
@@ -27,6 +28,10 @@ export const MusicProvider = ({ children }) => {
 
         if (savedVolume !== null) {
           setVolume(parseFloat(savedVolume));
+        }
+        const savedSfxVolume = await AsyncStorage.getItem('sfxVolume');
+        if (savedSfxVolume !== null) {
+          setSfxVolume(parseFloat(savedSfxVolume));
         }
         if (savedMusicEnabled !== null) {
           setIsMusicEnabled(JSON.parse(savedMusicEnabled));
@@ -123,8 +128,22 @@ export const MusicProvider = ({ children }) => {
     }
   }, [volume, soundObject, isInitialized]);
 
+  // Effect to save SFX volume to AsyncStorage
+  useEffect(() => {
+    const saveSfxVolume = async () => {
+      try {
+        await AsyncStorage.setItem('sfxVolume', sfxVolume.toString());
+      } catch (e) {
+        console.error('MusicContext: Failed to save SFX volume', e);
+      }
+    };
+    if (isInitialized) {
+      saveSfxVolume();
+    }
+  }, [sfxVolume, isInitialized]);
+
   return (
-    <MusicContext.Provider value={{ isMusicEnabled, setIsMusicEnabled, volume, setVolume }}>
+    <MusicContext.Provider value={{ isMusicEnabled, setIsMusicEnabled, volume, setVolume, sfxVolume, setSfxVolume }}>
       {children}
     </MusicContext.Provider>
   );

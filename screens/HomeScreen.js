@@ -10,9 +10,11 @@ import { BannerAdSize, GAMBannerAd, TestIds } from 'react-native-google-mobile-a
 import AchievementsModal from '../components/AchievementsModal';
 import CustomAlert from '../components/CustomAlert';
 
+import LeaderboardModal from '../components/LeaderboardModal';
 import SettingsModal from '../components/SettingsModal';
 import StatsModal from '../components/StatsModal';
 import TutorialModal from '../components/TutorialModal';
+import UsernameModal from '../components/UsernameModal';
 import { MusicContext } from '../context/MusicContext'; // Import MusicContext
 import { useSound } from '../hooks/useSound';
 import questionsData from '../questions_db.json';
@@ -197,6 +199,8 @@ export default function HomeScreen({ navigation }) {
   const [alertInfo, setAlertInfo] = useState({ isVisible: false, message: '', buttonText: null, onButtonPress: null, cancelButtonText: null, onCancelButtonPress: null });
 
   const [isStatsModalVisible, setStatsModalVisible] = useState(false);
+  const [isLeaderboardVisible, setLeaderboardVisible] = useState(false);
+  const [isUsernameModalVisible, setUsernameModalVisible] = useState(false);
   const { isMusicEnabled, setIsMusicEnabled } = useContext(MusicContext); // Use MusicContext
 
   const word = 'Wordy'.split('');
@@ -214,6 +218,7 @@ export default function HomeScreen({ navigation }) {
   const settingsButtonScale = useRef(new Animated.Value(1)).current;
   const exitButtonScale = useRef(new Animated.Value(1)).current;
   const achievementsButtonScale = useRef(new Animated.Value(1)).current;
+  const leaderboardButtonScale = useRef(new Animated.Value(1)).current;
 
 
   const scrollIndicatorAnim = useRef(new Animated.Value(0)).current;
@@ -255,6 +260,12 @@ export default function HomeScreen({ navigation }) {
 
           const savedHighScore = await AsyncStorage.getItem('high_score_endless');
           setEndlessHighScore(savedHighScore ? parseInt(savedHighScore, 10) : 0);
+
+          // Check if username exists
+          const savedUsername = await AsyncStorage.getItem('username');
+          if (!savedUsername) {
+            setUsernameModalVisible(true);
+          }
 
           // Check if this is the first time opening the app
           const tutorialShown = await AsyncStorage.getItem('tutorial_shown');
@@ -346,6 +357,20 @@ export default function HomeScreen({ navigation }) {
       setTutorialVisible(false);
     } catch (e) {
       console.error('Failed to save tutorial status.', e);
+    }
+  };
+
+  const handleUsernameSubmit = async (username) => {
+    try {
+      await AsyncStorage.setItem('username', username);
+      // Generate and save user ID if not exists
+      const userId = await AsyncStorage.getItem('user_id') || Math.random().toString(36).substr(2, 9);
+      if (!await AsyncStorage.getItem('user_id')) {
+        await AsyncStorage.setItem('user_id', userId);
+      }
+      setUsernameModalVisible(false);
+    } catch (e) {
+      console.error('Failed to save username.', e);
     }
   };
 
@@ -490,6 +515,45 @@ export default function HomeScreen({ navigation }) {
                 style={styles.buttonIcon}
               />
               <Text style={styles.buttonText}>Achievements</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View style={{ transform: [{ scale: leaderboardButtonScale }] }}>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              playTapSound();
+              setLeaderboardVisible(true);
+            }}
+            onPressIn={() => {
+              Animated.spring(leaderboardButtonScale, {
+                toValue: 0.95,
+                useNativeDriver: true,
+              }).start();
+            }}
+            onPressOut={() => {
+              Animated.spring(leaderboardButtonScale, {
+                toValue: 1,
+                friction: 3,
+                tension: 100,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <LinearGradient
+              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientButton}
+            >
+              <LottieView
+                source={require('../assets/images/milestone.json')}
+                autoPlay
+                loop
+                style={styles.buttonIcon}
+              />
+              <Text style={styles.buttonText}>Leaderboard</Text>
             </LinearGradient>
           </Pressable>
         </Animated.View>
@@ -716,6 +780,14 @@ export default function HomeScreen({ navigation }) {
         isVisible={isAchievementsModalVisible}
         onClose={() => setAchievementsModalVisible(false)}
       />
+      <LeaderboardModal
+        isVisible={isLeaderboardVisible}
+        onClose={() => setLeaderboardVisible(false)}
+      />
+      <UsernameModal
+        isVisible={isUsernameModalVisible}
+        onSubmit={handleUsernameSubmit}
+      />
 
       <StatsModal
         isVisible={isStatsModalVisible}
@@ -779,7 +851,7 @@ const styles = StyleSheet.create({
   },
   owlPressable: {
     position: 'absolute',
-    top: 105,
+    top: 80,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
