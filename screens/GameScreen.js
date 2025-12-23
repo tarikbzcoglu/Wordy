@@ -652,7 +652,7 @@ const GameScreen = ({ route, navigation }) => {
         const completionTime = levelStats.startTime ? (Date.now() - levelStats.startTime) / 1000 : 0;
         const stars = calculateStarRating(levelStats.hintsUsed, levelStats.mistakes);
 
-        await updatePlayerStats({
+        const updatedStats = await updatePlayerStats({
           levels_completed: 1,
           stars: stars,
           perfect: stars === 3,
@@ -669,6 +669,11 @@ const GameScreen = ({ route, navigation }) => {
             await AsyncStorage.setItem('user_id', userId);
           }
           const username = await AsyncStorage.getItem('username') || 'Player' + userId.substr(0, 4);
+
+          // Submit Total Stars
+          if (updatedStats && updatedStats.total_stars) {
+            await submitScore(userId, username, updatedStats.total_stars, 'Total Stars');
+          }
 
           // Check if this is a new high score for this category
           const categoryKey = `high_score_${category.replace(/\s+/g, '_')}`;
@@ -1117,7 +1122,12 @@ const GameScreen = ({ route, navigation }) => {
                       ]}
                     >
                       <View style={[styles.questionRow, { width: questionColumnWidth }]}>
-                        <Text style={styles.questionText}>{question.text}</Text>
+                        <Text
+                          style={styles.questionText}
+                          android_hyphenationFrequency="normal"
+                        >
+                          {question.text}
+                        </Text>
                       </View>
                       <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
                         {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
@@ -1131,6 +1141,7 @@ const GameScreen = ({ route, navigation }) => {
                             isCorrect={correctlyAnswered[questionIndex]}
                             onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
                             disabled={correctlyAnswered[questionIndex]}
+                            wordLength={answers[questionIndex].length}
                           />
                         ))}
                       </View>
@@ -1579,10 +1590,10 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   hintLetterCell: {
-    backgroundColor: '#B3E5FC',
-    borderColor: '#87CEEB',
+    backgroundColor: '#FFD700',
+    borderColor: '#e7c712ff',
     borderWidth: 2,
-    shadowColor: '#87CEEB',
+    shadowColor: '#95800aff',
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 4,

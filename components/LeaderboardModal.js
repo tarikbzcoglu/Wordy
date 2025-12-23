@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics';
 import LottieView from 'lottie-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -8,6 +9,7 @@ import { getLeaderboard } from '../utils/leaderboardUtils';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const CATEGORIES = [
+    'Total Stars',
     'Mixed Categories',
     'Planet Earth',
     'General Knowledge',
@@ -162,7 +164,10 @@ const LeaderboardModal = ({ isVisible, onClose }) => {
                                     styles.categoryTab,
                                     selectedCategory === cat && styles.categoryTabActive
                                 ]}
-                                onPress={() => setSelectedCategory(cat)}
+                                onPress={() => {
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                    setSelectedCategory(cat);
+                                }}
                             >
                                 <Text style={[
                                     styles.categoryTabText,

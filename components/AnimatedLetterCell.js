@@ -1,199 +1,148 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
-const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorrect, onPress, disabled }) => {
-    const scaleAnim = useRef(new Animated.Value(0)).current;
-    const shimmerAnim = useRef(new Animated.Value(0)).current;
-    const shimmer2Anim = useRef(new Animated.Value(0)).current;
-    const bounceAnim = useRef(new Animated.Value(0)).current;
-    const glowAnim = useRef(new Animated.Value(0)).current;
-    const rainbowAnim = useRef(new Animated.Value(0)).current;
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
+const AnimatedLetterCell = ({ letter, status, width, height, isSelected, isCorrect, onPress, disabled, wordLength = 0 }) => {
+    // boxScale controls the container (the cell itself) - starts at 1 so it's visible!
+    const boxScale = useRef(new Animated.Value(1)).current;
+    // textScale controls the letter pop-in effect
+    const textScale = useRef(new Animated.Value(letter ? 1 : 0)).current;
+
+    const shimmerAnim = useRef(new Animated.Value(0)).current;
+    const glowAnim = useRef(new Animated.Value(0)).current;
+
+    // Handle Letter Pop-in (Text Animation)
     useEffect(() => {
         if (letter) {
-            // Modern elastic pop-in
-            Animated.spring(scaleAnim, {
+            // Letter pops in
+            Animated.spring(textScale, {
                 toValue: 1,
                 friction: 6,
                 tension: 200,
                 useNativeDriver: true,
             }).start();
+
+            // Subtle box pulse when letter is entered
+            Animated.sequence([
+                Animated.timing(boxScale, { toValue: 1.05, duration: 100, useNativeDriver: true }),
+                Animated.timing(boxScale, { toValue: 1, duration: 100, useNativeDriver: true }),
+            ]).start();
         } else {
-            scaleAnim.setValue(0);
+            textScale.setValue(0);
         }
     }, [letter]);
 
+    // Handle Status Changes (Hint/Reveal Animations)
     useEffect(() => {
         if (status === 'revealed' || status === 'hint') {
-            // Enhanced reveal: smoother shimmer + prominent glow + bounce
-            Animated.parallel([
-                // Main shimmer sweep (faster and more prominent)
-                Animated.timing(shimmerAnim, {
-                    toValue: 1,
-                    duration: 500,
+            // Premium Gold Reveal: Flash -> Materialize -> Sheen -> Settle
+            Animated.sequence([
+                // 1. Initial Scale Down (Anticipation)
+                Animated.timing(boxScale, {
+                    toValue: 0.9,
+                    duration: 100,
                     useNativeDriver: true,
                 }),
-                // Second shimmer (closer timing for better effect)
-                Animated.sequence([
-                    Animated.delay(100),
-                    Animated.timing(shimmer2Anim, {
-                        toValue: 1,
-                        duration: 450,
+                // 2. Flash & Pop (Expansion)
+                Animated.parallel([
+                    Animated.spring(boxScale, {
+                        toValue: 1.1,
+                        friction: 5,
+                        tension: 200,
                         useNativeDriver: true,
                     }),
+                    // Flash effect (using glowAnim as white flash overlay)
+                    Animated.sequence([
+                        Animated.timing(glowAnim, {
+                            toValue: 1, // Full white opacity
+                            duration: 100,
+                            useNativeDriver: true,
+                        }),
+                        Animated.timing(glowAnim, {
+                            toValue: 0,
+                            duration: 300,
+                            useNativeDriver: true,
+                        }),
+                    ]),
                 ]),
-                // Rainbow glow pulse (longer and more visible)
-                Animated.sequence([
-                    Animated.timing(rainbowAnim, {
-                        toValue: 1,
-                        duration: 250,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(rainbowAnim, {
-                        toValue: 0,
-                        duration: 350,
-                        useNativeDriver: true,
-                    }),
-                ]),
-                // Stronger glow pulse
-                Animated.sequence([
-                    Animated.timing(glowAnim, {
-                        toValue: 1,
-                        duration: 250,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(glowAnim, {
-                        toValue: 0.3,
-                        duration: 300,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(glowAnim, {
-                        toValue: 0,
-                        duration: 200,
-                        useNativeDriver: true,
-                    }),
-                ]),
-                // Smooth bounce
-                Animated.sequence([
-                    Animated.spring(bounceAnim, {
-                        toValue: 1,
-                        friction: 4,
-                        tension: 180,
-                        useNativeDriver: true,
-                    }),
-                    Animated.spring(bounceAnim, {
-                        toValue: 0,
-                        friction: 6,
-                        tension: 120,
-                        useNativeDriver: true,
-                    }),
-                ]),
+                // 3. Sharp Sheen (Shimmer)
+                Animated.timing(shimmerAnim, {
+                    toValue: 1,
+                    duration: 400,
+                    useNativeDriver: true,
+                }),
+                // 4. Settle to natural size
+                Animated.spring(boxScale, {
+                    toValue: 1,
+                    friction: 7,
+                    tension: 100,
+                    useNativeDriver: true,
+                }),
             ]).start(() => {
                 shimmerAnim.setValue(0);
-                shimmer2Anim.setValue(0);
             });
         }
     }, [status]);
 
+    // Interpolations
     const shimmerTranslate = shimmerAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: [-width * 2, width * 2]
+        outputRange: [-width, width * 2] // Start further left, move further right
     });
 
-    const shimmer2Translate = shimmer2Anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-width * 2, width * 2]
-    });
-
-    const bounceScale = bounceAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, 1.2]
-    });
-
-    const glowOpacity = glowAnim.interpolate({
-        inputRange: [0, 0.3, 1],
-        outputRange: [0, 0.5, 0.6]
-    });
-
-    const rainbowOpacity = rainbowAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 0.5]
-    });
+    const flashOpacity = glowAnim; // Re-purposing glowAnim as flash
 
     return (
         <View>
-            {/* Rainbow glow layer */}
-            <Animated.View
-                style={{
-                    position: 'absolute',
-                    width: width + 8,
-                    height: height + 8,
-                    left: -4,
-                    top: -4,
-                    borderRadius: 8,
-                    backgroundColor: '#FF69B4',
-                    opacity: rainbowOpacity,
-                }}
-            />
-            {/* Subtle glow background */}
-            <Animated.View
-                style={{
-                    position: 'absolute',
-                    width: width + 6,
-                    height: height + 6,
-                    left: -3,
-                    top: -3,
-                    borderRadius: 6,
-                    backgroundColor: status === 'hint' ? '#87CEEB' : '#FFD700',
-                    opacity: glowOpacity,
-                }}
-            />
-            <Pressable
+            <AnimatedPressable
                 style={[
                     styles.letterCell,
                     { width, height, overflow: 'hidden' },
                     isSelected && styles.selectedCell,
                     isCorrect && styles.correctAnswerCell,
                     status === 'incorrect' && styles.incorrectAnswerCell,
-                    status === 'hint' && styles.hintLetterCell
+                    status === 'hint' && styles.hintLetterCell,
+                    { transform: [{ scale: boxScale }] } // Apply box scale
                 ]}
                 onPress={onPress}
                 disabled={disabled}
             >
-                {/* First shimmer */}
+                {/* Text Content with its own animation */}
+                <Animated.View style={{ transform: [{ scale: textScale }] }}>
+                    <Text style={[
+                        styles.letterText,
+                        { fontSize: (width < 30 ? 20 : 24) + (wordLength <= 9 ? 4 : 0) }
+                    ]}>
+                        {letter}
+                    </Text>
+                </Animated.View>
+
+                {/* The "Sheen" - A crisp diagonal shine */}
                 <Animated.View
                     style={{
                         position: 'absolute',
-                        width: width * 0.6,
-                        height: height * 2,
-                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        top: -height,
+                        left: 0,
+                        width: width * 0.5,
+                        height: height * 4,
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         transform: [
                             { translateX: shimmerTranslate },
-                            { rotate: '25deg' }
+                            { rotate: '20deg' }
                         ],
                     }}
                 />
-                {/* Second shimmer (trailing) */}
+
+                {/* The "Flash" - Full white overlay for pop effect */}
                 <Animated.View
                     style={{
-                        position: 'absolute',
-                        width: width * 0.4,
-                        height: height * 2,
-                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                        transform: [
-                            { translateX: shimmer2Translate },
-                            { rotate: '25deg' }
-                        ],
+                        ...StyleSheet.absoluteFillObject,
+                        backgroundColor: '#FFFFFF',
+                        opacity: flashOpacity,
                     }}
                 />
-                <Animated.View style={{
-                    transform: [
-                        { scale: Animated.multiply(scaleAnim, bounceScale) }
-                    ]
-                }}>
-                    <Text style={[styles.letterText, { fontSize: width < 30 ? 20 : 24 }]}>{letter}</Text>
-                </Animated.View>
-            </Pressable>
+            </AnimatedPressable>
         </View>
     );
 };
@@ -241,10 +190,10 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     hintLetterCell: {
-        backgroundColor: '#B3E5FC',
-        borderColor: '#87CEEB',
+        backgroundColor: '#FFD700',
+        borderColor: '#e7c712ff',
         borderWidth: 2,
-        shadowColor: '#87CEEB',
+        shadowColor: '#95800aff',
         shadowOpacity: 0.3,
         shadowRadius: 6,
         elevation: 4,

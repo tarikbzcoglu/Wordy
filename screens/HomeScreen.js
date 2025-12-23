@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
@@ -9,6 +10,10 @@ import { Animated, BackHandler, Platform, Pressable, ScrollView, StyleSheet, Tex
 import { BannerAdSize, GAMBannerAd, TestIds } from 'react-native-google-mobile-ads';
 import AchievementsModal from '../components/AchievementsModal';
 import CustomAlert from '../components/CustomAlert';
+
+// ... existing imports ...
+
+
 
 import LeaderboardModal from '../components/LeaderboardModal';
 import SettingsModal from '../components/SettingsModal';
@@ -667,7 +672,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   const handleOwlPress = () => {
-    console.log('Owl pressed!');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Play random hoot sound
     const hootSounds = [playHoot1, playHoot2, playHoot3, playHoot4];

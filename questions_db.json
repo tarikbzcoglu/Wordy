@@ -8545,12 +8545,6 @@
   },
   {
     "category": "Travel & Geography",
-    "difficulty": "medium",
-    "question": "A pass through mountains",
-    "answer": "Pass"
-  },
-  {
-    "category": "Travel & Geography",
     "difficulty": "easy",
     "question": "Person traveling in vehicle",
     "answer": "Passenger"
