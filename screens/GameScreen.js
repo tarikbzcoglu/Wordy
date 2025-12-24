@@ -802,6 +802,36 @@ const GameScreen = ({ route, navigation }) => {
       setCorrectlyAnswered(newCorrectlyAnswered);
       setAnswers(newAnswers);
       isProcessingAttempt.current = false;
+
+      // Smart Focus: Auto-advance to the next incomplete word
+      // Logic: Start searching from (questionIndex + 1), wrap around.
+      let nextQuestionIdx = -1;
+      for (let offset = 1; offset < questions.length; offset++) {
+        const idx = (questionIndex + offset) % questions.length;
+        if (!newCorrectlyAnswered[idx]) {
+          nextQuestionIdx = idx;
+          break;
+        }
+      }
+
+      if (nextQuestionIdx !== -1) {
+        // Find first empty/inputtable cell in this new word
+        const nextWordAnswers = newAnswers[nextQuestionIdx];
+        let nextEmptyInputIdx = nextWordAnswers.findIndex(cell => cell.status !== 'revealed' && cell.status !== 'hint');
+
+        if (nextEmptyInputIdx !== -1) {
+          setActiveQuestionIndex(nextQuestionIdx);
+          setActiveInputIndex(nextEmptyInputIdx);
+        } else {
+          // Should not happen if word is not correct, but just in case
+          setActiveQuestionIndex(null);
+          setActiveInputIndex(null);
+        }
+      } else {
+        // Level Completed (all answered)
+        setActiveQuestionIndex(null);
+        setActiveInputIndex(null);
+      }
     } else if (userAnswer.length === correctAnswer.length) {
       playWrongSound();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -945,18 +975,34 @@ const GameScreen = ({ route, navigation }) => {
     if (newAnswers[activeQuestionIndex].every(cell => cell.letter !== '')) {
       isProcessingAttempt.current = true;
       checkAnswer(activeQuestionIndex);
-      setActiveQuestionIndex(null);
-      setActiveInputIndex(null);
+      // Removed setActiveQuestionIndex(null) to allow checkAnswer to handle smart focus transition
     } else {
       let nextInputIndex = activeInputIndex + 1;
+      // Scan forward
       while (nextInputIndex < currentQuestion.correct_answer.length && (newAnswers[activeQuestionIndex][nextInputIndex].status === 'revealed' || newAnswers[activeQuestionIndex][nextInputIndex].status === 'hint')) {
         nextInputIndex++;
       }
+
       if (nextInputIndex < currentQuestion.correct_answer.length) {
         setActiveInputIndex(nextInputIndex);
       } else {
-        setActiveQuestionIndex(null);
-        setActiveInputIndex(null);
+        // Smart Focus: If reached end, wrap around to start to find any skipped empty cells
+        let wrappedIndex = 0;
+        let foundEmpty = false;
+        while (wrappedIndex < activeInputIndex) {
+          const cell = newAnswers[activeQuestionIndex][wrappedIndex];
+          if (cell.status !== 'revealed' && cell.status !== 'hint' && cell.letter === '') { // Focus only if empty
+            setActiveInputIndex(wrappedIndex);
+            foundEmpty = true;
+            break;
+          }
+          wrappedIndex++;
+        }
+
+        if (!foundEmpty) {
+          setActiveQuestionIndex(null);
+          setActiveInputIndex(null);
+        }
       }
     }
   };
@@ -1132,7 +1178,7 @@ const GameScreen = ({ route, navigation }) => {
                       <View style={[styles.answerBoxesContainer, { width: answerColumnWidth }]}>
                         {answers[questionIndex] && answers[questionIndex].map((cell, inputIndex) => (
                           <AnimatedLetterCell
-                            key={inputIndex}
+                            key={`${question.text}-${inputIndex}`} // CRITICAL FIX: Unique key forces remount on new question/level
                             letter={cell.letter}
                             status={cell.status}
                             width={dynamicCellSize}
@@ -1142,6 +1188,12 @@ const GameScreen = ({ route, navigation }) => {
                             onPress={() => handleAnswerBoxPress(questionIndex, inputIndex)}
                             disabled={correctlyAnswered[questionIndex]}
                             wordLength={answers[questionIndex].length}
+                            // Pass styles for customization
+                            style={styles.letterCell}
+                            correctStyle={styles.correctAnswerCell}
+                            incorrectStyle={styles.incorrectAnswerCell}
+                            hintStyle={styles.hintLetterCell}
+                            selectedStyle={styles.selectedCell}
                           />
                         ))}
                       </View>
@@ -1267,7 +1319,7 @@ const GameScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(28, 59, 79, 0.7)',
+    backgroundColor: '#18425cff',
   },
   header: {
     flexDirection: 'row',
@@ -1276,9 +1328,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 2,
     paddingTop: 0,
-    backgroundColor: '#1C3B4F',
-    borderBottomWidth: 1,
-    borderBottomColor: '#4A7E8E',
+    backgroundColor: '#18425cff',
   },
   headerButton: {
     width: 40,
@@ -1526,21 +1576,22 @@ const styles = StyleSheet.create({
   questionAnswerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 1,
+    marginBottom: 2,
   },
   questionRow: {
-    backgroundColor: '#1C3B4F',
+    backgroundColor: '#1e5577ff',
     borderRadius: 6,
     justifyContent: 'center',
     paddingHorizontal: 4,
     paddingVertical: 2,
-    minHeight: 92,
+    minHeight: 91,
     marginRight: 0,
+    marginTop: 2,
   },
   questionText: {
     color: '#E1E2E1',
     fontSize: 15,
-    lineHeight: 19,
+    lineHeight: 20,
     fontFamily: 'EagleLake-Regular',
   },
   answerBoxesContainer: {
@@ -1549,18 +1600,24 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   letterCell: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FAF3E0',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
-    marginHorizontal: 1,
-    borderWidth: 2,
-    borderColor: 'rgba(28, 59, 79, 0.15)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    marginHorizontal: 1, // Biraz daha aralık bırakmak bu stilde iyi durur
+
+    // Kenarlıkları ve 3D efekti
+    borderRadius: 6, // Biraz daha köşeli
+    borderWidth: 1,
+    borderColor: '#E6DABF',     // Üst ve yanlar için açık ton
+    borderBottomWidth: 4,       // Alt tarafı kalınlaştırarak taş hissi ver
+    borderBottomColor: '#D4C5A5', // Alt taraf için daha koyu ton (Gölge gibi)
+
+    // Hafif bir derinlik gölgesi
+    shadowColor: '#8D7D65',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
   selectedCell: {
     backgroundColor: '#FFE082',
@@ -1572,13 +1629,14 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   correctAnswerCell: {
-    backgroundColor: '#81C784',
-    borderColor: '#4CAF50',
-    borderWidth: 2,
-    shadowColor: '#4CAF50',
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 4,
+    backgroundColor: '#26b3daff',
+    borderColor: '#66BB6A',
+    borderBottomColor: '#66BB6A',
+    borderBottomWidth: 4,
+    borderTopWidth: 4,
+    borderRadius: 8,
+    borderTopColor: '#66BB6A',
+    elevation: 6,
   },
   incorrectAnswerCell: {
     backgroundColor: '#FF8A80',
@@ -1591,7 +1649,7 @@ const styles = StyleSheet.create({
   },
   hintLetterCell: {
     backgroundColor: '#FFD700',
-    borderColor: '#e7c712ff',
+    borderColor: '#AED581',
     borderWidth: 2,
     shadowColor: '#95800aff',
     shadowOpacity: 0.3,
@@ -1613,7 +1671,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 100,
     alignSelf: 'center',
-    backgroundColor: 'rgba(74, 126, 142, 0.95)',
+    backgroundColor: 'rgba(25, 92, 139, 0.95)',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 25,

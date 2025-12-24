@@ -68,10 +68,12 @@ const styles = StyleSheet.create({
     progressText: {
         color: '#FFD700',
         fontSize: 11,
-        fontFamily: 'Papyrus',
-        fontWeight: 'bold',
+        fontFamily: 'EagleLake-Regular',
         minWidth: 32,
         textAlign: 'right',
+        marginLeft: -5,
+        marginRight: 4,
+
     },
 });
 

@@ -78,7 +78,7 @@ const GameHeader = ({
                 {({ pressed }) => (
                     <View style={[
                         styles.backButtonInner,
-                        { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
+                        { backgroundColor: pressed ? '#143d55' : '#1e5577ff' }
                     ]}>
                         <Text style={styles.backButtonTextModern}>←</Text>
                     </View>
@@ -177,7 +177,7 @@ const GameHeader = ({
                 {({ pressed }) => (
                     <View style={[
                         styles.settingsButtonInner,
-                        { backgroundColor: pressed ? '#3A6A7A' : '#4A7E8E' }
+                        { backgroundColor: pressed ? '#143d55' : '#1e5577ff' }
                     ]}>
                         <View style={styles.hamburgerLine} />
                         <View style={styles.hamburgerLine} />
@@ -197,9 +197,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 2,
         paddingTop: 0,
-        backgroundColor: '#1C3B4F',
-        borderBottomWidth: 1,
-        borderBottomColor: '#4A7E8E',
+        backgroundColor: '#14415fff',
+        borderBottomWidth: 0, // Removed border
     },
     backButtonModern: {
         width: 42,
@@ -258,6 +257,7 @@ const styles = StyleSheet.create({
     hintButtonContainer: {
         alignItems: 'center',
         marginRight: 25,
+        marginTop: 2, // Moved down by 2px
     },
     hintAnimationLarge: {
         width: 55,

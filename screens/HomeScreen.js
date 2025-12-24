@@ -399,7 +399,7 @@ export default function HomeScreen({ navigation }) {
               onPress={() => handleCategoryPress(category)}
             >
               <LinearGradient
-                colors={isEndlessMode ? ['#CD7F32', '#A0522D', '#8B4513'] : ['#4A7E8E', '#2C5F6F']}
+                colors={isEndlessMode ? ['#b63711ff', '#b61111ff', '#b61111ff'] : ['#0e75b0ff', '#1e5577ff']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.categoryGradient}
@@ -469,7 +469,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
+              colors={['#1e5577ff', '#0e75b0ff', '#1e5577ff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -508,7 +508,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
+              colors={['#1e5577ff', '#0e75b0ff', '#1e5577ff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -547,7 +547,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
+              colors={['#1e5577ff', '#0e75b0ff', '#1e5577ff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -585,7 +585,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#3B6E7E', '#1D4F5F', '#3B6E7E']}
+              colors={['#1e5577ff', '#0e75b0ff', '#1e5577ff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -621,7 +621,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <LinearGradient
-              colors={['#2C5564', '#1F3F4D', '#2C5564']}
+              colors={['#1e5577ff', '#0e75b0ff', '#1e5577ff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={[styles.gradientButton, { paddingVertical: 10, paddingHorizontal: 25 }]}

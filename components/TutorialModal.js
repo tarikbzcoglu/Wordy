@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         paddingHorizontal: 24,
         paddingVertical: 24,
-        backgroundColor: '#1C3B4F',
+        backgroundColor: '#0d5872ff',
         borderRadius: 20,
         borderWidth: 2,
         borderColor: '#68919E',

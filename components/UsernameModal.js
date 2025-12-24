@@ -48,7 +48,7 @@ const UsernameModal = ({ isVisible, onSubmit }) => {
                         disabled={username.trim().length < 3}
                     >
                         <LinearGradient
-                            colors={username.trim().length >= 3 ? ['#4CAF50', '#40d548ff'] : ['#afb47dff', '#118bd7ff']}
+                            colors={username.trim().length >= 3 ? ['#26C6DA', '#66bb6ae6'] : ['#afb47dff', '#118bd7ff']}
                             style={styles.buttonGradient}
                         >
                             <Text style={styles.buttonText}>Start Playing!</Text>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         width: '85%',
-        backgroundColor: '#1C3B4F',
+        backgroundColor: '#117799ff',
         borderRadius: 20,
         padding: 25,
         borderWidth: 2,

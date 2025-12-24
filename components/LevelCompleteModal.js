@@ -224,7 +224,7 @@ const LevelCompleteModal = ({
             }}
           >
             <LinearGradient
-              colors={['#DAA520', '#FF8C00']}
+              colors={['#1c92d6ff', '#3b80abff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -254,7 +254,7 @@ const LevelCompleteModal = ({
             }}
           >
             <LinearGradient
-              colors={['#c63a3aff', '#A9A9A9']}
+              colors={['#c53f3fff', '#fa000096']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradientButton}
@@ -286,12 +286,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 24,
     paddingTop: 10,
-    backgroundColor: '#1C3B4F',
+    backgroundColor: '#0f598aff',
     borderRadius: 15,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#68919E',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#000000ff',
     shadowOffset: {
       width: 0,
       height: 5,
@@ -301,15 +301,16 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   lottieAnimation: {
-    width: 100,
-    height: 100,
+    width: 111,
+    height: 111,
     marginBottom: 0,
+    marginLeft: 9,
   },
   titleText: {
     color: '#FFD700',
     fontSize: 34,
     fontFamily: 'EagleLake-Regular',
-    marginBottom: 10,
+    marginBottom: 5,
     textAlign: 'center',
     textShadowColor: 'rgba(255, 215, 0, 0.5)',
     textShadowOffset: { width: 0, height: 0 },
@@ -317,7 +318,7 @@ const styles = StyleSheet.create({
   },
   starsContainer: {
     flexDirection: 'row',
-    marginBottom: 20,
+    marginBottom: 15,
     justifyContent: 'center',
     gap: 8,
   },
@@ -396,7 +397,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: '100%',
     overflow: 'hidden',
-    marginBottom: 12,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -411,11 +412,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   menuButton: {
-    backgroundColor: '#676D69',
+    backgroundColor: '#6d6967ff',
   },
   buttonText: {
-    color: '#E1E2E1',
-    fontSize: 22,
+    color: '#e2e2e1ff',
+    fontSize: 24,
     fontFamily: 'EagleLake-Regular',
   },
   titleContainer: {
