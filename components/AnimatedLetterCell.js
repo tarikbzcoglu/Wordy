@@ -84,12 +84,12 @@ const AnimatedLetterCell = ({
                     }),
                 ]),
 
-                // 5. Rainbow Tint Cycle (during spin) - MUST be false for color interpolation
+                // 5. Rainbow Tint Cycle (converted to Opacity for Native Driver perf)
                 Animated.sequence([
                     Animated.timing(rainbowAnim, {
                         toValue: 1,
                         duration: 650,
-                        useNativeDriver: false,
+                        useNativeDriver: true, // Now TRUE for performance!
                     }),
                 ]),
             ]).start();
@@ -109,17 +109,10 @@ const AnimatedLetterCell = ({
 
     const flashOpacity = glowAnim;
 
-    // Rainbow Tint Interpolation
-    const rainbowColor = rainbowAnim.interpolate({
-        inputRange: [0, 0.2, 0.4, 0.6, 0.8, 1],
-        outputRange: [
-            'rgba(255, 215, 0, 0)',   // Transparent Gold start
-            'rgba(255, 0, 0, 0.3)',   // Red tint
-            'rgba(255, 0, 255, 0.3)', // Purple tint
-            'rgba(0, 255, 255, 0.3)', // Cyan tint
-            'rgba(0, 255, 0, 0.3)',   // Green tint
-            'rgba(255, 215, 0, 0)'    // Back to Gold/Transparent
-        ]
+    // Rainbow/Holo Opacity Interpolation (Replaces heavy color interpolation)
+    const rainbowOpacity = rainbowAnim.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [0, 0.4, 0] // Fade in to 0.4 then out
     });
 
     return (
@@ -144,11 +137,12 @@ const AnimatedLetterCell = ({
                 onPress={onPress}
                 disabled={disabled}
             >
-                {/* Rainbow/Holo Overlay Layer */}
+                {/* Rainbow/Holo Overlay Layer - Optimized */}
                 <Animated.View
                     style={{
                         ...StyleSheet.absoluteFillObject,
-                        backgroundColor: rainbowColor,
+                        backgroundColor: 'rgba(255, 215, 0, 0.5)', // Gold Tint constant
+                        opacity: rainbowOpacity, // Native Driver opacity
                         borderRadius: 6,
                     }}
                 />

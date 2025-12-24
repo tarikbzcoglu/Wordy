@@ -182,10 +182,10 @@ const allCategories = ['Mixed Categories', ...[...new Set(questionsData.map(q =>
     'Planet Earth': 0,
     'General Knowledge': 1,
     'Science & Nature': 2,
-    'Food & Culture': 3,
+    'Food & Culture': 6,
     'History & Civilization': 4,
     'Movies & Pop Culture': 5,
-    'Art & Literature': 6,
+    'Art & Literature': 3,
     'Games & Technology': 7,
     'Travel & Geography': 8,
   };
@@ -436,7 +436,7 @@ export default function HomeScreen({ navigation }) {
       </Animated.View>
       <Pressable style={({ pressed }) => [
         styles.backButton,
-        { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#4A7E8E' }
+        { backgroundColor: pressed ? 'rgba(28, 59, 79, 0.8)' : '#0e75b0ff' }
       ]} onPress={handleBackPress}>
         <Text style={styles.backButtonText}>Back</Text>
       </Pressable>
@@ -895,7 +895,7 @@ const styles = StyleSheet.create({
     color: '#e6ca12ff',
     fontFamily: 'EagleLake-Regular',
     paddingBottom: 1,
-    marginTop: -4,
+    marginTop: 0,
   },
   menu: {
     width: '100%',

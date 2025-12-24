@@ -169,14 +169,24 @@ const GameScreen = ({ route, navigation }) => {
   // Load endless mode questions (mixed from all categories)
   const loadEndlessQuestions = useCallback(() => {
     // Get all questions except from Karışık category itself and limit length <= 11
-    const allQuestions = questionsData.filter(q =>
+    let allQuestions = questionsData.filter(q =>
       q.category !== 'Mixed Categories' &&
       decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').length <= 11
     );
 
+    // Filter out already used questions
+    let unusedQuestions = allQuestions.filter(q => !endlessUsedQuestions.has(q.question));
+
+    // If we ran out of unique questions, reset history and start over
+    if (unusedQuestions.length < 5) {
+      console.log('Unique questions exhausted, resetting history!');
+      setEndlessUsedQuestions(new Set());
+      unusedQuestions = allQuestions; // Reset pool
+    }
+
     // Group questions by answer length to ensure UI consistency
     const questionsByLength = {};
-    allQuestions.forEach(q => {
+    unusedQuestions.forEach(q => {
       const len = decode(q.answer).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().length;
       if (!questionsByLength[len]) {
         questionsByLength[len] = [];
@@ -197,25 +207,30 @@ const GameScreen = ({ route, navigation }) => {
       targetLength = availableLengths[Math.floor(Math.random() * availableLengths.length)];
       targetQuestions = questionsByLength[targetLength];
     }
-    // Strategy 2: Fallback to ANY length that has questions (even directly < 5)
+    // Strategy 2: Fallback to ANY length that has questions
     else {
       const allLengths = Object.keys(questionsByLength).map(Number);
       if (allLengths.length > 0) {
-        // Pick the length with the most questions
         targetLength = allLengths.sort((a, b) => questionsByLength[b].length - questionsByLength[a].length)[0];
         targetQuestions = questionsByLength[targetLength];
       }
     }
 
-    // Strategy 3: Ultimate Fallback - Just take any 5 unique questions mixed
+    // Strategy 3: Ultimate Fallback
     if (!targetQuestions || targetQuestions.length === 0) {
-      targetQuestions = [...allQuestions];
-      // Note: This might result in mixed lengths, but it's better than empty screen.
+      targetQuestions = [...unusedQuestions];
     }
 
     // Shuffle and select random questions
     const shuffled = [...targetQuestions].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, getQuestionCount(level));
+
+    // Mark selected questions as used
+    setEndlessUsedQuestions(prev => {
+      const newSet = new Set(prev);
+      selected.forEach(q => newSet.add(q.question));
+      return newSet;
+    });
 
     const decodedQuestions = selected.map(q => ({
       ...q,
@@ -1049,6 +1064,8 @@ const GameScreen = ({ route, navigation }) => {
     navigation.goBack();
   };
 
+  const [endlessUsedQuestions, setEndlessUsedQuestions] = useState(new Set());
+
   const handlePlayAgain = () => {
     // Reset processing flag to allow cell clicks
     isProcessingAttempt.current = false;
@@ -1063,6 +1080,7 @@ const GameScreen = ({ route, navigation }) => {
     setActiveQuestionIndex(null); // Reset active question
     setActiveInputIndex(null); // Reset active input
     setHintsLeft(3); // Reset hints
+    setEndlessUsedQuestions(new Set()); // Reset used questions history
 
     // Reset stats
     setLevelStats({
@@ -1584,7 +1602,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 4,
     paddingVertical: 2,
-    minHeight: 91,
+    minHeight: 90,
     marginRight: 0,
     marginTop: 2,
   },

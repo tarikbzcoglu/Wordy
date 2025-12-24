@@ -25,7 +25,7 @@ const CATEGORIES = [
 const LeaderboardModal = ({ isVisible, onClose }) => {
     const [scores, setScores] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState('Mixed Categories');
+    const [selectedCategory, setSelectedCategory] = useState('Total Stars');
     const [userRank, setUserRank] = useState(null);
     const [userScore, setUserScore] = useState(null);
 
