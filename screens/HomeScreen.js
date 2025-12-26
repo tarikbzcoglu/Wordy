@@ -511,13 +511,13 @@ export default function HomeScreen({ navigation }) {
               colors={['#1e5577ff', '#0e75b0ff', '#1e5577ff']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.gradientButton}
+              style={[styles.gradientButton, { paddingVertical: 0 }]}
             >
               <LottieView
                 source={require('../assets/images/Achievements.json')}
                 autoPlay
                 loop
-                style={styles.buttonIcon}
+                style={{ width: 75, height: 75 }}
               />
               <Text style={styles.buttonText}>Achievements</Text>
             </LinearGradient>
@@ -553,7 +553,7 @@ export default function HomeScreen({ navigation }) {
               style={styles.gradientButton}
             >
               <LottieView
-                source={require('../assets/images/milestone.json')}
+                source={require('../assets/images/leaderboard.json')}
                 autoPlay
                 loop
                 style={styles.buttonIcon}
@@ -922,8 +922,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   buttonIcon: {
-    width: 32,
-    height: 32,
+    width: 45,
+    height: 45,
   },
   buttonText: {
     color: '#E1E2E1',

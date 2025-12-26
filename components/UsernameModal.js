@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const UsernameModal = ({ isVisible, onSubmit }) => {
     const [username, setUsername] = useState('');
@@ -15,7 +15,10 @@ const UsernameModal = ({ isVisible, onSubmit }) => {
 
     return (
         <Modal transparent visible={isVisible} animationType="fade">
-            <View style={styles.overlay}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.overlay}
+            >
                 <View style={styles.modalContent}>
                     <LottieView
                         source={require('../assets/images/owl_hi.json')}
@@ -55,7 +58,7 @@ const UsernameModal = ({ isVisible, onSubmit }) => {
                         </LinearGradient>
                     </Pressable>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 };
@@ -71,9 +74,9 @@ const styles = StyleSheet.create({
         width: '85%',
         backgroundColor: '#117799ff',
         borderRadius: 20,
-        padding: 25,
+        padding: 12,
         borderWidth: 2,
-        borderColor: '#FFD700',
+        borderColor: '#ffd900d3',
     },
     owlAnimation: {
         width: 120,

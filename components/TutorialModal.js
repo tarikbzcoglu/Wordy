@@ -208,7 +208,7 @@ const TutorialModal = ({ isVisible, onComplete, steps = TUTORIAL_STEPS }) => {
                         onPress={handleNext}
                     >
                         <Text style={styles.buttonText}>
-                            {isLastStep ? "Let's Play! 🎮" : 'Next →'}
+                            {isLastStep ? "Let's Play!" : 'Next →'}
                         </Text>
                     </Pressable>
                 </View>
@@ -234,10 +234,10 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         paddingHorizontal: 24,
         paddingVertical: 24,
-        backgroundColor: '#0d5872ff',
+        backgroundColor: '#175b72ff',
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: '#68919E',
+        borderColor: '#ffd900db',
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
         right: 15,
         paddingHorizontal: 15,
         paddingVertical: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: 'rgba(110, 90, 90, 0.33)',
         borderRadius: 15,
         zIndex: 10,
     },
@@ -327,10 +327,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     previousButton: {
-        backgroundColor: '#676D69',
+        backgroundColor: '#be821fff',
     },
     nextButton: {
-        backgroundColor: '#4A7E8E',
+        backgroundColor: '#1eb660ff',
     },
     singleButton: {
         flex: 1,

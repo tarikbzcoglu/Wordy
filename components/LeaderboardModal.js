@@ -108,13 +108,12 @@ const LeaderboardModal = ({ isVisible, onClose }) => {
                 isCurrentUser && styles.currentUserRow
             ]}>
                 <View style={styles.rankCol}>
-                    {isCurrentUser ? (
-                        <Text style={styles.rankText}>🏆 #{index + 1}</Text>
-                    ) : index < 3 ? (
-                        <Ionicons name={iconName} size={20} color={rankColor} />
-                    ) : (
-                        <Text style={styles.rankText}>{index + 1}</Text>
-                    )}
+                    <Text style={[
+                        styles.rankText,
+                        index < 3 && { color: rankColor, fontWeight: 'bold' }
+                    ]}>
+                        {index + 1}.
+                    </Text>
                 </View>
                 <Text style={[styles.userText, index < 3 && { color: rankColor }]}>
                     {item.username || 'Anonymous'}
@@ -138,7 +137,7 @@ const LeaderboardModal = ({ isVisible, onClose }) => {
                     <View style={styles.header}>
                         <View style={styles.headerLeft}>
                             <LottieView
-                                source={require('../assets/images/Achievements.json')}
+                                source={require('../assets/images/leaderboard.json')}
                                 autoPlay
                                 loop
                                 style={styles.headerIcon}

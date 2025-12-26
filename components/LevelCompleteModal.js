@@ -264,6 +264,18 @@ const LevelCompleteModal = ({
           </Pressable>
         </Animated.View>
       </View>
+
+      {/* Fireworks Overlay for Milestones */}
+      {isMilestone && (
+        <View style={styles.fireworksContainer}>
+          <LottieView
+            source={require('../assets/images/fireworks.json')}
+            autoPlay
+            loop={true}
+            style={styles.fireworksAnimation}
+          />
+        </View>
+      )}
     </Animated.View>
   );
 };
@@ -283,13 +295,14 @@ const styles = StyleSheet.create({
   modalBox: {
     width: '85%',
     maxWidth: 360,
+    maxHeight: 600,
     paddingHorizontal: 24,
     paddingBottom: 24,
     paddingTop: 10,
     backgroundColor: '#0f598aff',
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#68919E',
+    borderColor: '#cbc32bc4',
     alignItems: 'center',
     shadowColor: '#000000ff',
     shadowOffset: {
@@ -301,8 +314,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   lottieAnimation: {
-    width: 111,
-    height: 111,
+    width: 122,
+    height: 122,
     marginBottom: 0,
     marginLeft: 9,
   },
@@ -429,6 +442,21 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginRight: 10,
+  },
+  fireworksContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+    pointerEvents: 'none',
+  },
+  fireworksAnimation: {
+    width: 400,
+    height: 400,
   },
 });
 

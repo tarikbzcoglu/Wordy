@@ -126,17 +126,19 @@ const AchievementsModal = ({ isVisible, onClose }) => {
             <View style={styles.modalOverlay}>
                 <View style={styles.modalContainer}>
                     {/* Header */}
-                    <View style={styles.header}>
+                    <View style={[styles.header,
+                    { paddingVertical: 0, paddingHorizontal: 3 }
+                    ]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <LottieView
                                 source={require('../assets/images/Achievements.json')}
                                 autoPlay
                                 loop
-                                style={{ width: 40, height: 40, marginRight: 10 }}
+                                style={{ width: 75, height: 75, marginRight: 0 }}
                             />
-                            <Text style={styles.headerTitle}>Achievements</Text>
+                            <Text style={[styles.headerTitle, { fontSize: 28 }]}>Achievements</Text>
                         </View>
-                        <Pressable onPress={onClose} style={styles.closeButton}>
+                        <Pressable onPress={onClose} style={[styles.closeButton, { marginRight: 10 }]}>
                             <Text style={styles.closeButtonText}>✕</Text>
                         </Pressable>
                     </View>
@@ -174,7 +176,7 @@ const AchievementsModal = ({ isVisible, onClose }) => {
                     </ScrollView>
                 </View>
             </View>
-        </Modal>
+        </Modal >
     );
 };
 

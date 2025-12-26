@@ -1,9 +1,10 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const AnimatedLetterCell = ({
+const AnimatedLetterCell = React.memo(({
     letter,
     status,
     width,
@@ -12,84 +13,86 @@ const AnimatedLetterCell = ({
     isCorrect,
     onPress,
     disabled,
-    wordLength = 0,
-    // Style overrides
+    wordLength,
+    style,
     correctStyle,
     incorrectStyle,
     hintStyle,
-    selectedStyle,
-    style, // Base style override
+    selectedStyle
 }) => {
-    // boxScale controls the container (the cell itself)
+    // Animation Refs
+    const spinAnim = useRef(new Animated.Value(0)).current;
+    const glowAnim = useRef(new Animated.Value(0)).current;
+    // const shimmerAnim = useRef(new Animated.Value(0)).current; // Removed for perf
+    // const rainbowAnim = useRef(new Animated.Value(0)).current; // Removed for perf
+
+    // Pulse animation for input/selected state
     const boxScale = useRef(new Animated.Value(1)).current;
 
-    // Animation Values
-    const spinAnim = useRef(new Animated.Value(0)).current;     // For 3D rotation
-    const glowAnim = useRef(new Animated.Value(0)).current;     // For Neon Flash
-    const shimmerAnim = useRef(new Animated.Value(0)).current;  // For Sheen finish
-    const rainbowAnim = useRef(new Animated.Value(0)).current;  // For Rainbow colors
+    const prevStatus = useRef(status);
+    const prevIsSelected = useRef(isSelected);
 
-    // Handle Letter Entry Pulse (Polished Interaction)
+    // 1. Box Pulse Effect (Input/Selected)
     useEffect(() => {
-        if (letter && status !== 'hint' && status !== 'revealed') {
+        if (isSelected && !prevIsSelected.current) {
             Animated.sequence([
                 Animated.timing(boxScale, { toValue: 1.05, duration: 100, useNativeDriver: true }),
-                Animated.timing(boxScale, { toValue: 1, duration: 100, useNativeDriver: true }),
+                Animated.timing(boxScale, { toValue: 1, duration: 100, useNativeDriver: true })
             ]).start();
         }
-    }, [letter]);
+        prevIsSelected.current = isSelected;
+    }, [isSelected]);
 
-    // Handle Status Changes (Hint/Reveal Animations)
+    // Combined Effect for Status Changes
     useEffect(() => {
-        if (status === 'revealed' || status === 'hint') {
-            // 🌟 ULTIMATE + RAINBOW COMBO ANIMATION 🌟
-            // 3D Spin + Neon Flash + Scale Pulse + Sheen Finish + Rainbow Tint
+        if (status === prevStatus.current && status !== 'revealed') return;
+        prevStatus.current = status;
 
-            spinAnim.setValue(0);
-            glowAnim.setValue(0);
-            shimmerAnim.setValue(0);
-            rainbowAnim.setValue(0);
+        // Reset animations
+        spinAnim.setValue(0);
+        glowAnim.setValue(0);
 
-            // Ensure text is visible!
-            // textScale removed to fix visibility issues.
-
+        if (status === 'hint') {
+            // 2. Hint Reveal: 3D Flip + Glow
             Animated.parallel([
-                // 1. 360 Degree Spin
                 Animated.timing(spinAnim, {
                     toValue: 1,
-                    duration: 650,
+                    duration: 600,
                     useNativeDriver: true,
                 }),
-
-                // 2. Pulse Scale
                 Animated.sequence([
-                    Animated.timing(boxScale, { toValue: 1.15, duration: 325, useNativeDriver: true }),
-                    Animated.spring(boxScale, { toValue: 1, friction: 5, tension: 200, useNativeDriver: true }),
-                ]),
-
-                // 3. Neon Flash
-                Animated.sequence([
-                    Animated.delay(100),
-                    Animated.timing(glowAnim, { toValue: 0.9, duration: 150, useNativeDriver: true }),
-                    Animated.timing(glowAnim, { toValue: 0, duration: 400, useNativeDriver: true }),
-                ]),
-
-                // 4. Sheen Sweep
-                Animated.sequence([
-                    Animated.delay(550),
-                    Animated.timing(shimmerAnim, {
-                        toValue: 1,
-                        duration: 500,
+                    Animated.timing(glowAnim, {
+                        toValue: 1, // Flash
+                        duration: 300,
                         useNativeDriver: true,
                     }),
-                ]),
-
-                // 5. Rainbow Tint Cycle (converted to Opacity for Native Driver perf)
+                    Animated.timing(glowAnim, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: true,
+                    })
+                ])
+            ]).start();
+        } else if (status === 'revealed') {
+            // 3. Reveal: Simple 3D FLip + Flash (No Rainbow/Shimmer for max FPS)
+            Animated.parallel([
+                // Spin
+                Animated.timing(spinAnim, {
+                    toValue: 1,
+                    duration: 400, // Faster spin
+                    useNativeDriver: true,
+                }),
+                // Simple Flash
                 Animated.sequence([
-                    Animated.timing(rainbowAnim, {
-                        toValue: 1,
-                        duration: 650,
-                        useNativeDriver: true, // Now TRUE for performance!
+                    Animated.timing(glowAnim, {
+                        toValue: 0.6, // Subtle flash
+                        duration: 200,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(glowAnim, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: true,
                     }),
                 ]),
             ]).start();
@@ -102,90 +105,70 @@ const AnimatedLetterCell = ({
         outputRange: ['0deg', '360deg']
     });
 
-    const shimmerTranslate = shimmerAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-width, width * 2]
-    });
-
     const flashOpacity = glowAnim;
 
-    // Rainbow/Holo Opacity Interpolation (Replaces heavy color interpolation)
-    const rainbowOpacity = rainbowAnim.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: [0, 0.4, 0] // Fade in to 0.4 then out
-    });
+    // Memoize the combined style
+    const combinedStyle = React.useMemo(() => [
+        styles.letterCell,
+        style,
+        { width, height, overflow: 'hidden' }, // Ensure hidden overflow for radius
+        isSelected && (selectedStyle || styles.selectedCell),
+        status === 'incorrect' && (incorrectStyle || styles.incorrectAnswerCell),
+        status === 'hint' && (hintStyle || styles.hintLetterCell),
+        isCorrect && (correctStyle || styles.correctAnswerCell),
+        {
+            transform: [
+                { scale: boxScale },
+                { rotateY: (status === 'hint' || status === 'revealed') ? spinRotate : '0deg' }
+            ]
+        }
+    ], [style, width, height, isSelected, selectedStyle, status, incorrectStyle, hintStyle, isCorrect, correctStyle, boxScale, spinRotate]);
 
     return (
         <View>
             <AnimatedPressable
-                style={[
-                    styles.letterCell,
-                    style, // Apply external base style override
-                    { width, height, overflow: 'hidden' },
-                    isSelected && (selectedStyle || styles.selectedCell),
-                    status === 'incorrect' && (incorrectStyle || styles.incorrectAnswerCell),
-                    status === 'hint' && (hintStyle || styles.hintLetterCell),
-                    // isCorrect must be last to override hint style when the word is completed
-                    isCorrect && (correctStyle || styles.correctAnswerCell),
-                    {
-                        transform: [
-                            { scale: boxScale },
-                            { rotateY: (status === 'hint' || status === 'revealed') ? spinRotate : '0deg' }
-                        ]
-                    }
-                ]}
+                style={combinedStyle}
                 onPress={onPress}
                 disabled={disabled}
             >
-                {/* Rainbow/Holo Overlay Layer - Optimized */}
-                <Animated.View
-                    style={{
-                        ...StyleSheet.absoluteFillObject,
-                        backgroundColor: 'rgba(255, 215, 0, 0.5)', // Gold Tint constant
-                        opacity: rainbowOpacity, // Native Driver opacity
-                        borderRadius: 6,
-                    }}
-                />
+                {/* Optimized: Only 1 Overlay Layer (Flash) and only when needed */}
+                {(status === 'revealed' || status === 'hint') && (
+                    <Animated.View
+                        style={{
+                            ...StyleSheet.absoluteFillObject,
+                            backgroundColor: 'white',
+                            opacity: flashOpacity,
+                            borderRadius: 6,
+                        }}
+                    />
+                )}
 
-                {/* The "Sheen" - Diagonal light sweep */}
-                <Animated.View
-                    style={{
-                        position: 'absolute',
-                        top: -height,
-                        left: 0,
-                        width: width * 0.5,
-                        height: height * 4,
-                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                        transform: [
-                            { translateX: shimmerTranslate },
-                            { rotate: '20deg' }
-                        ],
-                    }}
-                />
-
-                {/* The "Flash" - White overlay for the neon ignition */}
-                <Animated.View
-                    style={{
-                        ...StyleSheet.absoluteFillObject,
-                        backgroundColor: '#FFFFFF',
-                        opacity: flashOpacity,
-                    }}
-                />
-
-                {/* Text Content - RENDERED LAST TO BE ON TOP */}
-                <View style={{ zIndex: 999, elevation: 10 }}>
+                {/* Text Content */}
+                <Animated.View style={{ zIndex: 100, elevation: 10 }}>
                     <Text style={[
                         styles.letterText,
-                        { fontSize: (width < 30 ? 20 : 24) + (wordLength <= 9 ? 4 : 0) }
+                        // Dynamic Font Size Logic
+                        { fontSize: (width < 38 || wordLength > 9) ? 22 : 32 }
                     ]}>
                         {letter}
                     </Text>
-                </View>
+                </Animated.View>
 
             </AnimatedPressable>
         </View>
     );
-};
+}, (prevProps, nextProps) => {
+    // Custom Comparison Function for Performance
+    return (
+        prevProps.letter === nextProps.letter &&
+        prevProps.status === nextProps.status &&
+        prevProps.isSelected === nextProps.isSelected &&
+        prevProps.isCorrect === nextProps.isCorrect &&
+        prevProps.width === nextProps.width &&
+        prevProps.height === nextProps.height &&
+        prevProps.disabled === nextProps.disabled
+    );
+});
 
 const styles = StyleSheet.create({
     letterCell: {

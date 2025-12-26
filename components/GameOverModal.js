@@ -93,6 +93,18 @@ const GameOverModal = ({ isVisible, score, isNewHighScore, onPlayAgain, onBackTo
                     </View>
 
                 </Animated.View>
+
+                {/* Fireworks Overlay for New High Score */}
+                {isNewHighScore && (
+                    <View style={styles.fireworksContainer}>
+                        <LottieView
+                            source={require('../assets/images/fireworks.json')}
+                            autoPlay
+                            loop={true}
+                            style={styles.fireworksAnimation}
+                        />
+                    </View>
+                )}
             </View>
         </Modal>
     );
@@ -204,6 +216,21 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         marginRight: 0,
+    },
+    fireworksContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+        pointerEvents: 'none',
+    },
+    fireworksAnimation: {
+        width: 400,
+        height: 400,
     },
 });
 

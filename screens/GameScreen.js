@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { decode } from 'html-entities';
+import LottieView from 'lottie-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BannerAdSize, GAMBannerAd, RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
@@ -78,6 +79,7 @@ const GameScreen = ({ route, navigation }) => {
   const isEndlessMode = category === 'Mixed Categories';
   const [mistakesRemaining, setMistakesRemaining] = useState(5);
   const [endlessScore, setEndlessScore] = useState(0);
+  const [celebrationAnim, setCelebrationAnim] = useState(require('../assets/images/Confetti.json'));
   const [isGameOver, setIsGameOver] = useState(false);
   const [isNewHighScore, setIsNewHighScore] = useState(false);
   const [achievementToast, setAchievementToast] = useState({
@@ -87,12 +89,7 @@ const GameScreen = ({ route, navigation }) => {
 
   const hintReminderAnim = useRef(new Animated.Value(0)).current;
   const scoreScaleAnim = useRef(new Animated.Value(1)).current;
-  const confettiAnims = useRef([...Array(20)].map(() => ({
-    x: new Animated.Value(0),
-    y: new Animated.Value(0),
-    rotate: new Animated.Value(0),
-    opacity: new Animated.Value(1),
-  }))).current;
+
 
   // Shake animation for incorrect answers - use state to update with questions
   const [shakeAnims, setShakeAnims] = useState([]);
@@ -195,9 +192,28 @@ const GameScreen = ({ route, navigation }) => {
     });
 
     const MIN_QUESTIONS = 5;
+
+    // PROGRESSIVE DIFFICULTY LOGIC
+    // Filter available lengths based on current score (endlessScore)
+    // 0 - 300 points (First ~5-6 levels): Easy (3-5 letters)
+    // 300 - 1000 points (Next ~15 levels): Medium (4-7 letters)
+    // 1000+ points: Hard (5-11 letters)
+
+    let minLen = 3;
+    let maxLen = 11;
+
+    if (endlessScore < 300) {
+      maxLen = 5;
+    } else if (endlessScore < 1000) {
+      minLen = 4;
+      maxLen = 7;
+    } else {
+      minLen = 5;
+    }
+
     const availableLengths = Object.keys(questionsByLength)
       .map(Number)
-      .filter(len => questionsByLength[len].length >= MIN_QUESTIONS);
+      .filter(len => questionsByLength[len].length >= MIN_QUESTIONS && len >= minLen && len <= maxLen);
 
     let targetQuestions = [];
     let targetLength = 0;
@@ -630,37 +646,22 @@ const GameScreen = ({ route, navigation }) => {
       };
       saveProgress();
 
+      // Determine Animation
+      if (isMilestone(level) && !isEndlessMode) {
+        setCelebrationAnim(require('../assets/images/fireworks.json'));
+      } else {
+        // Random Confetti
+        const confettis = [
+          require('../assets/images/Confetti.json'),
+          require('../assets/images/Confetti2.json'),
+          require('../assets/images/Confetti3.json')
+        ];
+        setCelebrationAnim(confettis[Math.floor(Math.random() * confettis.length)]);
+      }
+
       // Trigger confetti celebration
       setShowConfetti(true);
-      confettiAnims.forEach((anim, i) => {
-        const angle = (i / 20) * Math.PI * 2;
-        const distance = 150 + Math.random() * 100;
-        Animated.parallel([
-          Animated.timing(anim.x, {
-            toValue: Math.cos(angle) * distance,
-            duration: 1500 + Math.random() * 500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(anim.y, {
-            toValue: Math.sin(angle) * distance - 200,
-            duration: 1500 + Math.random() * 500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(anim.rotate, {
-            toValue: Math.random() * 720,
-            duration: 1500 + Math.random() * 500,
-            useNativeDriver: true,
-          }),
-          Animated.sequence([
-            Animated.delay(1000),
-            Animated.timing(anim.opacity, {
-              toValue: 0,
-              duration: 500,
-              useNativeDriver: true,
-            }),
-          ]),
-        ]).start();
-      });
+
 
       setTimeout(async () => {
         // Update player stats and check achievements
@@ -709,13 +710,7 @@ const GameScreen = ({ route, navigation }) => {
         setIsLevelComplete(true);
         setShowConfetti(false);
         // Reset confetti
-        confettiAnims.forEach(anim => {
-          anim.x.setValue(0);
-          anim.y.setValue(0);
-          anim.rotate.setValue(0);
-          anim.opacity.setValue(1);
-        });
-      }, 2000);
+      }, 1000);
     }
   }, [correctlyAnswered, playLevelUpSound, questions.length]);
 
@@ -782,7 +777,9 @@ const GameScreen = ({ route, navigation }) => {
         handleAchievementCheck(0, { high_score_endless: newScore });
       }
       let newCorrectlyAnswered = [...correctlyAnswered];
-      let newAnswers = JSON.parse(JSON.stringify(answers));
+      // Optimize: Shallow copy instead of deep clone (JSON.parse/stringify is SLOW)
+      let newAnswers = answers.map(row => [...row]);
+
       let queue = [questionIndex];
       let processedInCascade = new Set();
       while (queue.length > 0) {
@@ -929,32 +926,46 @@ const GameScreen = ({ route, navigation }) => {
         ]).start();
       }
 
+      // Efficient update for incorrect answers
       setAnswers(currentAnswers => {
-        const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
-        newAnswers[questionIndex] = newAnswers[questionIndex].map(cell => {
-          if (cell.status === 'input') return { ...cell, status: 'incorrect' };
-          return cell;
+        const newAnswers = currentAnswers.map((row, idx) => {
+          if (idx !== questionIndex) return row;
+          return row.map(cell => {
+            if (cell.status === 'input') return { ...cell, status: 'incorrect' };
+            return cell;
+          });
         });
         return newAnswers;
       });
+
       setTimeout(() => {
         let firstEmptyIndex = -1;
         setAnswers(currentAnswers => {
-          const newAnswers = JSON.parse(JSON.stringify(currentAnswers));
-          newAnswers[questionIndex] = newAnswers[questionIndex].map((cell, index) => {
-            if (cell.status !== 'hint' && cell.status !== 'revealed') {
-              if (firstEmptyIndex === -1) {
-                firstEmptyIndex = index;
+          // Efficient update to clear incorrect cells
+          const newAnswers = currentAnswers.map((row, idx) => {
+            if (idx !== questionIndex) return row;
+            return row.map((cell, index) => {
+              if (cell.status !== 'hint' && cell.status !== 'revealed') {
+                if (firstEmptyIndex === -1 && cell.letter === '') { // Keep focus on first previously empty spot
+                  firstEmptyIndex = index;
+                }
+                if (index === firstEmptyIndex) firstEmptyIndex = index; // Ensure consistent logic
+
+                return { letter: '', status: 'empty' };
               }
-              return { letter: '', status: 'empty' };
-            }
-            return cell;
+              return cell;
+            });
           });
+
           return newAnswers;
         });
 
         if (firstEmptyIndex === -1) {
-          firstEmptyIndex = 0;
+          // Find the first non-locked cell (neither 'hint' nor 'revealed')
+          const targetRow = answers[questionIndex] || [];
+          firstEmptyIndex = targetRow.findIndex(cell => cell.status !== 'hint' && cell.status !== 'revealed');
+
+          if (firstEmptyIndex === -1) firstEmptyIndex = 0; // Fallback
         }
         setActiveQuestionIndex(questionIndex);
         setActiveInputIndex(firstEmptyIndex);
@@ -1295,33 +1306,18 @@ const GameScreen = ({ route, navigation }) => {
               steps={ENDLESS_TUTORIAL_STEPS}
             />
 
-            {/* Confetti Celebration */}
+
             {showConfetti && (
-              <View style={styles.confettiContainer}>
-                {confettiAnims.map((anim, i) => (
-                  <Animated.View
-                    key={i}
-                    style={[
-                      styles.confetti,
-                      {
-                        backgroundColor: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FF6347'][i % 5],
-                        transform: [
-                          { translateX: anim.x },
-                          { translateY: anim.y },
-                          {
-                            rotate: anim.rotate.interpolate({
-                              inputRange: [0, 720],
-                              outputRange: ['0deg', '720deg']
-                            })
-                          }
-                        ],
-                        opacity: anim.opacity,
-                      }
-                    ]}
-                  />
-                ))}
+              <View style={styles.confettiContainer} pointerEvents="none">
+                <LottieView
+                  source={celebrationAnim}
+                  autoPlay
+                  loop={false}
+                  style={{ width: 400, height: 400 }}
+                />
               </View>
             )}
+
           </View>
         </View>
       </View>
@@ -1502,7 +1498,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   heartIcon: {
-    fontSize: 24,
+    fontSize: 18,
   },
   scoreDisplay: {
     backgroundColor: 'rgba(74, 126, 142, 0.8)',
@@ -1601,41 +1597,41 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     justifyContent: 'center',
     paddingHorizontal: 4,
-    paddingVertical: 2,
+    paddingVertical: 1,
     minHeight: 90,
     marginRight: 0,
     marginTop: 2,
+    maxHeight: 95,
   },
   questionText: {
     color: '#E1E2E1',
     fontSize: 15,
+    paddingLeft: 2,
     lineHeight: 20,
     fontFamily: 'EagleLake-Regular',
   },
   answerBoxesContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 2,
+    padding: 1.5,
   },
   letterCell: {
     backgroundColor: '#FAF3E0',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 1, // Biraz daha aralık bırakmak bu stilde iyi durur
-
-    // Kenarlıkları ve 3D efekti
-    borderRadius: 6, // Biraz daha köşeli
+    marginHorizontal: 1,
+    borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#E6DABF',     // Üst ve yanlar için açık ton
-    borderBottomWidth: 4,       // Alt tarafı kalınlaştırarak taş hissi ver
-    borderBottomColor: '#D4C5A5', // Alt taraf için daha koyu ton (Gölge gibi)
-
-    // Hafif bir derinlik gölgesi
+    borderColor: '#E6DABF',
+    borderBottomWidth: 5,
+    borderTopWidth: 1.5,
+    borderTopColor: '#D4C5A5',
+    borderBottomColor: '#D4C5A5',
     shadowColor: '#8D7D65',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 3,
+    elevation: 4,
   },
   selectedCell: {
     backgroundColor: '#FFE082',
@@ -1647,13 +1643,15 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   correctAnswerCell: {
-    backgroundColor: '#26b3daff',
-    borderColor: '#66BB6A',
-    borderBottomColor: '#66BB6A',
-    borderBottomWidth: 4,
-    borderTopWidth: 4,
+    backgroundColor: '#66BB6A',
+    borderColor: '#26b3daff',
+    borderBottomColor: '#26b3daff',
+    borderLeftColor: '#66BB6A',
+    borderRightColor: '#66BB6A',
+    borderBottomWidth: 5,
+    borderTopWidth: 5,
     borderRadius: 8,
-    borderTopColor: '#66BB6A',
+    borderTopColor: '#26b3daff',
     elevation: 6,
   },
   incorrectAnswerCell: {
@@ -1710,10 +1708,12 @@ const styles = StyleSheet.create({
   },
   confettiContainer: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 1,
-    height: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 9999,
     pointerEvents: 'none',
   },

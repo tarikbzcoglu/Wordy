@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     hintButtonContainer: {
         alignItems: 'center',
         marginRight: 25,
-        marginTop: 2, // Moved down by 2px
+        marginTop: 6, // 2px + 4px extra down
     },
     hintAnimationLarge: {
         width: 55,
