@@ -4,6 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as StoreReview from 'expo-store-review';
 import LottieView from 'lottie-react-native';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Animated, BackHandler, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -376,6 +377,23 @@ export default function HomeScreen({ navigation }) {
       setUsernameModalVisible(false);
     } catch (e) {
       console.error('Failed to save username.', e);
+    }
+  };
+
+  const handleRateApp = async () => {
+    playTapSound();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    try {
+      const isAvailable = await StoreReview.isAvailableAsync();
+      if (isAvailable) {
+        await StoreReview.requestReview();
+      } else {
+        // Fallback: Could open app store link directly
+        console.log('Store review not available on this device');
+      }
+    } catch (error) {
+      console.error('Error requesting store review:', error);
     }
   };
 
@@ -755,6 +773,29 @@ export default function HomeScreen({ navigation }) {
         </Pressable>
       )}
 
+      {/* Rate App Button */}
+      {!showCategories && (
+        <Pressable
+          style={({ pressed }) => [
+            styles.rateAppButton,
+            { transform: [{ scale: pressed ? 0.9 : 1 }] }
+          ]}
+          onPress={handleRateApp}
+        >
+          <LinearGradient
+            colors={['#FFD700', '#FFA500', '#FF8C00']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.rateAppButtonGradient}
+          >
+            <View style={styles.rateAppIconContainer}>
+              <Text style={styles.rateAppIcon}>⭐</Text>
+            </View>
+          </LinearGradient>
+          <Text style={styles.rateAppText}>Rate Us!</Text>
+        </Pressable>
+      )}
+
       {!showCategories && (
         <Pressable onPress={handleOwlPress} style={styles.owlPressable}>
           <Animated.View style={{ transform: [{ scale: owlScaleAnim }] }}>
@@ -849,6 +890,48 @@ const styles = StyleSheet.create({
   statsAnimation: {
     width: 40,
     height: 40,
+  },
+  rateAppButton: {
+    position: 'absolute',
+    top: 75,
+    left: 20,
+    zIndex: 10,
+    alignItems: 'center',
+  },
+  rateAppButtonGradient: {
+    width: 55,
+    height: 55,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.4)',
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  rateAppIconContainer: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rateAppIcon: {
+    fontSize: 28,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  rateAppText: {
+    color: '#FFD700',
+    fontSize: 11,
+    fontFamily: 'EagleLake-Regular',
+    marginTop: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
   lottieAnimation: {
     width: 133,
